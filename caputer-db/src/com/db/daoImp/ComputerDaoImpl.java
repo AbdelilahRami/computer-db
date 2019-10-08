@@ -1,13 +1,19 @@
 package com.db.daoImp;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.sql.*;
 import com.db.connection.ComputerDBConnection;
 import com.db.dao.DaoComputer;
+import com.db.mapper.DatesConversion;
 import com.db.model.Company;
 import com.db.model.Computer;
-import com.db.service.DbService;
 
 public class ComputerDaoImpl implements DaoComputer {
 
@@ -66,8 +72,8 @@ public class ComputerDaoImpl implements DaoComputer {
 			while(rs.next()) {
 				int idComputer = rs.getInt("id");
 				String name=rs.getString("name");
-				Timestamp intoduced=rs.getTimestamp("introduced");
-				Timestamp discontinued = rs.getTimestamp("discontinued");
+				Date intoduced=rs.getDate("introduced");
+				Date discontinued = rs.getDate("discontinued");
 				int idCompany = rs.getInt("company_id");
 				computer = new Computer(idComputer, name, 
 												intoduced, discontinued, idCompany);
@@ -81,24 +87,17 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public void createComputer(String name, Date introducedDate, Date discountedDate, int idCompany) throws Exception {
-		DbService dbService = new DbService();
-		boolean dateIsvalid = dbService.dateIsvalid(introducedDate,discountedDate);
-		boolean idExist = dbService.companyIdExist(idCompany);
-		if(!dateIsvalid || !idExist) {
-			throw new Exception("discounte Date must be greater than introduced Date");
-		}else if(!idExist) {
-			throw new Exception("The id company doesn't exist in database");
-		}
+	public void createComputer(Computer computer) throws Exception {
+		
 		Connection conn=ComputerDBConnection.getInstance();
 		try {
 			
 			String query = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 			PreparedStatement pstm = conn.prepareStatement(query);
-			pstm.setString(1, name);
-			pstm.setDate(2, introducedDate);
-			pstm.setDate(3, discountedDate);
-			pstm.setInt(4, idCompany);
+			pstm.setString(1, computer.getName());
+			pstm.setDate(2, java.sql.Date.valueOf(computer.getIntroducedDate().toString()));
+			pstm.setDate(3, java.sql.Date.valueOf(computer.getDiscountedDate().toString()));
+			pstm.setInt(4, computer.getIdCompany());
 			pstm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -108,23 +107,22 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public void updateComputer(int id, String name,Date introducedDate, Date discountedDate, int idCompany ) throws Exception {
+	public void updateComputer(Computer computer) throws Exception {
+		System.out.println(computer.getIntroducedDate());
+		try {
 		Connection conn = ComputerDBConnection.getInstance();
-		Computer computer = this.getComputerDetails(id);
-		if(computer != null) {
-			String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ? ";
+			String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 			PreparedStatement pstm = conn.prepareStatement(query);
-			pstm.setString(1, name);
-			pstm.setDate(2, introducedDate);
-			pstm.setDate(3, discountedDate);
-			pstm.setInt(4, idCompany);
-			pstm.setInt(5, id);
-			ResultSet rs = pstm.executeQuery();
-			
-		}else {
-			throw new Exception("The computer you want to update doesn't exist");
-		}
-
+			pstm.setString(1, computer.getName());
+			pstm.setDate(2, DatesConversion.convertUtilToSql(computer.getIntroducedDate()));
+			pstm.setDate(3, DatesConversion.convertUtilToSql(computer.getDiscountedDate()));
+			pstm.setInt(4, computer.getIdCompany());
+			pstm.setInt(5, computer.getId());
+			int rs = pstm.executeUpdate();
+		}catch(SQLException exc) {
+			exc.printStackTrace();
+		}	
+	
 
 	}
 
