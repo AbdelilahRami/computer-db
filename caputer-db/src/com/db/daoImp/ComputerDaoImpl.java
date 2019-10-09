@@ -185,7 +185,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		Computer computer;
 		Connection myConn=ComputerDBConnection.getInstance();
 		try {
-			PreparedStatement pstm = myConn.prepareStatement("selct * from computer LIMIT = ? OFFSET = ?");
+			PreparedStatement pstm = myConn.prepareStatement("select * from computer LIMIT ?, ?");
 			pstm.setInt(1, Page.getPageSize());
 			pstm.setInt(2, Page.getPageSize()*(pageId-1));
 			ResultSet rs=pstm.executeQuery();
