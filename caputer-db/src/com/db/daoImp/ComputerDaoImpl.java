@@ -180,18 +180,40 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public List<Computer> getComputersByPageNumber(int pageId) {
+	public List<Computer> getComputersByPageNumber(int pageId) throws SQLException {
+		List<Computer> computers= new ArrayList<Computer>();
+		Computer computer;
 		Connection myConn=ComputerDBConnection.getInstance();
 		try {
 			PreparedStatement pstm = myConn.prepareStatement("selct * from computer LIMIT = ? OFFSET = ?");
 			pstm.setInt(1, Page.getPageSize());
-			pstm.setInt(2, Page.getPageSize()*pageId);
+			pstm.setInt(2, Page.getPageSize()*(pageId-1));
 			ResultSet rs=pstm.executeQuery();
+			while(rs.next()) {
+				int idComputer = rs.getInt("id");
+				String name=rs.getString("name");
+				Date introducedDate = rs.getDate("introduced");
+				Date discountedDate = rs.getDate("discontinued");
+				LocalDate introduced = null;
+				LocalDate discounted = null;
+				if(introducedDate != null) {
+					introduced = rs.getDate("introduced").toLocalDate();
+				}
+				if(discountedDate != null) {
+					discounted = rs.getDate("discontinued").toLocalDate();
+				}
+				int idCompany = rs.getInt("company_id");
+				computer = new Computer(idComputer, name, 
+						introduced, discounted, getCompanyById(idCompany));
+				computers.add(computer);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			myConn.close();
 		}
-		return null;
+		return computers;
 	}
 
 	@Override
@@ -201,11 +223,8 @@ public class ComputerDaoImpl implements DaoComputer {
 		Connection myConn=ComputerDBConnection.getInstance();
 		try {
 			Statement stm = myConn.createStatement();
-			ResultSet myRes=stm.executeQuery("select count(*) from computer");
-			int numberOflines =0;
-			while(myRes.next()) {
-				numberOflines++;
-			}
+			ResultSet myRes=stm.executeQuery("select count(*) as number from computer");
+			int numberOflines =myRes.getInt("number");
 			numberOfPages = numberOflines/pageSize;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

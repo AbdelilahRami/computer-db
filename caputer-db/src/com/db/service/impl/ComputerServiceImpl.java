@@ -1,9 +1,12 @@
 package com.db.service.impl;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 import com.db.dao.DaoComputer;
+import com.db.daoImp.ComputerDaoImpl;
+import com.db.exception.ComputerToDeleteNotFound;
 import com.db.exception.DatesNotValidException;
 import com.db.exception.NotFoundCompanyException;
 import com.db.exception.PageNotFoundException;
@@ -97,22 +100,39 @@ public class ComputerServiceImpl implements ComputeService {
 	}
 
 	@Override
-	public List<Computer> getComputersByPage(Page page) {
+	public List<Computer> getComputersByPage(Page page) throws SQLException {
+		List<Computer> computers=null;
 		try {
 			if(page.getPageNumber() > getNumberOfPages()) {
 				throw new PageNotFoundException("You have exced the max number of pages");
 			}
+			computers = daoComputer.getComputersByPageNumber(page.getPageNumber());
 		} catch (PageNotFoundException e) {
 			System.out.println("You have exced the max number of pages");
 		}
-		if(page.getPageNumber() > getNumberOfPages())
-		return null;
+		return computers;
 	}
 
 	@Override
 	public int getNumberOfPages() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void deleteComputer(int idComputer) throws Exception {
+		ComputerDaoImpl computerDao = new ComputerDaoImpl();
+		Computer  computer=computerDao.getComputerDetails(idComputer);
+		try {
+			if(computer == null) {
+				throw new ComputerToDeleteNotFound("This computer doesn't exist :");
+			}
+			computerDao.deleteComputer(idComputer);
+		}catch(ComputerToDeleteNotFound ex) {
+			System.out.println("This computer doesn't exist :");
+		}
+		
+		
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.db.main;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 import com.db.daoImp.ComputerDaoImpl;
@@ -22,7 +24,7 @@ public class Main {
 			System.out.println("4-Find a computer with a specific Id :");
 			System.out.println("5-Update a given computer :");
 			System.out.println("6-Delete a given computer :");
-			System.out.println("7-Quit :");
+			System.out.println("7-Pagination functionalities :");
 			value = getOperationNumber();
 			
 			
@@ -54,11 +56,13 @@ public class Main {
 					break;
 				case 6 :
 					System.out.println("Your are in the delete part :");
-					Computer computerToDelete=getComputerToDelet();
+					int idComputer=getComputerToDelet();
+					computerService.deleteComputer(idComputer);
 					break;
 				case 7 : 
-					break Label;
-					//start = false;	
+					System.out.println("Pagination part :");
+					List<Computer> myComputers= computersByPage();
+					myComputers.forEach((cp)->System.out.println(cp.toString()));
 				}
 
 			}	
@@ -95,13 +99,11 @@ public class Main {
 		int idComputer = sc.nextInt();
 		return idComputer;
 	}
-	public static Computer getComputerToDelet() {
+	public static int getComputerToDelet() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer to update");
 		int idComputer = sc.nextInt();
-		ComputerDaoImpl computerDao = new ComputerDaoImpl();
-		Computer computer= computerDao.getComputerDetails(idComputer);
-		return computer;		
+		return idComputer;		
 	}
 	public static Computer getComputerToUpdate() {
 		Scanner sc = new Scanner(System.in);
@@ -122,5 +124,13 @@ public class Main {
 		Company company=computerDao.getCompanyById(idCompany);
 		Computer computer = new Computer(idComputer, name, localDateIntro, localDateDicounted, company);
 		return computer;
+	}
+	
+	public static List<Computer> computersByPage() throws SQLException{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please enter the number of page");
+		int pageNumber = sc.nextInt();
+		List<Computer> computers = computerDAO.getComputersByPageNumber(pageNumber);
+		return computers;
 	}
 }

@@ -1,6 +1,7 @@
 package com.db.dao;
 
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,6 @@ public interface DaoComputer {
 	public void deleteComputer(int id);
 	public Company getCompanyById(int idCompany);
 	public int getNumberOfPages();
-	public List<Computer> getComputersByPageNumber(int pageId);
+	public List<Computer> getComputersByPageNumber(int pageId)throws SQLException;
 
 }

@@ -2,7 +2,7 @@ package com.db.model;
 
 public class Page {
 	private int pageNumber;
-	private static final int pageSize =40;
+	private static final int pageSize =10;
 	public Page(int pageNumber) {
 		this.pageNumber = pageNumber;
 	}
