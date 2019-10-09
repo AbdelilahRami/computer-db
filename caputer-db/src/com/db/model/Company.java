@@ -4,7 +4,6 @@ public class Company {
 	private int id;
 	private String name;
 	
-	
 	public Company(int id, String name) {
 		super();
 		this.id = id;
@@ -22,5 +21,8 @@ public class Company {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", name=" + name +  "]";
+	}
 }

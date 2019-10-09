@@ -1,31 +1,39 @@
 package com.db.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Computer {
 	private int id;
 	private String name;
-	private Date introducedDate;
-	private Date discountedDate;
-	private int idCompany;
+	private LocalDate introducedDate;
+	private LocalDate discountedDate;
+	private Company company;
 
 	public Computer() {
 		super();
 	}
 
-	public Computer(int id, String name, Date introducedDate, Date discountedDate, int idCompany) {
+	public Computer(int id, String name, LocalDate introducedDate, LocalDate discountedDate, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introducedDate = introducedDate;
 		this.discountedDate = discountedDate;
-		this.idCompany = idCompany;
+		this.company = company;
+	}
+	public Computer(String name, LocalDate introducedDate, LocalDate discountedDate, Company company) {
+		super();
+		this.name = name;
+		this.introducedDate = introducedDate;
+		this.discountedDate = discountedDate;
+		this.company = company;
 	}
 
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introducedDate=" + introducedDate + ", discountedDate="
-				+ discountedDate + ", idCompany=" + idCompany + "]";
+				+ discountedDate + ", idCompany=" + company + "]";
 	}
 
 	public int getId() {
@@ -44,28 +52,28 @@ public class Computer {
 		this.name = name;
 	}
 
-	public Date getIntroducedDate() {
+	public LocalDate getIntroducedDate() {
 		return introducedDate;
 	}
 
-	public void setIntroducedDate(Date introducedDate) {
+	public void setIntroducedDate(LocalDate introducedDate) {
 		this.introducedDate = introducedDate;
 	}
 
-	public Date getDiscountedDate() {
+	public LocalDate getDiscountedDate() {
 		return discountedDate;
 	}
 
-	public void setDiscountedDate(Date discountedDate) {
+	public void setDiscountedDate(LocalDate discountedDate) {
 		this.discountedDate = discountedDate;
 	}
 
-	public int getIdCompany() {
-		return idCompany;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setIdCompany(int idCompany) {
-		this.idCompany = idCompany;
+	public void setIdCompany(Company company) {
+		this.company = company;
 	}
 
 }

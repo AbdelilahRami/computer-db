@@ -15,5 +15,8 @@ public interface DaoComputer {
 	public void createComputer(Computer computer) throws Exception;
 	public void updateComputer(Computer computer)throws Exception;
 	public void deleteComputer(int id);
+	public Company getCompanyById(int idCompany);
+	public int getNumberOfPages();
+	public List<Computer> getComputersByPageNumber(int pageId);
 
 }
