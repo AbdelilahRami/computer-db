@@ -10,14 +10,14 @@ import com.db.model.Company;
 
 public interface DaoComputer {
 	
-	public List<Computer> getAllComputers();
-	public List<Company> getAllyCompanies();
-	public Computer getComputerDetails(int id);
+	public List<Computer> getAllComputers()throws SQLException;
+	public List<Company> getAllyCompanies()throws SQLException;
+	public Computer getComputerDetails(int id)throws SQLException ;
 	public void createComputer(Computer computer) throws Exception;
 	public void updateComputer(Computer computer)throws Exception;
-	public void deleteComputer(int id);
-	public Company getCompanyById(int idCompany);
-	public int getNumberOfPages();
+	public void deleteComputer(int id)throws SQLException;
+	public Company getCompanyById(int idCompany)throws SQLException;
+	public int getNumberOfPages()throws SQLException;
 	public List<Computer> getComputersByPageNumber(int pageId)throws SQLException;
 
 }

@@ -10,72 +10,74 @@ import com.db.daoImp.ComputerDaoImpl;
 import com.db.model.Company;
 import com.db.model.Computer;
 import com.db.service.impl.*;
+
+
 public class Main {
 	static ComputerDaoImpl computerDAO = new ComputerDaoImpl();
-	static ComputerServiceImpl computerService= new ComputerServiceImpl(computerDAO);
+	static ComputerServiceImpl computerService = new ComputerServiceImpl(computerDAO);
 	static int value;
-	public static void main(String[] args) throws Exception {
-		
-			System.out.println("=================================");
-			System.out.println("=======User Interface============");
-			System.out.println("1-Show the list of computers :");
-			System.out.println("2-Show the list of campanies :");
-			System.out.println("3-Add a computer to database :");
-			System.out.println("4-Find a computer with a specific Id :");
-			System.out.println("5-Update a given computer :");
-			System.out.println("6-Delete a given computer :");
-			System.out.println("7-Pagination functionalities :");
-			value = getOperationNumber();
-			
-			
-	Label:		while(true) {
-				switch(value) {
-				case 1 :
-					computerService.getAllComputers();
-					value = getOperationNumber();
-					break;
-				case 2 :
-					computerService.getAllCompanies();
-					value = getOperationNumber();
-					break;
-				case 3 :
-					Computer computer=computerCreate();
-					computerService.createComputer(computer);
-					value = getOperationNumber();
-					break;
-				case 4 :
-					System.out.println("Your are about to get computer details :");
-					Computer myComputer =computerDAO.getComputerDetails(getIdOfComputer());
-					System.out.println(myComputer.toString());
-					break;
-				case 5 :
-					System.out.println("Your are in the update part :");
-					Computer updatComputer = getComputerToUpdate();
-					computerService.updateComputer(updatComputer);
-					value = getOperationNumber();
-					break;
-				case 6 :
-					System.out.println("Your are in the delete part :");
-					int idComputer=getComputerToDelet();
-					computerService.deleteComputer(idComputer);
-					break;
-				case 7 : 
-					System.out.println("Pagination part :");
-					List<Computer> myComputers= computersByPage();
-					myComputers.forEach((cp)->System.out.println(cp.toString()));
-				}
 
-			}	
+	public static void main(String[] args) throws Exception {
+
+		showTheMenu();
+
+		Label: while (true) {
+			switch (value) {
+			case 1:
+				computerService.getAllComputers();
+				value = showTheMenu();
+				break;
+			case 2:
+				computerService.getAllCompanies();
+				value = showTheMenu();
+				break;
+			case 3:
+				Computer computer = computerCreate();
+				computerService.createComputer(computer);
+				value = showTheMenu();
+				break;
+			case 4:
+				System.out.println("Your are about to get computer details :");
+				Computer myComputer = computerDAO.getComputerDetails(getIdOfComputer());
+				System.out.println(myComputer.toString());
+				value=showTheMenu();
+				break;
+			case 5:
+				System.out.println("Your are in the update part :");
+				Computer updatComputer = getComputerToUpdate();
+				computerService.updateComputer(updatComputer);
+				value = showTheMenu();
+				break;
+			case 6:
+				System.out.println("Your are in the delete part :");
+				int idComputer = getComputerToDelet();
+				computerService.deleteComputer(idComputer);
+				value=showTheMenu();
+				break;
+			case 7:
+				System.out.println("Pagination part :");
+				List<Computer> myComputers = computersByPage();
+				myComputers.forEach((cp) -> System.out.println(cp.toString()));
+				value =showTheMenu();
+				break;
+			case 8 :
+				System.out.print("Quit");				
+				System.out.flush();
+				break Label;
+			}
+
+		}
 	}
+
 	public static int getOperationNumber() {
 		System.out.println("Choose a number :");
 		Scanner sc = new Scanner(System.in);
 		value = sc.nextInt();
-		
+
 		return value;
 	}
-	
-	public static Computer computerCreate() {
+
+	public static Computer computerCreate() throws SQLException {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
@@ -89,23 +91,26 @@ public class Main {
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
 		ComputerDaoImpl computerDao = new ComputerDaoImpl();
-		Company company=computerDao.getCompanyById(idCompany);
+		Company company = computerDao.getCompanyById(idCompany);
 		Computer computer = new Computer(name, localDateIntro, localDateDicounted, company);
 		return computer;
 	}
+
 	public static int getIdOfComputer() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer");
 		int idComputer = sc.nextInt();
 		return idComputer;
 	}
+
 	public static int getComputerToDelet() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer to update");
 		int idComputer = sc.nextInt();
-		return idComputer;		
+		return idComputer;
 	}
-	public static Computer getComputerToUpdate() {
+
+	public static Computer getComputerToUpdate() throws SQLException {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer to update");
 		int idComputer = sc.nextInt();
@@ -121,16 +126,32 @@ public class Main {
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
 		ComputerDaoImpl computerDao = new ComputerDaoImpl();
-		Company company=computerDao.getCompanyById(idCompany);
+		Company company = computerDao.getCompanyById(idCompany);
 		Computer computer = new Computer(idComputer, name, localDateIntro, localDateDicounted, company);
 		return computer;
 	}
-	
-	public static List<Computer> computersByPage() throws SQLException{
+
+	public static List<Computer> computersByPage() throws SQLException {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please enter the number of page");
 		int pageNumber = sc.nextInt();
 		List<Computer> computers = computerDAO.getComputersByPageNumber(pageNumber);
 		return computers;
+	}
+
+	public static int showTheMenu() {
+
+		System.out.println("=================================");
+		System.out.println("=======User Interface============");
+		System.out.println("1-Show the list of computers :");
+		System.out.println("2-Show the list of campanies :");
+		System.out.println("3-Add a computer to database :");
+		System.out.println("4-Find a computer with a specific Id :");
+		System.out.println("5-Update a given computer :");
+		System.out.println("6-Delete a given computer :");
+		System.out.println("7-Pagination functionalities :");
+		System.out.println("8-Quit :");
+		value = getOperationNumber();
+		return value;
 	}
 }

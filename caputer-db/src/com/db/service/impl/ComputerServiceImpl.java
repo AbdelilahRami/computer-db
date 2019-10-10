@@ -3,6 +3,7 @@ package com.db.service.impl;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.db.dao.DaoComputer;
 import com.db.daoImp.ComputerDaoImpl;
@@ -15,10 +16,10 @@ import com.db.model.Computer;
 import com.db.model.Page;
 import com.db.service.ComputeService;
 
+
 public class ComputerServiceImpl implements ComputeService {
 
 	private DaoComputer daoComputer;
-
 	public ComputerServiceImpl(DaoComputer daoComputer) {
 
 		this.daoComputer = daoComputer;
@@ -94,7 +95,7 @@ public class ComputerServiceImpl implements ComputeService {
 	}
 
 	@Override
-	public boolean idCompanyExisted(int id) {
+	public boolean idCompanyExisted(int id) throws SQLException {
 		Company company = daoComputer.getCompanyById(id);
 		return company != null;
 	}
