@@ -13,8 +13,8 @@ import com.db.service.impl.*;
 
 
 public class Main {
-	static ComputerDaoImpl computerDAO = new ComputerDaoImpl();
-	static ComputerServiceImpl computerService = new ComputerServiceImpl(computerDAO);
+	static ComputerDaoImpl computerDAO = ComputerDaoImpl.getInstance();
+	static ComputerServiceImpl computerServiceImpl =ComputerServiceImpl.getInstance();
 	static int value;
 
 	public static void main(String[] args) throws Exception {
@@ -24,16 +24,16 @@ public class Main {
 		Label: while (true) {
 			switch (value) {
 			case 1:
-				computerService.getAllComputers();
+				computerServiceImpl.getAllComputers();
 				value = showTheMenu();
 				break;
 			case 2:
-				computerService.getAllCompanies();
+				computerServiceImpl.getAllCompanies();
 				value = showTheMenu();
 				break;
 			case 3:
 				Computer computer = computerCreate();
-				computerService.createComputer(computer);
+				computerServiceImpl.createComputer(computer);
 				value = showTheMenu();
 				break;
 			case 4:
@@ -45,13 +45,13 @@ public class Main {
 			case 5:
 				System.out.println("Your are in the update part :");
 				Computer updatComputer = getComputerToUpdate();
-				computerService.updateComputer(updatComputer);
+				computerServiceImpl.updateComputer(updatComputer);
 				value = showTheMenu();
 				break;
 			case 6:
 				System.out.println("Your are in the delete part :");
 				int idComputer = getComputerToDelet();
-				computerService.deleteComputer(idComputer);
+				computerServiceImpl.deleteComputer(idComputer);
 				value=showTheMenu();
 				break;
 			case 7:
@@ -82,7 +82,7 @@ public class Main {
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
 		System.out.println("Please give the date of introduction :");
-		String localDIntroduction = sc.next();
+		String localDIntroduction = sc.nextLine().trim();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate localDateIntro = LocalDate.parse(localDIntroduction, formatter);
 		System.out.println("Please give the date of discounted :");
@@ -90,7 +90,7 @@ public class Main {
 		LocalDate localDateDicounted = LocalDate.parse(localDiscounted, formatter);
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
-		ComputerDaoImpl computerDao = new ComputerDaoImpl();
+		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
 		Company company = computerDao.getCompanyById(idCompany);
 		Computer computer = new Computer(name, localDateIntro, localDateDicounted, company);
 		return computer;
@@ -125,7 +125,7 @@ public class Main {
 		LocalDate localDateDicounted = LocalDate.parse(localDiscounted, formatter);
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
-		ComputerDaoImpl computerDao = new ComputerDaoImpl();
+		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
 		Company company = computerDao.getCompanyById(idCompany);
 		Computer computer = new Computer(idComputer, name, localDateIntro, localDateDicounted, company);
 		return computer;
@@ -143,6 +143,7 @@ public class Main {
 
 		System.out.println("=================================");
 		System.out.println("=======User Interface============");
+		System.out.println("=================================");
 		System.out.println("1-Show the list of computers :");
 		System.out.println("2-Show the list of campanies :");
 		System.out.println("3-Add a computer to database :");

@@ -3,9 +3,7 @@ package com.db.service.impl;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.logging.Logger;
 
-import com.db.dao.DaoComputer;
 import com.db.daoImp.ComputerDaoImpl;
 import com.db.exception.ComputerToDeleteNotFound;
 import com.db.exception.DatesNotValidException;
@@ -19,15 +17,21 @@ import com.db.service.ComputeService;
 
 public class ComputerServiceImpl implements ComputeService {
 
-	private DaoComputer daoComputer;
-	public ComputerServiceImpl(DaoComputer daoComputer) {
-
-		this.daoComputer = daoComputer;
+	private static ComputerDaoImpl computerDaoImpl=ComputerDaoImpl.getInstance();
+	private static ComputerServiceImpl computerServiceImpl;
+	private  ComputerServiceImpl() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public static ComputerServiceImpl getInstance() {
+		if(computerServiceImpl==null)
+			computerServiceImpl= new ComputerServiceImpl();
+		return computerServiceImpl;
 	}
 
 	@Override
 	public List<Computer> getAllComputers() throws Exception {
-		List<Computer> computers = daoComputer.getAllComputers();
+		List<Computer> computers = computerDaoImpl.getAllComputers();
 
 		if (computers == null || computers.isEmpty()) {
 			throw new Exception("There is no computer in the table");
@@ -37,7 +41,7 @@ public class ComputerServiceImpl implements ComputeService {
 
 	@Override
 	public List<Company> getAllCompanies() throws Exception {
-		List<Company> companies = daoComputer.getAllyCompanies();
+		List<Company> companies = computerDaoImpl.getAllyCompanies();
 		try {
 			if (companies == null || companies.isEmpty()) {
 				throw new Exception("There is no company in the table");
@@ -54,14 +58,13 @@ public class ComputerServiceImpl implements ComputeService {
 	@Override
 	public void updateComputer(Computer computer) throws Exception {
 
-		int i = computer.getDiscountedDate().compareTo(computer.getIntroducedDate());
 		try {
 			if (computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
 				throw new DatesNotValidException("Discounted date must be greater than introduced date");
 			} else if (computer.getCompany() == null) {
 				throw new NotFoundCompanyException("The company doesn't exist");
 			}
-			daoComputer.updateComputer(computer);
+			computerDaoImpl.updateComputer(computer);
 		} catch (NotFoundCompanyException exc) {
 			System.out.println("The company doesn't exist");
 		} catch (DatesNotValidException exc) {
@@ -72,14 +75,13 @@ public class ComputerServiceImpl implements ComputeService {
 
 	@Override
 	public void createComputer(Computer computer) throws Exception {
-		int i = computer.getDiscountedDate().compareTo(computer.getIntroducedDate());
 		try {
 			if (computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
 				throw new DatesNotValidException("Discounted date must be greater than introduced date");
 			} else if (computer.getCompany() == null) {
 				throw new NotFoundCompanyException("The company doesn't exist");
 			}
-			daoComputer.createComputer(computer);
+			computerDaoImpl.createComputer(computer);
 		} catch (NotFoundCompanyException exc) {
 			System.out.println("The company doesn't exist");
 		} catch (DatesNotValidException exc) {
@@ -96,7 +98,7 @@ public class ComputerServiceImpl implements ComputeService {
 
 	@Override
 	public boolean idCompanyExisted(int id) throws SQLException {
-		Company company = daoComputer.getCompanyById(id);
+		Company company = computerDaoImpl.getCompanyById(id);
 		return company != null;
 	}
 
@@ -107,7 +109,7 @@ public class ComputerServiceImpl implements ComputeService {
 			if(page.getPageNumber() > getNumberOfPages()) {
 				throw new PageNotFoundException("You have exced the max number of pages");
 			}
-			computers = daoComputer.getComputersByPageNumber(page.getPageNumber());
+			computers = computerDaoImpl.getComputersByPageNumber(page.getPageNumber());
 		} catch (PageNotFoundException e) {
 			System.out.println("You have exced the max number of pages");
 		}
@@ -122,7 +124,7 @@ public class ComputerServiceImpl implements ComputeService {
 
 	@Override
 	public void deleteComputer(int idComputer) throws Exception {
-		ComputerDaoImpl computerDao = new ComputerDaoImpl();
+		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
 		Computer  computer=computerDao.getComputerDetails(idComputer);
 		try {
 			if(computer == null) {
