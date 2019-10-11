@@ -19,5 +19,5 @@ public interface DaoComputer {
 	public Company getCompanyById(int idCompany)throws SQLException;
 	public int getNumberOfPages()throws SQLException;
 	public List<Computer> getComputersByPageNumber(int pageId)throws SQLException;
-
+	
 }

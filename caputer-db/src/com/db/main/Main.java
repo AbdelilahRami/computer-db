@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.db.daoImp.ComputerDaoImpl;
+import com.db.mapper.DatesConversion;
 import com.db.model.Company;
 import com.db.model.Computer;
 import com.db.service.impl.*;
+import com.sun.jdi.ByteValue;
 
 
 public class Main {
@@ -83,11 +85,10 @@ public class Main {
 		String name = sc.nextLine();
 		System.out.println("Please give the date of introduction :");
 		String localDIntroduction = sc.nextLine().trim();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate localDateIntro = LocalDate.parse(localDIntroduction, formatter);
+		LocalDate localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
 		System.out.println("Please give the date of discounted :");
 		String localDiscounted = sc.next();
-		LocalDate localDateDicounted = LocalDate.parse(localDiscounted, formatter);
+		LocalDate localDateDicounted = DatesConversion.fromStringToLocalDate(localDiscounted);
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
@@ -118,11 +119,9 @@ public class Main {
 		String name = sc.next();
 		System.out.println("Please give the date of introduction :");
 		String localDIntroduction = sc.next();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate localDateIntro = LocalDate.parse(localDIntroduction, formatter);
-		System.out.println("Please give the date of discounted :");
+		LocalDate localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
 		String localDiscounted = sc.next();
-		LocalDate localDateDicounted = LocalDate.parse(localDiscounted, formatter);
+		LocalDate localDateDicounted = DatesConversion.fromStringToLocalDate(localDiscounted);
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();

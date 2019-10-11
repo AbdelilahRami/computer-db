@@ -59,7 +59,7 @@ public class ComputerServiceImpl implements ComputeService {
 	public void updateComputer(Computer computer) throws Exception {
 
 		try {
-			if (computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
+			if ((computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0)) {
 				throw new DatesNotValidException("Discounted date must be greater than introduced date");
 			} else if (computer.getCompany() == null) {
 				throw new NotFoundCompanyException("The company doesn't exist");
@@ -75,8 +75,10 @@ public class ComputerServiceImpl implements ComputeService {
 
 	@Override
 	public void createComputer(Computer computer) throws Exception {
+		LocalDate ds=computer.getDiscountedDate();
+		LocalDate di=computer.getIntroducedDate();
 		try {
-			if (computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
+			if (datesExisted(ds,di) && ds.compareTo(di) <= 0) {
 				throw new DatesNotValidException("Discounted date must be greater than introduced date");
 			} else if (computer.getCompany() == null) {
 				throw new NotFoundCompanyException("The company doesn't exist");
@@ -136,6 +138,12 @@ public class ComputerServiceImpl implements ComputeService {
 		}
 		
 		
+	}
+
+	@Override
+	public boolean datesExisted(LocalDate d1, LocalDate d2) {
+		
+		return ((d1!= null)&&(d2!=null));
 	}
 
 }

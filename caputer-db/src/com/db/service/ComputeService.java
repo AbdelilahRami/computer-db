@@ -18,4 +18,5 @@ public interface ComputeService {
 	public boolean idCompanyExisted(int id)throws SQLException;
 	public List<Computer> getComputersByPage(Page page)throws SQLException ;
 	public int getNumberOfPages();
+	public boolean datesExisted(LocalDate d1, LocalDate d2);
 }
