@@ -11,7 +11,6 @@ import com.db.mapper.DatesConversion;
 import com.db.model.Company;
 import com.db.model.Computer;
 import com.db.service.impl.*;
-import com.sun.jdi.ByteValue;
 
 
 public class Main {
@@ -84,7 +83,7 @@ public class Main {
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
 		System.out.println("Please give the date of introduction :");
-		String localDIntroduction = sc.nextLine().trim();
+		String localDIntroduction = sc.nextLine();
 		LocalDate localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
 		System.out.println("Please give the date of discounted :");
 		String localDiscounted = sc.next();
@@ -141,7 +140,7 @@ public class Main {
 	public static int showTheMenu() {
 
 		System.out.println("=================================");
-		System.out.println("=======User Interface============");
+		System.out.println("        User Interface           ");
 		System.out.println("=================================");
 		System.out.println("1-Show the list of computers :");
 		System.out.println("2-Show the list of campanies :");
