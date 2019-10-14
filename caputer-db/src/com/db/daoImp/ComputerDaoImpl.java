@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 import com.db.connection.ComputerDBConnection;
 import com.db.dao.DaoComputer;
@@ -20,7 +20,7 @@ import com.db.mapper.PageMappper;
 import com.db.model.Company;
 import com.db.model.Computer;
 import com.db.model.Page;
-import com.db.service.impl.ComputerServiceImpl;
+
 
 public class ComputerDaoImpl implements DaoComputer {
 	private static ComputerDaoImpl computerDaoImpl;
