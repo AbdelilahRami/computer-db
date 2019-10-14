@@ -119,7 +119,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
 			pstm.setInt(4, computer.getCompany().getId());
 			pstm.setInt(5, computer.getId());
-			int rs = pstm.executeUpdate();
+			i = pstm.executeUpdate();
 		} catch (SQLException exc) {
 			exc.printStackTrace();
 		} finally {

@@ -12,11 +12,11 @@ import com.db.exception.NoCompanyFound;
 import com.db.exception.NoComputerFound;
 import com.db.exception.NotFoundCompanyException;
 import com.db.exception.PageNotFoundException;
-import com.db.mapper.DatesConversion;
 import com.db.model.Company;
 import com.db.model.Computer;
 import com.db.model.ComputerBuilder;
 import com.db.service.impl.*;
+import com.db.validators.LocalDateValidator;
 
 public class Main {
 	static ComputerDaoImpl computerDAO = ComputerDaoImpl.getInstance();
@@ -36,6 +36,7 @@ public class Main {
 				break;
 			case 2:
 				List<Company> companies = manageAllCompanies();
+				companies.forEach((cp)->System.out.println(cp));
 				value = showTheMenu();
 				break;
 			case 3:
@@ -89,12 +90,9 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
-		System.out.println("Please give the date of introduction :(Ex : yyyy-dd-mm or mm/dd/yyyy )");
-		String localDIntroduction = sc.nextLine();
-		LocalDate localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
-		System.out.println("Please give the date of discounted :(Ex : yyyy-dd-mm or mm/dd/yyyy )");
-		String localDiscounted = sc.nextLine();
-		LocalDate localDateDicounted = DatesConversion.fromStringToLocalDate(localDiscounted);
+		
+		LocalDate localDateIntro=LocalDateValidator.inputIsValidForIntroduction();
+		LocalDate localDateDicounted=LocalDateValidator.inputIsValidForDiscontinued();
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
@@ -125,12 +123,8 @@ public class Main {
 		int idComputer = sc.nextInt();
 		System.out.println("Please give the name of PC :");
 		String name = scn.nextLine();
-		System.out.println("Please give the date of introduction :");
-		String localDIntroduction = scn.nextLine();
-		LocalDate localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
-		System.out.println("Please give the date of discontinued :");
-		String localDiscounted = scn.nextLine();
-		LocalDate localDateDicounted = DatesConversion.fromStringToLocalDate(localDiscounted);
+		LocalDate localDateIntro=LocalDateValidator.inputIsValidForIntroduction();
+		LocalDate localDateDicounted=LocalDateValidator.inputIsValidForDiscontinued();
 		System.out.println("Please give the id of company :");
 		int idCompany = scn.nextInt();
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
@@ -157,17 +151,18 @@ public class Main {
 
 	public static int showTheMenu() {
 
-		System.out.println("=================================");
-		System.out.println("        User Interface           ");
-		System.out.println("=================================");
-		System.out.println("1-Show the list of computers :");
-		System.out.println("2-Show the list of campanies :");
-		System.out.println("3-Add a computer to database :");
-		System.out.println("4-Find a computer with a specific Id :");
-		System.out.println("5-Update a given computer :");
-		System.out.println("6-Delete a given computer :");
-		System.out.println("7-Pagination functionalities :");
-		System.out.println("8-Quit :");
+		System.out.println("========================================================");
+		System.out.println("                        User Interface                  ");
+		System.out.println("========================================================");
+		System.out.println("1-Show the list of computers :        ==================");
+		System.out.println("2-Show the list of campanies :        ==================");
+		System.out.println("3-Add a computer to database :        ==================");
+		System.out.println("4-Find a computer with a specific Id :==================");
+		System.out.println("5-Update a given computer :           ==================");
+		System.out.println("6-Delete a given computer :           ==================");
+		System.out.println("7-Pagination functionalities :        ==================");
+		System.out.println("8-Quit :                              ==================");
+		System.out.println("========================================================");
 		value = getOperationNumber();
 		return value;
 	}

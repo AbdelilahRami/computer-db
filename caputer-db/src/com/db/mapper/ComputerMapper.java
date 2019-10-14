@@ -62,7 +62,6 @@ public class ComputerMapper {
 			}		
 		}catch(Exception e) {			
 		}
-		companies.forEach((cp)->System.out.println(cp));
 		return companies;
 	}
 	
