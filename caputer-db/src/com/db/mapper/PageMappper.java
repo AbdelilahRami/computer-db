@@ -8,7 +8,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.db.daoImp.ComputerDaoImpl;
+import com.db.model.Company;
 import com.db.model.Computer;
+import com.db.model.ComputerBuilder;
 
 public class PageMappper {
 	
@@ -23,9 +25,12 @@ public class PageMappper {
 			Date introducedDate = rs.getDate("introduced");
 			Date discountedDate = rs.getDate("discontinued");
 			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
-			LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "introduced");
+			LocalDate discontinued = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 			int idCompany = rs.getInt("company_id");
-			computer = new Computer(idComputer, name, introduced, discounted, computerDaoImpl.getCompanyById(idCompany));
+			Company company=computerDaoImpl.getCompanyById(idCompany);
+			computer = ComputerBuilder.newInstance().setId(idComputer).setName(name)
+					.setIntroducedDate(introduced).setDiscountedDate(discontinued).setCompany(company).build();
+
 			computers.add(computer);
 		}
 		return computers;

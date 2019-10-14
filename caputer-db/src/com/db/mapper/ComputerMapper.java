@@ -1,19 +1,16 @@
 
 package com.db.mapper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import com.db.connection.ComputerDBConnection;
 import com.db.daoImp.*;
 import com.db.model.Company;
 import com.db.model.Computer;
+import com.db.model.ComputerBuilder;
 
 public class ComputerMapper {
 	
@@ -40,14 +37,20 @@ public class ComputerMapper {
 				LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
 				LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 				int idCompany = rs.getInt("company_id");
-				Computer computer = new Computer(id, name, introduced, discounted, computerDaoImpl.getCompanyById(idCompany));
+				Company company=computerDaoImpl.getCompanyById(idCompany);
+				Computer computer=ComputerBuilder.newInstance().
+													setId(id).
+													setName(name). 
+													setIntroducedDate(introduced).
+													setDiscountedDate(discounted).
+													setCompany(company).build();											
 				computers.add(computer);
 			}		
 		}catch(Exception e) {			
 		}
-		computers.forEach((cp)->System.out.println(cp));
 		return computers;
 	}
+	
 	public List<Company> getAllCompaniesMapper(ResultSet rs){
 		List<Company> companies =new ArrayList<Company>();
 		try {
@@ -74,7 +77,13 @@ public class ComputerMapper {
 			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
 			LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 			int idCompany = rs.getInt("company_id");
-			computer = new Computer(idComputer, name, introduced, discounted, computerDaoImpl.getCompanyById(idCompany));
+			Company company=computerDaoImpl.getCompanyById(idCompany);
+			computer=ComputerBuilder.newInstance().
+					setId(idComputer).
+					setName(name). 
+					setIntroducedDate(introduced).
+					setDiscountedDate(discounted).
+					setCompany(company).build();
 		}
 		return computer;
 	}
