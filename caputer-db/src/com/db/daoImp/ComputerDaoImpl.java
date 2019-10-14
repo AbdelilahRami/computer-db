@@ -81,8 +81,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			ResultSet rs = pst.executeQuery();
 			computer = ComputerMapper.getInstance().getComputerDetailsMapper(rs);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} finally {
 			this.conn = ComputerDBConnection.closeConnection();
 		}
