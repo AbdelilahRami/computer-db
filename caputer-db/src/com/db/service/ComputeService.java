@@ -17,6 +17,5 @@ public interface ComputeService {
 	public int createComputer(Computer computer)throws Exception;
 	public boolean idCompanyExisted(int id)throws SQLException;
 	public List<Computer> getComputersByPage(Page page)throws SQLException, PageNotFoundException ;
-	public int getNumberOfPages();
 	public boolean datesExisted(LocalDate d1, LocalDate d2);
 }

@@ -32,7 +32,6 @@ public class ComputerDaoImpl implements DaoComputer {
 	private ComputerDaoImpl() {
 
 	}
-
 	public static ComputerDaoImpl getInstance() {
 		if (computerDaoImpl == null) {
 			computerDaoImpl = new ComputerDaoImpl();
@@ -102,7 +101,6 @@ public class ComputerDaoImpl implements DaoComputer {
 			pstm.setInt(4, computer.getCompany().getId());
 			i = pstm.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			this.conn = ComputerDBConnection.closeConnection();

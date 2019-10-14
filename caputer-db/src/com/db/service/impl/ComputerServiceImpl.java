@@ -21,7 +21,6 @@ public class ComputerServiceImpl implements ComputeService  {
 	private static ComputerDaoImpl computerDaoImpl=ComputerDaoImpl.getInstance();
 	private static ComputerServiceImpl computerServiceImpl;
 	private  ComputerServiceImpl() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public static ComputerServiceImpl getInstance() {
@@ -93,7 +92,7 @@ public class ComputerServiceImpl implements ComputeService  {
 	@Override
 	public List<Computer> getComputersByPage(Page page) throws SQLException, PageNotFoundException {
 		List<Computer> computers=null;
-			if(page.getPageNumber() > getNumberOfPages()) {
+			if(page.getPageNumber() > computerDaoImpl.getNumberOfPages()) {
 				throw new PageNotFoundException("You have exced the max number of pages");
 			}
 			computers = computerDaoImpl.getComputersByPageNumber(page.getPageNumber());
@@ -101,11 +100,7 @@ public class ComputerServiceImpl implements ComputeService  {
 		return computers;
 	}
 
-	@Override
-	public int getNumberOfPages() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 
 	@Override
 	public int deleteComputer(int idComputer) throws ComputerToDeleteNotFound, SQLException  {
