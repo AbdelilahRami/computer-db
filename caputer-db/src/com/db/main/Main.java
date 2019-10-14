@@ -82,7 +82,7 @@ public class Main {
 		System.out.println("Choose a number :");
 		Scanner sc = new Scanner(System.in);
 		value = sc.nextInt();
-
+		sc.close();
 		return value;
 	}
 
@@ -99,6 +99,7 @@ public class Main {
 		Company company = computerDao.getCompanyById(idCompany);
 		Computer computer = ComputerBuilder.newInstance().setName(name).setIntroducedDate(localDateIntro)
 				.setDiscountedDate(localDateDicounted).setCompany(company).build();
+		sc.close();
 		return computer;
 	}
 
@@ -106,6 +107,7 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer");
 		int idComputer = sc.nextInt();
+		sc.close();
 		return idComputer;
 	}
 
@@ -113,6 +115,7 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer to update");
 		int idComputer = sc.nextInt();
+		sc.close();
 		return idComputer;
 	}
 
@@ -131,7 +134,10 @@ public class Main {
 		Company company = computerDao.getCompanyById(idCompany);
 		Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(name)
 				.setIntroducedDate(localDateIntro).setDiscountedDate(localDateDicounted).setCompany(company).build();
+		sc.close();
+		scn.close();
 		return computer;
+		
 	}
 
 	public static List<Computer> computersByPage() {
@@ -144,8 +150,9 @@ public class Main {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} catch (PageNotFoundException e) {
-			System.out.println(e.getMessage());
+			System.out.println("The number of page is too high !");
 		}
+		sc.close();
 		return computers;
 	}
 
@@ -170,7 +177,7 @@ public class Main {
 	public static void manageCreate(Computer computer) {
 
 		try {
-			int exectued = computerServiceImpl.createComputer(computer);
+			computerServiceImpl.createComputer(computer);
 
 		} catch (DatesNotValidException e) {
 			System.out.println(e.getMessage());
@@ -183,11 +190,11 @@ public class Main {
 
 	public static void manageUpdate(Computer computer) {
 		try {
-			int updated = computerServiceImpl.updateComputer(computer);
+			computerServiceImpl.updateComputer(computer);
 		} catch (DatesNotValidException e) {
 			System.out.println(e.getMessage());
 		} catch (NotFoundCompanyException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -196,9 +203,8 @@ public class Main {
 
 	public static void manageDelete(Computer computer) {
 		try {
-			int deleted = computerServiceImpl.deleteComputer(computer.getId());
+			computerServiceImpl.deleteComputer(computer.getId());
 		} catch (ComputerToDeleteNotFound e) {
-
 			System.out.println(e.getMessage());
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -206,7 +212,6 @@ public class Main {
 	}
 
 	public static List<Computer> manageAllComputers() {
-
 		List<Computer> computers = null;
 		try {
 			computers = computerServiceImpl.getAllComputers();
@@ -215,27 +220,20 @@ public class Main {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-
 		return computers;
 
 	}
 
 	public static List<Company> manageAllCompanies() {
-
 		List<Company> computers = null;
-
 		try {
 			computers = computerServiceImpl.getAllCompanies();
 		} catch (NoCompanyFound e) {
-
 			System.out.println(e.getMessage());
 		} catch (SQLException e) {
-
 			System.out.println(e.getMessage());
 		}
-
 		return computers;
-
 	}
 
 	public static Computer manageDetails(int id) {
@@ -244,7 +242,6 @@ public class Main {
 		try {
 			computer = computerDAO.getComputerDetails(id);
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
 		return computer;

@@ -2,7 +2,6 @@ package com.db.dao;
 
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import com.db.model.Computer;
