@@ -1,4 +1,4 @@
-//w
+
 package com.db.mapper;
 
 import java.sql.Connection;
@@ -38,7 +38,7 @@ public class ComputerMapper {
 				Date introducedDate = rs.getDate("introduced");
 				Date discountedDate = rs.getDate("discontinued");
 				LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
-				LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "introduced");
+				LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 				int idCompany = rs.getInt("company_id");
 				Computer computer = new Computer(id, name, introduced, discounted, computerDaoImpl.getCompanyById(idCompany));
 				computers.add(computer);
@@ -72,7 +72,7 @@ public class ComputerMapper {
 			Date introducedDate = rs.getDate("introduced");
 			Date discountedDate = rs.getDate("discontinued");
 			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
-			LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "introduced");
+			LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 			int idCompany = rs.getInt("company_id");
 			computer = new Computer(idComputer, name, introduced, discounted, computerDaoImpl.getCompanyById(idCompany));
 		}

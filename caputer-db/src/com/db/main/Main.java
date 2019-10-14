@@ -11,7 +11,6 @@ import com.db.mapper.DatesConversion;
 import com.db.model.Company;
 import com.db.model.Computer;
 import com.db.service.impl.*;
-import com.sun.jdi.ByteValue;
 
 
 public class Main {
@@ -83,17 +82,18 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
-		System.out.println("Please give the date of introduction :");
-		String localDIntroduction = sc.nextLine().trim();
+		System.out.println("Please give the date of introduction :(Ex : yyyy-dd-mm or mm/dd/yyyy )");
+		String localDIntroduction = sc.nextLine();
 		LocalDate localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
-		System.out.println("Please give the date of discounted :");
-		String localDiscounted = sc.next();
+		System.out.println("Please give the date of discounted :(Ex : yyyy-dd-mm or mm/dd/yyyy )");
+		String localDiscounted = sc.nextLine();
 		LocalDate localDateDicounted = DatesConversion.fromStringToLocalDate(localDiscounted);
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
 		Company company = computerDao.getCompanyById(idCompany);
 		Computer computer = new Computer(name, localDateIntro, localDateDicounted, company);
+		System.out.println(computer.toString());
 		return computer;
 	}
 
@@ -120,6 +120,7 @@ public class Main {
 		System.out.println("Please give the date of introduction :");
 		String localDIntroduction = sc.next();
 		LocalDate localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
+		System.out.println("Please give the date of discontinued :");
 		String localDiscounted = sc.next();
 		LocalDate localDateDicounted = DatesConversion.fromStringToLocalDate(localDiscounted);
 		System.out.println("Please give the id of company :");
@@ -141,7 +142,7 @@ public class Main {
 	public static int showTheMenu() {
 
 		System.out.println("=================================");
-		System.out.println("=======User Interface============");
+		System.out.println("        User Interface           ");
 		System.out.println("=================================");
 		System.out.println("1-Show the list of computers :");
 		System.out.println("2-Show the list of campanies :");
