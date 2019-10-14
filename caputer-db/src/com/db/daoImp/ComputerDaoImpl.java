@@ -99,8 +99,8 @@ public class ComputerDaoImpl implements DaoComputer {
 			String query = CREATE_COMPUTER;
 			PreparedStatement pstm = conn.prepareStatement(query);
 			pstm.setString(1, computer.getName());
-			pstm.setDate(2, java.sql.Date.valueOf(computer.getIntroducedDate().toString()));
-			pstm.setDate(3, java.sql.Date.valueOf(computer.getDiscountedDate().toString()));
+			pstm.setDate(2, DatesConversion.convertLocalToSql(computer.getIntroducedDate()));
+			pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
 			pstm.setInt(4, computer.getCompany().getId());
 			pstm.executeUpdate();
 		} catch (SQLException e) {
@@ -119,8 +119,8 @@ public class ComputerDaoImpl implements DaoComputer {
 			String query = UPDATE_COMPUTER;
 			PreparedStatement pstm = conn.prepareStatement(query);
 			pstm.setString(1, computer.getName());
-			pstm.setDate(2, DatesConversion.convertUtilToSql(computer.getIntroducedDate()));
-			pstm.setDate(3, DatesConversion.convertUtilToSql(computer.getDiscountedDate()));
+			pstm.setDate(2, java.sql.Date.valueOf(computer.getIntroducedDate().toString()));
+			pstm.setDate(3, java.sql.Date.valueOf(computer.getDiscountedDate().toString()));
 			pstm.setInt(4, computer.getCompany().getId());
 			pstm.setInt(5, computer.getId());
 			int rs = pstm.executeUpdate();
