@@ -12,11 +12,11 @@ import com.db.exception.NoCompanyFound;
 import com.db.exception.NoComputerFound;
 import com.db.exception.NotFoundCompanyException;
 import com.db.exception.PageNotFoundException;
-import com.db.mapper.DatesConversion;
 import com.db.model.Company;
 import com.db.model.Computer;
 import com.db.model.ComputerBuilder;
 import com.db.service.impl.*;
+import com.db.validators.LocalDateValidator;
 
 public class Main {
 	static ComputerDaoImpl computerDAO = ComputerDaoImpl.getInstance();
@@ -36,6 +36,7 @@ public class Main {
 				break;
 			case 2:
 				List<Company> companies = manageAllCompanies();
+				companies.forEach((cp)->System.out.println(cp));
 				value = showTheMenu();
 				break;
 			case 3:
@@ -71,6 +72,7 @@ public class Main {
 			case 8:
 				System.out.print("Quit");
 				System.out.flush();
+				System.out.println("Thank you for using our Application.");
 				break Label;
 			}
 
@@ -81,7 +83,6 @@ public class Main {
 		System.out.println("Choose a number :");
 		Scanner sc = new Scanner(System.in);
 		value = sc.nextInt();
-
 		return value;
 	}
 
@@ -89,12 +90,9 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
-		System.out.println("Please give the date of introduction :(Ex : yyyy-dd-mm or mm/dd/yyyy )");
-		String localDIntroduction = sc.nextLine();
-		LocalDate localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
-		System.out.println("Please give the date of discounted :(Ex : yyyy-dd-mm or mm/dd/yyyy )");
-		String localDiscounted = sc.nextLine();
-		LocalDate localDateDicounted = DatesConversion.fromStringToLocalDate(localDiscounted);
+		
+		LocalDate localDateIntro=LocalDateValidator.inputIsValidForIntroduction();
+		LocalDate localDateDicounted=LocalDateValidator.inputIsValidForDiscontinued();
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
@@ -105,8 +103,8 @@ public class Main {
 	}
 
 	public static int getIdOfComputer() {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer");
+		Scanner sc = new Scanner(System.in);
 		int idComputer = sc.nextInt();
 		return idComputer;
 	}
@@ -125,12 +123,8 @@ public class Main {
 		int idComputer = sc.nextInt();
 		System.out.println("Please give the name of PC :");
 		String name = scn.nextLine();
-		System.out.println("Please give the date of introduction :");
-		String localDIntroduction = scn.nextLine();
-		LocalDate localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
-		System.out.println("Please give the date of discontinued :");
-		String localDiscounted = scn.nextLine();
-		LocalDate localDateDicounted = DatesConversion.fromStringToLocalDate(localDiscounted);
+		LocalDate localDateIntro=LocalDateValidator.inputIsValidForIntroduction();
+		LocalDate localDateDicounted=LocalDateValidator.inputIsValidForDiscontinued();
 		System.out.println("Please give the id of company :");
 		int idCompany = scn.nextInt();
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
@@ -138,6 +132,7 @@ public class Main {
 		Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(name)
 				.setIntroducedDate(localDateIntro).setDiscountedDate(localDateDicounted).setCompany(company).build();
 		return computer;
+		
 	}
 
 	public static List<Computer> computersByPage() {
@@ -150,13 +145,12 @@ public class Main {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} catch (PageNotFoundException e) {
-			System.out.println(e.getMessage());
+			System.out.println("The number of page is too high !");
 		}
 		return computers;
 	}
 
 	public static int showTheMenu() {
-
 		System.out.println("=================================");
 		System.out.println("      Excilys: CDB Application   ");
 		System.out.println("=================================");
@@ -175,7 +169,7 @@ public class Main {
 	public static void manageCreate(Computer computer) {
 
 		try {
-			int exectued = computerServiceImpl.createComputer(computer);
+			computerServiceImpl.createComputer(computer);
 
 		} catch (DatesNotValidException e) {
 			System.out.println(e.getMessage());
@@ -188,11 +182,11 @@ public class Main {
 
 	public static void manageUpdate(Computer computer) {
 		try {
-			int updated = computerServiceImpl.updateComputer(computer);
+			computerServiceImpl.updateComputer(computer);
 		} catch (DatesNotValidException e) {
 			System.out.println(e.getMessage());
 		} catch (NotFoundCompanyException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -201,9 +195,8 @@ public class Main {
 
 	public static void manageDelete(Computer computer) {
 		try {
-			int deleted = computerServiceImpl.deleteComputer(computer.getId());
+			computerServiceImpl.deleteComputer(computer.getId());
 		} catch (ComputerToDeleteNotFound e) {
-
 			System.out.println(e.getMessage());
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -211,7 +204,6 @@ public class Main {
 	}
 
 	public static List<Computer> manageAllComputers() {
-
 		List<Computer> computers = null;
 		try {
 			computers = computerServiceImpl.getAllComputers();
@@ -220,27 +212,20 @@ public class Main {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-
 		return computers;
 
 	}
 
 	public static List<Company> manageAllCompanies() {
-
 		List<Company> computers = null;
-
 		try {
 			computers = computerServiceImpl.getAllCompanies();
 		} catch (NoCompanyFound e) {
-
 			System.out.println(e.getMessage());
 		} catch (SQLException e) {
-
 			System.out.println(e.getMessage());
 		}
-
 		return computers;
-
 	}
 
 	public static Computer manageDetails(int id) {
@@ -249,7 +234,6 @@ public class Main {
 		try {
 			computer = computerDAO.getComputerDetails(id);
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
 		return computer;

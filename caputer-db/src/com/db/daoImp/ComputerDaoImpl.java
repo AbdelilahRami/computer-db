@@ -81,8 +81,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			ResultSet rs = pst.executeQuery();
 			computer = ComputerMapper.getInstance().getComputerDetailsMapper(rs);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} finally {
 			this.conn = ComputerDBConnection.closeConnection();
 		}
@@ -119,7 +118,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
 			pstm.setInt(4, computer.getCompany().getId());
 			pstm.setInt(5, computer.getId());
-			int rs = pstm.executeUpdate();
+			i = pstm.executeUpdate();
 		} catch (SQLException exc) {
 			exc.printStackTrace();
 		} finally {
@@ -159,7 +158,7 @@ public class ComputerDaoImpl implements DaoComputer {
 				company = new Company(idCompany, name);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 		}
 		return company;
 	}
@@ -167,7 +166,6 @@ public class ComputerDaoImpl implements DaoComputer {
 	@Override
 	public List<Computer> getComputersByPageNumber(int pageId) throws SQLException, PageNotFoundException {
 		List<Computer> computers = new ArrayList<Computer>();
-		Computer computer;
 		conn = ComputerDBConnection.getInstance().getConnection();
 		try (PreparedStatement pstm = conn.prepareStatement(GET_COMPUTERS_BY_PAGE);) {
 			pstm.setInt(1, Page.getPageSize() * (pageId - 1));
@@ -175,7 +173,6 @@ public class ComputerDaoImpl implements DaoComputer {
 			ResultSet rs = pstm.executeQuery();
 			computers = PageMappper.getComputersByPageNumberMapper(rs);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return computers;
@@ -191,7 +188,6 @@ public class ComputerDaoImpl implements DaoComputer {
 			int numberOflines = myRes.getInt("number");
 			numberOfPages = numberOflines / pageSize;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			this.conn = ComputerDBConnection.closeConnection();

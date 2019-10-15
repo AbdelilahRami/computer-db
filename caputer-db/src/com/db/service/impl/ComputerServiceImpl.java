@@ -15,20 +15,16 @@ import com.db.model.Company;
 import com.db.model.Computer;
 import com.db.model.Page;
 import com.db.service.ComputeService;
-
-
 public class ComputerServiceImpl implements ComputeService  {
 	private static ComputerDaoImpl computerDaoImpl=ComputerDaoImpl.getInstance();
 	private static ComputerServiceImpl computerServiceImpl;
 	private  ComputerServiceImpl() {
 	}
-	
 	public static ComputerServiceImpl getInstance() {
 		if(computerServiceImpl==null)
 			computerServiceImpl= new ComputerServiceImpl();
 		return computerServiceImpl;
 	}
-
 	@Override
 	public List<Computer> getAllComputers() throws NoComputerFound, SQLException {
 		List<Computer> computers = computerDaoImpl.getAllComputers();
@@ -46,10 +42,7 @@ public class ComputerServiceImpl implements ComputeService  {
 			if (companies == null || companies.isEmpty()) {
 				throw new NoCompanyFound("There is no company in the table");
 			}
-		
-
 		return companies;
-
 	}
 
 	@Override
@@ -63,11 +56,8 @@ public class ComputerServiceImpl implements ComputeService  {
 				throw new NotFoundCompanyException("The company doesn't exist");
 			}
 			int value=computerDaoImpl.updateComputer(computer);
-		
 				return value;
-
 	}
-
 	@Override
 	public int createComputer(Computer computer) throws DatesNotValidException,  NotFoundCompanyException, SQLException{
 		LocalDate ds=computer.getDiscountedDate();
@@ -82,13 +72,11 @@ public class ComputerServiceImpl implements ComputeService  {
 		 
 			return k;
 	}
-
 	@Override
 	public boolean idCompanyExisted(int id) throws SQLException {
 		Company company = computerDaoImpl.getCompanyById(id);
 		return company != null;
 	}
-
 	@Override
 	public List<Computer> getComputersByPage(Page page) throws SQLException, PageNotFoundException {
 		List<Computer> computers=null;
@@ -96,7 +84,6 @@ public class ComputerServiceImpl implements ComputeService  {
 				throw new PageNotFoundException("You have exced the max number of pages");
 			}
 			computers = computerDaoImpl.getComputersByPageNumber(page.getPageNumber());
-		
 		return computers;
 	}
 
@@ -111,14 +98,11 @@ public class ComputerServiceImpl implements ComputeService  {
 				throw new ComputerToDeleteNotFound("This computer doesn't exist :");
 			}
 			int k=computerDao.deleteComputer(idComputer);
-		
 		return k;
-		
 	}
 
 	@Override
 	public boolean datesExisted(LocalDate d1, LocalDate d2) {
-		
 		return ((d1!= null)&&(d2!=null));
 	}
 
