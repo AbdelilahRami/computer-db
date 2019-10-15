@@ -158,7 +158,7 @@ public class Main {
 	public static int showTheMenu() {
 
 		System.out.println("=================================");
-		System.out.println("        User Interface           ");
+		System.out.println("      Excilys: CDB Application   ");
 		System.out.println("=================================");
 		System.out.println("1-Show the list of computers :");
 		System.out.println("2-Show the list of campanies :");
