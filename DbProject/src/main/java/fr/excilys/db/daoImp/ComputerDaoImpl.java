@@ -1,4 +1,4 @@
-package com.db.daoImp;
+package fr.excilys.db.daoImp;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import com.db.connection.ComputerDBConnection;
-import com.db.dao.DaoComputer;
-import com.db.exception.PageNotFoundException;
-import com.db.mapper.ComputerMapper;
-import com.db.mapper.DatesConversion;
-import com.db.mapper.PageMappper;
-import com.db.model.Company;
-import com.db.model.Computer;
-import com.db.model.Page;
+import fr.excilys.db.connection.ComputerDBConnection;
+import fr.excilys.db.dao.DaoComputer;
+import fr.excilys.db.exception.PageNotFoundException;
+import fr.excilys.db.mapper.ComputerMapper;
+import fr.excilys.db.mapper.DatesConversion;
+import fr.excilys.db.mapper.PageMappper;
+import fr.excilys.db.model.Company;
+import fr.excilys.db.model.Computer;
+import fr.excilys.db.model.Page;
 
 public class ComputerDaoImpl implements DaoComputer {
 	private static ComputerDaoImpl computerDaoImpl;
@@ -27,8 +27,7 @@ public class ComputerDaoImpl implements DaoComputer {
 	private static final String DELETE_COMPUTER = "delete from computer where id = ?";
 	private static final String GET_COMPUTERS_BY_PAGE = "select * from computer LIMIT ?, ?";
 	private static final String GET_COMPANY_BY_ID = "select * from company where id = ?";
-	private Connection conn;
-
+	
 	private ComputerDaoImpl() {
 
 	}
@@ -40,14 +39,13 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public List<Computer> getAllComputers(){
+	public List<Computer> getAllComputers(Connection conn){
 		List<Computer> computers = null;
-		conn = ComputerDBConnection.getInstance().getConnection();
 		String query = GET_ALL_COMPUTERS;
 		try  {
 			Statement stm = conn.createStatement();
 			ResultSet rs = stm.executeQuery(query);
-			computers = ComputerMapper.getInstance().getAllComputerMapper(rs);
+			computers = ComputerMapper.getInstance().getAllComputerMapper(rs,conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -57,41 +55,37 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public List<Company> getAllyCompanies(){
+	public List<Company> getAllyCompanies(Connection conn){
 		List<Company> companies = null;
-		this.conn = ComputerDBConnection.getInstance().getConnection();
 		try (Statement stm = conn.createStatement();) {
 			ResultSet rs = stm.executeQuery(GET_ALL_COMPANIES);
 			companies = ComputerMapper.getInstance().getAllCompaniesMapper(rs);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			this.conn = ComputerDBConnection.closeConnection();
+			conn = ComputerDBConnection.closeConnection();
 		}
 		return companies;
 	}
 
 	@Override
-	public Computer getComputerDetails(int id){
+	public Computer getComputerDetails(int id,Connection conn){
 		Computer computer = null;
-		this.conn = ComputerDBConnection.getInstance().getConnection();
 		try (PreparedStatement pst = conn.prepareStatement(GET_COMPUTERS_DETAILS);) {
 			pst.setInt(1, id);
 			ResultSet rs = pst.executeQuery();
-			computer = ComputerMapper.getInstance().getComputerDetailsMapper(rs);
+			computer = ComputerMapper.getInstance().getComputerDetailsMapper(rs,conn);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
-			this.conn = ComputerDBConnection.closeConnection();
+			conn = ComputerDBConnection.closeConnection();
 		}
 		return computer;
 	}
 
 	@Override
-	public int createComputer(Computer computer){
+	public int createComputer(Computer computer, Connection conn){
 		int i = 0;
-		this.conn = ComputerDBConnection.getInstance().getConnection();
 		String query = CREATE_COMPUTER;
 		try (PreparedStatement pstm = conn.prepareStatement(query);) {
 			pstm.setString(1, computer.getName());
@@ -102,15 +96,14 @@ public class ComputerDaoImpl implements DaoComputer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			this.conn = ComputerDBConnection.closeConnection();
+			conn = ComputerDBConnection.closeConnection();
 		}
 		return i;
 	}
 
 	@Override
-	public int updateComputer(Computer computer){
+	public int updateComputer(Computer computer,Connection conn){
 		int i = 0;
-		this.conn = ComputerDBConnection.getInstance().getConnection();
 		String query = UPDATE_COMPUTER;
 		try (PreparedStatement pstm = conn.prepareStatement(query);) {
 			pstm.setString(1, computer.getName());
@@ -122,15 +115,14 @@ public class ComputerDaoImpl implements DaoComputer {
 		} catch (SQLException exc) {
 			exc.printStackTrace();
 		} finally {
-			this.conn = ComputerDBConnection.closeConnection();
+			conn = ComputerDBConnection.closeConnection();
 		}
 		return i;
 	}
 
 	@Override
-	public int deleteComputer(int id) throws SQLException {
+	public int deleteComputer(int id,Connection conn) throws SQLException {
 		int value = 0;
-		this.conn = ComputerDBConnection.getInstance().getConnection();
 		String query = DELETE_COMPUTER;
 		try (PreparedStatement pstm = conn.prepareStatement(query);) {
 			pstm.setInt(1, id);
@@ -139,17 +131,14 @@ public class ComputerDaoImpl implements DaoComputer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			this.conn = ComputerDBConnection.closeConnection();
+			conn = ComputerDBConnection.closeConnection();
 		}
 		return value;
 	}
 
 	@Override
-	public Company getCompanyById(int idCompany) {
+	public Company getCompanyById(int idCompany,Connection conn) {
 		Company company = null;
-		if(conn==null) {
-			conn=ComputerDBConnection.getInstance().getConnection();
-		}
 		try (PreparedStatement pst = conn.prepareStatement(GET_COMPANY_BY_ID);) {
 			pst.setInt(1, idCompany);
 			ResultSet rs = pst.executeQuery();
@@ -164,27 +153,25 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public List<Computer> getComputersByPageNumber(int pageId) throws PageNotFoundException {
+	public List<Computer> getComputersByPageNumber(int pageId, Connection conn) throws PageNotFoundException {
 		List<Computer> computers = new ArrayList<Computer>();
-		conn = ComputerDBConnection.getInstance().getConnection();
 		try (PreparedStatement pstm = conn.prepareStatement(GET_COMPUTERS_BY_PAGE);) {
 			pstm.setInt(1, Page.getPageSize() * (pageId - 1));
 			pstm.setInt(2, Page.getPageSize());
 			ResultSet rs = pstm.executeQuery();
-			computers = PageMappper.getComputersByPageNumberMapper(rs);
+			computers = PageMappper.getComputersByPageNumberMapper(rs,conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			this.conn = ComputerDBConnection.closeConnection();
+			conn = ComputerDBConnection.closeConnection();
 		}
 		return computers;
 	}
 
 	@Override
-	public int getNumberOfPages(){
+	public int getNumberOfPages(Connection conn){
 		int pageSize = Page.getPageSize();
 		int numberOfPages = 0;
-		conn = ComputerDBConnection.getInstance().getConnection();
 		try (Statement stm = conn.createStatement();) {
 			ResultSet myRes = stm.executeQuery("select count(*) as number from computer");
 			int numberOflines = myRes.getInt("number");
@@ -192,7 +179,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			this.conn = ComputerDBConnection.closeConnection();
+			conn = ComputerDBConnection.closeConnection();
 		}
 
 		return numberOfPages;

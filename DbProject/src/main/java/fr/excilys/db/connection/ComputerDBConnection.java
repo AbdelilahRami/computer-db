@@ -1,14 +1,18 @@
-package com.db.connection;
+package fr.excilys.db.connection;
 import java.sql.*;
 public class ComputerDBConnection {
-	private String url ="jdbc:mysql://localhost:3306/computer-database-db?useSSL=false";
-	private String username="admincdb";
-	private String password="qwerty1234";
+	private String url;
+	private String username;
+	private String password;
 	private static Connection conn;
 	private static ComputerDBConnection computerDbInstance;
 
-	private ComputerDBConnection() {}
 	
+	public ComputerDBConnection(String url, String username, String password) {
+		this.url = url;
+		this.username = username;
+		this.password = password;
+	}
 	public Connection getConnection() {
 		try {			
 			conn=DriverManager.getConnection(url, username, password);
@@ -20,12 +24,7 @@ public class ComputerDBConnection {
 		}
 		return conn;
 	}
-	public static ComputerDBConnection getInstance() {
-		if(computerDbInstance==null) {
-			computerDbInstance=new ComputerDBConnection();
-		}
-		return computerDbInstance;
-	}
+
 	
 	public static Connection closeConnection() {
 		
