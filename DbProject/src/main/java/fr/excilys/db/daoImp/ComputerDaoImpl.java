@@ -121,7 +121,7 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public int deleteComputer(int id,Connection conn) throws SQLException {
+	public int deleteComputer(int id,Connection conn){
 		int value = 0;
 		String query = DELETE_COMPUTER;
 		try (PreparedStatement pstm = conn.prepareStatement(query);) {

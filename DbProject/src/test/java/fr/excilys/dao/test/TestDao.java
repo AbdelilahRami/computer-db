@@ -14,7 +14,9 @@ import fr.excilys.db.model.ComputerBuilder;
 public class TestDao {
 	private Connection conn;
 	private ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
-
+	private Company company;
+	private Computer realComputer;
+	private Computer expectedComputer;
 	@Before
 	public void beforeTestAllComputers() {
 
@@ -86,15 +88,38 @@ public class TestDao {
 	}
 	@Before
 	public void beforeUpdateComputerTest() {
-		conn=H2DataBaseOperations.getConnection().get();		
+		conn=H2DataBaseOperations.getConnection().get();	
+		company = computerDao.getCompanyById(1, conn);
+		realComputer=ComputerBuilder.newInstance().setId(1).
+							setName("HP EliteBook").setIntroducedDate(null).
+							setDiscountedDate(null).setCompany(company).build();
 	}
 	@Test
-	public void testUpdateCoputer() {
-		Company company = computerDao.getCompanyById(1, conn);
-		Computer realComputer=ComputerBuilder.newInstance().setId(1).
-							setName("HP EliteBook").setIntroducedDate(null).
-							setDiscountedDate(null).setCompany(null).build();
+	public void testUpdateComputer() {
 		computerDao.updateComputer(realComputer, conn);
+		Computer expectedComputer=computerDao.getComputerDetails(1, conn);
+		assertEquals(expectedComputer.toString(), realComputer.toString());
 		
 	}
+	@After
+	public void afterUpdateComputer() {
+		H2DataBaseOperations.closeConnection();
+	}
+	
+	@Before
+	public void beforeDeleteComputerTest() {
+		conn=H2DataBaseOperations.getConnection().get();
+		expectedComputer=computerDao.getComputerDetails(1, conn);
+	}
+	
+	@Test
+	public void deleteTest() {
+		
+		computerDao.deleteComputer(1, conn);
+		List<Computer> computers=computerDao.getAllComputers(conn);
+		assertEquals(12, computers.size());
+		
+		
+	}
+	
 }

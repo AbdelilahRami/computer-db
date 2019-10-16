@@ -60,7 +60,7 @@ public class ComputerServiceImpl implements ComputeService  {
 				return value;
 	}
 	@Override
-	public int createComputer(Computer computer, Connection conn) throws DatesNotValidException,  NotFoundCompanyException, SQLException{
+	public int createComputer(Computer computer, Connection conn) throws NotFoundCompanyException,DatesNotValidException, SQLException{
 		LocalDate ds=computer.getDiscountedDate();
 		LocalDate di=computer.getIntroducedDate();
 	
