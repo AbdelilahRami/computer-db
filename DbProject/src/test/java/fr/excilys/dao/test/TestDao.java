@@ -114,7 +114,6 @@ public class TestDao {
 	
 	@Test
 	public void deleteTest() {
-		
 		computerDao.deleteComputer(1, conn);
 		List<Computer> computers=computerDao.getAllComputers(conn);
 		assertEquals(12, computers.size());

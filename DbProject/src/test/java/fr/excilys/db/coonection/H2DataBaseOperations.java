@@ -24,7 +24,6 @@ public class H2DataBaseOperations {
 	public static void closeConnection() {
 		
 		if(conn!=null) {
-			
 			try {
 				conn.close();
 			} catch (SQLException e) {
@@ -32,8 +31,6 @@ public class H2DataBaseOperations {
 			}
 			conn=null;
 		}
-		
-		
 	}
 
 }

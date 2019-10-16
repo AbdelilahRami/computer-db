@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.excilys.db.connection.ComputerDBConnection;
 import fr.excilys.db.dao.DaoComputer;
 import fr.excilys.db.exception.PageNotFoundException;
@@ -27,7 +31,7 @@ public class ComputerDaoImpl implements DaoComputer {
 	private static final String DELETE_COMPUTER = "delete from computer where id = ?";
 	private static final String GET_COMPUTERS_BY_PAGE = "select * from computer LIMIT ?, ?";
 	private static final String GET_COMPANY_BY_ID = "select * from company where id = ?";
-	
+	private static final  Logger logger=LoggerFactory.getLogger(ComputerDaoImpl.class);
 	private ComputerDaoImpl() {
 
 	}
@@ -40,6 +44,7 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public List<Computer> getAllComputers(Connection conn){
+		logger.info("The operations get all computers is running");
 		List<Computer> computers = null;
 		String query = GET_ALL_COMPUTERS;
 		try  {
@@ -48,6 +53,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			computers = ComputerMapper.getInstance().getAllComputerMapper(rs,conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("There is an exception of type SQL"+e.getMessage());
 		} finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
@@ -56,12 +62,14 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public List<Company> getAllyCompanies(Connection conn){
+		logger.info("The operation get all companies is running");
 		List<Company> companies = null;
 		try (Statement stm = conn.createStatement();) {
 			ResultSet rs = stm.executeQuery(GET_ALL_COMPANIES);
 			companies = ComputerMapper.getInstance().getAllCompaniesMapper(rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("There is an exception of type SQL"+e.getMessage());
 		} finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
@@ -70,6 +78,7 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public Computer getComputerDetails(int id,Connection conn){
+		logger.info("The operation get the details of the id="+id+" is running");
 		Computer computer = null;
 		try (PreparedStatement pst = conn.prepareStatement(GET_COMPUTERS_DETAILS);) {
 			pst.setInt(1, id);
@@ -77,6 +86,8 @@ public class ComputerDaoImpl implements DaoComputer {
 			computer = ComputerMapper.getInstance().getComputerDetailsMapper(rs,conn);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			logger.error("Showing the details of computer fails"+e.getMessage());
+
 		} finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
@@ -85,6 +96,7 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public int createComputer(Computer computer, Connection conn){
+		logger.info("Creation of the computer"+computer.getName()+" is running");
 		int i = 0;
 		String query = CREATE_COMPUTER;
 		try (PreparedStatement pstm = conn.prepareStatement(query);) {
@@ -95,6 +107,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			i = pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("Creation of the computer fails"+e.getMessage());
 		} finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
@@ -103,6 +116,7 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public int updateComputer(Computer computer,Connection conn){
+		logger.info("Update computer"+computer.getName()+" is runninng");
 		int i = 0;
 		String query = UPDATE_COMPUTER;
 		try (PreparedStatement pstm = conn.prepareStatement(query);) {
@@ -114,6 +128,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			i = pstm.executeUpdate();
 		} catch (SQLException exc) {
 			exc.printStackTrace();
+			logger.error("Update cannot fails :"+exc.getMessage());
 		} finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
@@ -122,14 +137,15 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public int deleteComputer(int id,Connection conn){
+		logger.info("Delete computer with the id "+id+" is running");
 		int value = 0;
 		String query = DELETE_COMPUTER;
 		try (PreparedStatement pstm = conn.prepareStatement(query);) {
 			pstm.setInt(1, id);
 			value = pstm.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error("delete computer fails");
 		} finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
@@ -154,6 +170,7 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public List<Computer> getComputersByPageNumber(int pageId, Connection conn) throws PageNotFoundException {
+		logger.info("Pagination is running");
 		List<Computer> computers = new ArrayList<Computer>();
 		try (PreparedStatement pstm = conn.prepareStatement(GET_COMPUTERS_BY_PAGE);) {
 			pstm.setInt(1, Page.getPageSize() * (pageId - 1));
@@ -162,6 +179,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			computers = PageMappper.getComputersByPageNumberMapper(rs,conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("Error in pagination part.");
 		}finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
