@@ -18,16 +18,16 @@ public class ComputerMapper {
 			lci = computer.getIntroducedDate().format(formatter);
 		}
 		String lcd = "";
-		if (computer.getIntroducedDate() != null) {
+		if (computer.getDiscountedDate() != null) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
-			lcd = computer.getIntroducedDate().format(formatter);
+			lcd = computer.getDiscountedDate().format(formatter);
 		}
 		String company="";
 		if (computer.getCompany()!=null) {	
 			company=computer.getCompany().getName();
 		}
 		return ComputerBuilder.newInstance().
-				setId(id).setLocaldateDiscontinued(lci).setLocaldateDiscontinued(lcd).setCompany(company).build();
+				setId(id).setName(name).setLocalDateIntro(lci).setLocaldateDiscontinued(lcd).setCompany(company).build();
 	}
 	
 	
