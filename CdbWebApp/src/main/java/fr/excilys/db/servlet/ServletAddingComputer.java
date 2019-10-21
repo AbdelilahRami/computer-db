@@ -43,20 +43,18 @@ public class ServletAddingComputer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn=null;
-		try {
-			conn = DtoConnection.getConnection();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		Connection conn = DtoConnection.getConnection();
+		Company company=null;
 		String name = request.getParameter("computerName");
 		String introducedDate=request.getParameter("introduced");
 		String discontinuedDate=request.getParameter("discontinued");
 		fr.excilys.db.dto.Computer dtoComputer=ComputerBuilder.newInstance().setName(name).setLocalDateIntro(introducedDate).setLocaldateDiscontinued(discontinuedDate).build();
-		int idCompany=Integer.parseInt(request.getParameter("companyName"));
-		Company company=ComputerDaoImpl.getInstance().getCompanyById(idCompany, conn);
+		if(!request.getParameter("companyName").equals("")) {
+			int idCompany=Integer.parseInt(request.getParameter("companyName"));
+			company=ComputerDaoImpl.getInstance().getCompanyById(idCompany, conn);
+		}
 		Computer computer=ComputerMapper.fromStringToObject(dtoComputer);
-		computer.setIdCompany(company);
+		computer.setCompany(company);
 		ComputerDaoImpl.getInstance().createComputer(computer, conn);
 	}
 

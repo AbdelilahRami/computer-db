@@ -53,7 +53,7 @@ public class Computer {
 		return company;
 	}
 
-	public void setIdCompany(Company company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
 	@Override

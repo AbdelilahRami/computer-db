@@ -8,9 +8,7 @@ public class ComputerDBConnection {
 	private String username;
 	private String password;
 	private static Connection conn;
-	private static ComputerDBConnection computerDbInstance;
-	private static final Logger logger=LoggerFactory.getLogger(ComputerDBConnection.class);
-	
+	private static final Logger logger=LoggerFactory.getLogger(ComputerDBConnection.class);	
 	public ComputerDBConnection(String url, String username, String password) {
 		this.url = url;
 		this.username = username;
@@ -27,11 +25,8 @@ public class ComputerDBConnection {
 			}
 		}
 		return conn;
-	}
-
-	
-	public static Connection closeConnection() {
-		
+	}	
+	public static Connection closeConnection() {	
 		if(conn!=null) {
 			try {
 				conn.close();
@@ -43,5 +38,4 @@ public class ComputerDBConnection {
 		}
 		return conn;
 	}
-
 }

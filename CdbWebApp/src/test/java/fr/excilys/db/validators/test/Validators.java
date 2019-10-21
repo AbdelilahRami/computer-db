@@ -3,10 +3,7 @@ package fr.excilys.db.validators.test;
 import static org.junit.Assert.assertEquals;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-
 import org.junit.*;
-
 import fr.excilys.db.mapper.DatesConversion;
 public class Validators {
 	String  stringDate;
@@ -18,6 +15,7 @@ public class Validators {
 	public void beforeValidateDate() {
 		stringDate="2010-01-01";
 		stringDateVide="";
+		
 	}
 
 	@Test
@@ -29,7 +27,6 @@ public class Validators {
 	public void testConversionToSQL() {
 		assertEquals(Date.valueOf(locald), DatesConversion.convertLocalToSql(locald));
 		assertEquals(null, DatesConversion.convertLocalToSql(localdNull));
-		
 	}
 
 }

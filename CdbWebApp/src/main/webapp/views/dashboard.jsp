@@ -93,7 +93,7 @@
 			<ul class="pagination">
 				<%--For displaying Previous link except for the 1st page --%>
 				<c:if test="${numPage != 1}">
-					<td><a href="employee.do?page=${numPage - 1}">Previous</a></td>
+					<td><a href="computerServlet?numPage=${numPage - 1}&size=${size}">Previous</a></td>
 				</c:if>
 				<c:forEach begin="1" end="${numberOfPages}" var="i">
 					<c:choose>
@@ -104,23 +104,23 @@
 						</c:when>
 						<c:otherwise>
 							<li class="page-item"><a class="page-link"
-								href="firstServlet?numPage=${i}&size=${size}">${i}</a></li>
+								href="computerServlet?numPage=${i}&size=${size}">${i}</a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
 
 
 				<c:if test="${numPage lt numberOfPages}">
-					<td><a href="employee.do?page=${numPage + 1}">Next</a></td>
+					<td><a href="computerServlet?numPage=${numPage + 1}&size=${size}">Next</a></td>
 				</c:if>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href="firstServlet?numPage=${numPage}&size=${10}">
+				<a href="computerServlet?numPage=${numPage}&size=${10}">
 					<button type="button" class="btn btn-default">10</button>
 				</a> <a class="page-link"
-					href="firstServlet?numPage=${numPage}&size=${50}">
+					href="computerServlet?numPage=${numPage}&size=${50}">
 					<button type="button" class="btn btn-default">50</button>
-				</a> <a href="firstServlet?numPage=${numPage}&size=${100}">
+				</a> <a href="computerServlet?numPage=${numPage}&size=${100}">
 					<button type="button" class="btn btn-default">100</button>
 				</a>
 			</div>

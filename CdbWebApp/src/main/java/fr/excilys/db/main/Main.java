@@ -160,13 +160,9 @@ public class Main {
 		System.out.println("Please enter the number of page");
 		int pageNumber = sc.nextInt();
 		List<Computer> computers = null;
-		try {
+		
 			computers = computerServiceImpl.getComputersByPage(pageNumber,conn,50);
-		} catch (PageNotFoundException e) {
-			System.out.println("The number of page is too high !");
-		}catch(SQLException exc) {
-			System.out.println(exc.getMessage());
-		}
+
 		return computers;
 	}
 

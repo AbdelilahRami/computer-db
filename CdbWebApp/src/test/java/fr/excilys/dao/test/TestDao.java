@@ -1,7 +1,5 @@
 package fr.excilys.dao.test;
-
 import static org.junit.Assert.assertEquals;
-
 import java.sql.Connection;
 import java.util.List;
 import org.junit.*;
@@ -10,7 +8,6 @@ import fr.excilys.db.daoImp.ComputerDaoImpl;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.ComputerBuilder;
-
 public class TestDao {
 	private Connection conn;
 	private ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();

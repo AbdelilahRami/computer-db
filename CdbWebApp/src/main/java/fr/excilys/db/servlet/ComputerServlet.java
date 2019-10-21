@@ -21,26 +21,22 @@ import fr.excilys.db.service.impl.ComputerServiceImpl;
 /**
  * Servlet implementation class FirsTServlet
  */
-@WebServlet("/firstServlet")
-public class FirsTServlet extends HttpServlet {
+@WebServlet("/computerServlet")
+public class ComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FirsTServlet() {
+    public ComputerServlet() {
         super();
     }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn=null;
-		try {
-			conn = DtoConnection.getConnection();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		Connection conn = DtoConnection.getConnection();
+		
 		String pageSize=request.getParameter("size");
 		int numPage=Integer.parseInt(request.getParameter("numPage"));
 		int pageSizeInt= Integer.parseInt(pageSize);

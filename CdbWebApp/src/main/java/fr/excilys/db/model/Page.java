@@ -21,5 +21,4 @@ public class Page {
 		super();
 		this.pageSize = pageSize;
 	}
-	
 }

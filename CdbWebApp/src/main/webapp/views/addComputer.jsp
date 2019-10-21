@@ -15,7 +15,6 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
-
 <script type="text/javascript">
 	$(function() {
 		$("#introduced").datepicker({
@@ -40,7 +39,7 @@
 			rules : {
 				computerName : {
 	                required: true,
-	                minlength : 10
+	                minlength : 5
 				},
 				introduced: {
 					required: false
@@ -50,11 +49,11 @@
                 }
 			}
 		});
-		   $('#form input').on('keyup blur', function () { // fires on every keyup & blur
-		        if ($('#form').valid()) {                   // checks form for validity
-		            $('#add').prop('disabled', false);        // enables button
+		   $('#form input').on('keyup blur', function () { 
+		        if ($('#form').valid()) {                  
+		            $('#add').prop('disabled', false);        
 		        } else {
-		            $('#add"').prop('disabled', 'disabled');   // disables button
+		            $('#add"').prop('disabled', 'disabled');  
 		        }
 		    });
 
@@ -95,6 +94,7 @@
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyName">
+									<option value=""></option>
 									<option value="1">Apple Inc.</option>
 									<option value="2">RCA</option>
 									<option value="3">Netronics</option>
@@ -104,7 +104,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" id="add" class="btn btn-primary">
-							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+							or <a href="/firstServlet?numPage=5&size=50" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>

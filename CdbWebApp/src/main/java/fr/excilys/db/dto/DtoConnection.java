@@ -12,11 +12,16 @@ public class DtoConnection {
 	
 	private DtoConnection() {}
 	
-	public static Connection getConnection() throws ClassNotFoundException {
+	public static Connection getConnection() {
 		
 		Connection conn=null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			conn = DriverManager.getConnection(url, username, password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

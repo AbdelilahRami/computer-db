@@ -105,7 +105,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			pstm.setString(1, computer.getName());
 			pstm.setDate(2, DatesConversion.convertLocalToSql(computer.getIntroducedDate()));
 			pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
-			if (computer.getCompany() == null) {
+			if (computer.getCompany() == null ||computer.getCompany().getName().equals("")) {
 				pstm.setString(4, null);
 			}
 			else{pstm.setInt(4, computer.getCompany().getId());}

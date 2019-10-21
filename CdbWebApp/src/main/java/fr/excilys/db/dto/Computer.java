@@ -6,20 +6,16 @@ public class Computer {
 	private String localDateIntroduction;
 	private String localDateDiscontinued;
 	private String idCompany ;
-	
 	public Computer(ComputerBuilder builder) {
-		
 		this.id=builder.getId();
 		this.name=builder.getName();
 		this.localDateIntroduction=builder.getLocalDateIntro();
 		this.localDateDiscontinued=builder.getLocaldateDiscontinued();
 		this.idCompany=builder.getCompany();
 	}
-
 	public String getId() {
 		return id;
 	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
