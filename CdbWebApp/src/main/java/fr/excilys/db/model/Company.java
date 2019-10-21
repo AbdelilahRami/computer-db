@@ -6,6 +6,11 @@ public class Company {
 		this.id = id;
 		this.name = name;
 	}
+	public Company(CompanyBuilder companyBuilder) {
+			this.id=companyBuilder.getIdCompany();
+			this.name=companyBuilder.getNameCompany();
+	
+	}
 	public int getId() {
 		return id;
 	}

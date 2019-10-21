@@ -16,6 +16,6 @@ public interface ComputeService {
 	 int updateComputer(Computer computer, Connection conn)throws Exception;
 	 int deleteComputer(int idComputer, Connection conn)throws Exception;
 	 int createComputer(Computer computer, Connection conn)throws Exception;
-	 List<Computer> getComputersByPage(int idpage, Connection conn)throws SQLException, PageNotFoundException;
+	 List<Computer> getComputersByPage(int idpage, Connection conn,int pageSize)throws SQLException, PageNotFoundException;
 	 boolean datesExisted(LocalDate d1, LocalDate d2);
 }

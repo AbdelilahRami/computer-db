@@ -30,7 +30,7 @@ public class Main {
 	static ComputerServiceImpl computerServiceImpl = ComputerServiceImpl.getInstance();
 	static int value;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException {
 
 		showTheMenu();
 
@@ -111,7 +111,6 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
-		
 		LocalDate localDateIntro=LocalDateValidator.inputIsValidForIntroduction();
 		LocalDate localDateDicounted=LocalDateValidator.inputIsValidForDiscontinued();
 		System.out.println("Please give the id of company :");
@@ -162,7 +161,7 @@ public class Main {
 		int pageNumber = sc.nextInt();
 		List<Computer> computers = null;
 		try {
-			computers = computerServiceImpl.getComputersByPage(pageNumber,conn);
+			computers = computerServiceImpl.getComputersByPage(pageNumber,conn,50);
 		} catch (PageNotFoundException e) {
 			System.out.println("The number of page is too high !");
 		}catch(SQLException exc) {

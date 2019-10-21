@@ -5,7 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.excilys.db.daoImp.ComputerDaoImpl;
 import fr.excilys.db.mapper.DatesConversion;
+import fr.excilys.db.model.Company;
+import fr.excilys.db.model.CompanyBuilder;
 
 public class ComputerMapper {
 
@@ -31,12 +34,15 @@ public class ComputerMapper {
 	}
 	
 	
-	//public static fr.excilys.db.model.Computer fromStringToObject(Computer computer){
-		//int id=Integer.parseInt(computer.getId());
-		//String name=computer.getName();
-		//LocalDate lci=DatesConversion.fromStringToLocalDate(computer.getLocalDateIntroduction());
-		//LocalDate lcd=DatesConversion.fromStringToLocalDate(computer.getLocalDateDiscontinued());
+	public static fr.excilys.db.model.Computer fromStringToObject(Computer computer){
+		String name=computer.getName();
+		LocalDate lci=DatesConversion.fromStringToLocalDate(computer.getLocalDateIntroduction());
+		LocalDate lcd=DatesConversion.fromStringToLocalDate(computer.getLocalDateDiscontinued());
+		fr.excilys.db.model.Computer objComputer=fr.excilys.db.model.ComputerBuilder.newInstance().setName(name) 
+										.setIntroducedDate(lci).setDiscountedDate(lcd).build();
 		
+		return objComputer;
+	}
 		
 	public static List<Computer> fromListObjecToListString(List<fr.excilys.db.model.Computer> list){
 		
@@ -47,5 +53,6 @@ public class ComputerMapper {
 		
 		return computers;
 	}
+	
 
 }

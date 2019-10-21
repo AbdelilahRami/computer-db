@@ -16,8 +16,9 @@ public class ComputerDBConnection {
 		this.username = username;
 		this.password = password;
 	}
-	public Connection getConnection() {
+	public Connection getConnection() throws ClassNotFoundException {
 		try {			
+			Class.forName("com.mysql.jdbc.Driver");
 			conn=DriverManager.getConnection(url, username, password);
 			logger.info("Connection is established successfully");
 		}catch(SQLException exc) {

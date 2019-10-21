@@ -1,7 +1,6 @@
 //On load
 $(function() {
     // Default: hide edit mode
-    $(".editMode").hide();
     
     // Click on "selectall" box
     $("#selectall").click(function () {
@@ -66,6 +65,7 @@ $(function() {
             $('#deleteForm input[name=selection]').setCheckboxValues('selection','cb');
             $('#deleteForm').submit();
         }
+        
     };
 }( jQuery ));
 

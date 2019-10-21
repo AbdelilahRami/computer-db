@@ -75,12 +75,12 @@ public class ComputerServiceImpl implements ComputeService  {
 			return k;
 	}
 	@Override
-	public List<Computer> getComputersByPage(int numPage, Connection conn) throws SQLException, PageNotFoundException {
+	public List<Computer> getComputersByPage(int numPage, Connection conn, int pageSize)  {
 		List<Computer> computers = null;
-			if (numPage > computerDaoImpl.getNumberOfPages(conn)) {
-				throw new PageNotFoundException("You have exced the max number of pages");
+			if (numPage > computerDaoImpl.getNumberOfPages(conn,pageSize)) {
+				//throw new PageNotFoundException("You have exced the max number of pages");
 			}
-			computers = computerDaoImpl.getComputersByPageNumber(numPage, conn);
+			computers = computerDaoImpl.getComputersByPageNumber(numPage, conn,pageSize);
 		return computers;
 	}
 	@Override
