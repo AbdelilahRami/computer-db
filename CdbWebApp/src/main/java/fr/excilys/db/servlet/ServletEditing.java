@@ -27,7 +27,7 @@ public class ServletEditing extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id= request.getParameter("id");
-		request.getServletContext().getRequestDispatcher("/views/editComputer.html").forward(request, response);
+		request.getServletContext().getRequestDispatcher("/views/editComputer.jsp").forward(request, response);
 	}
 
 	/**

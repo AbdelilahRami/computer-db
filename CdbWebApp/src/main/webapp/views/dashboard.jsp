@@ -2,6 +2,7 @@
 <%@page import="fr.excilys.db.dto.Computer"%>
 <%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
 <html>
 <head>
@@ -23,7 +24,10 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">{computers.size()} Computers found</h1>
+			<h1 id="homeTitle">
+				<c:out value="${fn:length(computers)}"></c:out>
+				Computers found
+			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -90,12 +94,20 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
+			<%--For displaying Previous link except for the 1st page --%>
+			<c:if test="${numPage!=1 && (endPage-beginPage+1) lt 5}">
+				<td><a aria-label="Previous"
+					href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage}&size=${size}"><span
+						aria-hidden="true">&laquo;</span></a></td>
+			</c:if>
+			<c:if test="${numPage!=1 && (endPage-beginPage+1) ge 5}">
+				<td><a aria-label="Previous"
+					href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage-1}&size=${size}"><span
+						aria-hidden="true">&laquo;</span></a></td>
+			</c:if>
 			<ul class="pagination">
-				<%--For displaying Previous link except for the 1st page --%>
-				<c:if test="${numPage != 1}">
-					<td><a href="computerServlet?numPage=${numPage - 1}&size=${size}">Previous</a></td>
-				</c:if>
-				<c:forEach begin="1" end="${numberOfPages}" var="i">
+
+				<c:forEach begin="${beginPage}" end="${endPage}" var="i">
 					<c:choose>
 						<c:when test="${numPage eq i}">
 							<li class="page-item active"><a class="page-link"> ${i}
@@ -103,27 +115,36 @@
 							</a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="page-item"><a class="page-link"
-								href="computerServlet?numPage=${i}&size=${size}">${i}</a></li>
+							<c:choose>
+								<c:when test="${(endPage-beginPage+i) lt numberOfPages}">
+									<li class="page-item"><a class="page-link"
+										href="computerServlet?beginPage=${i}&size=${size}&endPage=${i+(endPage-beginPage)}">${i}</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item"><a class="page-link"
+										href="computerServlet?beginPage=${i}&size=${size}&endPage=${endPage}">${i}</a></li>
+								</c:otherwise>
+							</c:choose>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-
-
-				<c:if test="${numPage lt numberOfPages}">
-					<td><a href="computerServlet?numPage=${numPage + 1}&size=${size}">Next</a></td>
-				</c:if>
 			</ul>
+			<c:if test="${endPage lt numberOfPages}">
+				<td><a
+					href="computerServlet?beginPage=${beginPage +1}&endPage=${endPage + 1}&size=${size}">Next</a></td>
+			</c:if>
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href="computerServlet?numPage=${numPage}&size=${10}">
+				<a href="computerServlet?beginPage=${beginPage}&endPage=${endPage}&size=${10}">
 					<button type="button" class="btn btn-default">10</button>
 				</a> <a class="page-link"
-					href="computerServlet?numPage=${numPage}&size=${50}">
+					href="computerServlet?beginPage=${beginPage}&endPage=${endPage}&size=${50}">
 					<button type="button" class="btn btn-default">50</button>
-				</a> <a href="computerServlet?numPage=${numPage}&size=${100}">
+				</a> <a href="computerServlet?beginPage=${beginPage}&endPage=${endPage}&size=${100}">
 					<button type="button" class="btn btn-default">100</button>
 				</a>
 			</div>
+		</div>
+
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

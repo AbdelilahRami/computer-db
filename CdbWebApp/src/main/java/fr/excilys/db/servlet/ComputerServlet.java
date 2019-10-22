@@ -38,12 +38,17 @@ public class ComputerServlet extends HttpServlet {
 		Connection conn = DtoConnection.getConnection();
 		
 		String pageSize=request.getParameter("size");
-		int numPage=Integer.parseInt(request.getParameter("numPage"));
+		//int numPage=Integer.parseInt(request.getParameter("numPage"));
+		int beginPage=Integer.parseInt(request.getParameter("beginPage"));
+		int endPage=Integer.parseInt(request.getParameter("endPage"));
+		int numPage=beginPage;
 		int pageSizeInt= Integer.parseInt(pageSize);
 		int numberOfPages=ComputerDaoImpl.getInstance().getNumberOfPages(conn, pageSizeInt);
 		request.setAttribute("numberOfPages", numberOfPages);
 		request.setAttribute("numPage", numPage);
 		request.setAttribute("size", pageSizeInt);
+		request.setAttribute("beginPage", beginPage);
+		request.setAttribute("endPage", endPage);
 		List<Computer> computers=ComputerServiceImpl.getInstance().getComputersByPage(numPage, conn, pageSizeInt);
 		List<fr.excilys.db.dto.Computer> computersDTO=ComputerMapper.fromListObjecToListString(computers);
 		request.setAttribute("computers", computersDTO);

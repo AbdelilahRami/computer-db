@@ -3,14 +3,10 @@
 <head>
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script
-	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<link rel="stylesheet"
-	href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
@@ -20,8 +16,8 @@
 		$("#introduced").datepicker({
 			numberOfMonths : 1,
 			dateFormat : 'yy-mm-dd',
-			onSelect : function(selectedDate) {
-				var ds = new Date(selectedDate);
+			onSelect : function(selectDate) {
+				var ds = new Date(selectDate);
 				ds.setDate(ds.getDate() + 1)
 				$("#discontinued").datepicker("option", "minDate", ds);
 			}
@@ -29,8 +25,8 @@
 		$("#discontinued").datepicker({
 			numberOfMonths : 1,
 			dateFormat : 'yy-mm-dd',
-			onSelect : function(selectedDate) {
-				var di = new Date(selectedDate)
+			onSelect : function(selectDate) {
+				var di = new Date(selectDate)
 				di.setDate(di.getDate() - 1)
 				$("#introduced").datepicker("option", "maxDate", di);
 			}
@@ -49,8 +45,8 @@
                 }
 			}
 		});
-		   $('#form input').on('keyup blur', function () { 
-		        if ($('#form').valid()) {                  
+		   $('#form input').on('keyup', function () { 
+		        if ($('#form').valid()) {                   
 		            $('#add').prop('disabled', false);        
 		        } else {
 		            $('#add"').prop('disabled', 'disabled');  
@@ -94,7 +90,7 @@
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyName">
-									<option value=""></option>
+									<option></option>
 									<option value="1">Apple Inc.</option>
 									<option value="2">RCA</option>
 									<option value="3">Netronics</option>
@@ -104,7 +100,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" id="add" class="btn btn-primary">
-							or <a href="/firstServlet?numPage=5&size=50" class="btn btn-default">Cancel</a>
+							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>
