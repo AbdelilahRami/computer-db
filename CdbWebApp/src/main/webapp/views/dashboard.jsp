@@ -94,22 +94,24 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-			<%--For displaying Previous link except for the 1st page --%>
-			<c:if test="${numPage!=1 && (endPage-beginPage+1) lt 5}">
-				<td><a aria-label="Previous"
-					href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage}&size=${size}"><span
-						aria-hidden="true">&laquo;</span></a></td>
-			</c:if>
-			<c:if test="${numPage!=1 && (endPage-beginPage+1) ge 5}">
-				<td><a aria-label="Previous"
-					href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage-1}&size=${size}"><span
-						aria-hidden="true">&laquo;</span></a></td>
-			</c:if>
-			<ul class="pagination">
 
+			<ul class="pagination">
+				<%--For displaying Previous link except for the 1st page --%>
+				<c:if test="${beginPage!=1 && (endPage-beginPage+1) lt 5}">
+					<li><a aria-label="Previous"
+						href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage}&size=${size}"><span
+							aria-hidden="true">&laquo;</span></a></li>
+				</c:if>
+				
+ 				<c:if test="${beginPage!=1 && (endPage-beginPage+1) ge 5}">
+ 					<li class="page-item"><a aria-label="Previous" 
+ 							href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage-1}&size=${size}"><span 
+								aria-hidden="true">&laquo;</span></a></li>
+ 				</c:if> 
+				
 				<c:forEach begin="${beginPage}" end="${endPage}" var="i">
 					<c:choose>
-						<c:when test="${numPage eq i}">
+						<c:when test="${beginPage eq i}">
 							<li class="page-item active"><a class="page-link"> ${i}
 									<span class="sr-only">(current)</span>
 							</a></li>
@@ -128,23 +130,26 @@
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
+				<c:if test="${endPage lt numberOfPages}">
+					<li class="page-item"><a aria-label="Next"
+							href="computerServlet?beginPage=${beginPage +1}&endPage=${endPage + 1}&size=${size}"><span
+								aria-hidden="true">&raquo;</span></a></li>
+				</c:if>
 			</ul>
-			<c:if test="${endPage lt numberOfPages}">
-				<td><a
-					href="computerServlet?beginPage=${beginPage +1}&endPage=${endPage + 1}&size=${size}">Next</a></td>
-			</c:if>
+
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href="computerServlet?beginPage=${beginPage}&endPage=${endPage}&size=${10}">
+				<a
+					href="computerServlet?beginPage=${1}&endPage=${5}&size=${10}">
 					<button type="button" class="btn btn-default">10</button>
 				</a> <a class="page-link"
-					href="computerServlet?beginPage=${beginPage}&endPage=${endPage}&size=${50}">
+					href="computerServlet?beginPage=${1}&endPage=${5}&size=${50}">
 					<button type="button" class="btn btn-default">50</button>
-				</a> <a href="computerServlet?beginPage=${beginPage}&endPage=${endPage}&size=${100}">
+				</a> <a
+					href="computerServlet?beginPage=${1}&endPage=${5}&size=${100}">
 					<button type="button" class="btn btn-default">100</button>
 				</a>
 			</div>
 		</div>
-
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

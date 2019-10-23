@@ -7,12 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import fr.excilys.db.connection.ComputerDBConnection;
 import fr.excilys.db.dao.DaoComputer;
+import fr.excilys.db.exception.NoCompanyFound;
 import fr.excilys.db.exception.PageNotFoundException;
 import fr.excilys.db.mapper.ComputerMapper;
 import fr.excilys.db.mapper.DatesConversion;
@@ -20,7 +19,6 @@ import fr.excilys.db.mapper.PageMappper;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.Page;
-
 public class ComputerDaoImpl implements DaoComputer {
 	private static ComputerDaoImpl computerDaoImpl;
 	private static final String GET_ALL_COMPUTERS = "select * from computer ";
@@ -32,18 +30,15 @@ public class ComputerDaoImpl implements DaoComputer {
 	private static final String GET_COMPUTERS_BY_PAGE = "select * from computer LIMIT ?, ?";
 	private static final String GET_COMPANY_BY_ID = "select * from company where id = ?";
 	private static final Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
-
 	private ComputerDaoImpl() {
 
 	}
-
 	public static ComputerDaoImpl getInstance() {
 		if (computerDaoImpl == null) {
 			computerDaoImpl = new ComputerDaoImpl();
 		}
 		return computerDaoImpl;
 	}
-
 	@Override
 	public List<Computer> getAllComputers(Connection conn) {
 		logger.info("The operations get all computers is running");
@@ -61,7 +56,6 @@ public class ComputerDaoImpl implements DaoComputer {
 		}
 		return computers;
 	}
-
 	@Override
 	public List<Company> getAllyCompanies(Connection conn) {
 		logger.info("The operation get all companies is running");
@@ -69,15 +63,20 @@ public class ComputerDaoImpl implements DaoComputer {
 		try (Statement stm = conn.createStatement();) {
 			ResultSet rs = stm.executeQuery(GET_ALL_COMPANIES);
 			companies = ComputerMapper.getInstance().getAllCompaniesMapper(rs);
+			if (companies == null || companies.isEmpty()) {
+				throw new NoCompanyFound("There is no company in the table");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("There is an exception of type SQL" + e.getMessage());
-		} finally {
+		}catch(NoCompanyFound ex) {
+			System.out.println(ex.getMessage());
+		}
+		finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
 		return companies;
 	}
-
 	@Override
 	public Computer getComputerDetails(int id, Connection conn) {
 		logger.info("The operation get the details of the id=" + id + " is running");
@@ -89,13 +88,11 @@ public class ComputerDaoImpl implements DaoComputer {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			logger.error("Showing the details of computer fails" + e.getMessage());
-
 		} finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
 		return computer;
 	}
-
 	@Override
 	public int createComputer(Computer computer, Connection conn) {
 		logger.info("Creation of the computer" + computer.getName() + " is running");
@@ -118,7 +115,6 @@ public class ComputerDaoImpl implements DaoComputer {
 		}
 		return i;
 	}
-
 	@Override
 	public int updateComputer(Computer computer, Connection conn) {
 		logger.info("Update computer" + computer.getName() + " is runninng");
@@ -139,7 +135,6 @@ public class ComputerDaoImpl implements DaoComputer {
 		}
 		return i;
 	}
-
 	@Override
 	public int deleteComputer(int id, Connection conn) {
 		logger.info("Delete computer with the id " + id + " is running");
@@ -172,7 +167,6 @@ public class ComputerDaoImpl implements DaoComputer {
 		}
 		return company;
 	}
-
 	@Override
 	public List<Computer> getComputersByPageNumber(int pageId, Connection conn, int pageSize) {
 		logger.info("Pagination is running");
@@ -191,7 +185,6 @@ public class ComputerDaoImpl implements DaoComputer {
 		}
 		return computers;
 	}
-
 	@Override
 	public int getNumberOfPages(Connection conn, int pageSize) {
 		int numberOfPages = 0;
@@ -199,17 +192,16 @@ public class ComputerDaoImpl implements DaoComputer {
 		try {
 			Statement stm = conn.createStatement();
 			ResultSet myRes = stm.executeQuery("select count(*) as number from computer");
-			 if(myRes.next()) {              // here
+			 if(myRes.next()) {              
 			      numberOflines = myRes.getInt(1);
-			    }
-			numberOfPages = numberOflines / pageSize;
+			    }		 
+			 numberOfPages = (numberOflines % pageSize==0) ? numberOflines/pageSize : numberOflines/pageSize+1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} finally {
 			conn = ComputerDBConnection.closeConnection();
 		}
 
 		return numberOfPages;
 	}
-
 }

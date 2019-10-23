@@ -9,7 +9,6 @@ public class Company {
 	public Company(CompanyBuilder companyBuilder) {
 			this.id=companyBuilder.getIdCompany();
 			this.name=companyBuilder.getNameCompany();
-	
 	}
 	public int getId() {
 		return id;

@@ -1,9 +1,7 @@
 package fr.excilys.db.model;
-
 public class CompanyBuilder {
 	private int idCompany;
 	private String nameCompany;
-	
 	public CompanyBuilder() {
 	}
 	public static CompanyBuilder newInstance() {
@@ -26,6 +24,4 @@ public class CompanyBuilder {
 		this.nameCompany = nameCompany;
 		return this;
 	}
-	
-
 }

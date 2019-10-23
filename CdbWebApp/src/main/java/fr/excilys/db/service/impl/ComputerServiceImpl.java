@@ -16,14 +16,8 @@ import fr.excilys.db.service.ComputeService;
 public class ComputerServiceImpl implements ComputeService  {
 	private static ComputerDaoImpl computerDaoImpl = ComputerDaoImpl.getInstance();
 	private static ComputerServiceImpl computerServiceImpl;
-	/**
-	 * Constructor ComputerServiceImpl
-	 */
 	private  ComputerServiceImpl() {
 	}
-	/**
-	 * @return ComputerServiceImpl
-	 */
 	public static ComputerServiceImpl getInstance() {
 		if (computerServiceImpl == null) {
 			computerServiceImpl = new ComputerServiceImpl();
@@ -43,11 +37,8 @@ public class ComputerServiceImpl implements ComputeService  {
 		return computers;
 	}
 	@Override
-	public List<Company> getAllCompanies(Connection conn) throws NoCompanyFound, SQLException {
+	public List<Company> getAllCompanies(Connection conn) {
 		List<Company> companies = computerDaoImpl.getAllyCompanies(conn);
-			if (companies == null || companies.isEmpty()) {
-				throw new NoCompanyFound("There is no company in the table");
-			}
 		return companies;
 	}
 	@Override

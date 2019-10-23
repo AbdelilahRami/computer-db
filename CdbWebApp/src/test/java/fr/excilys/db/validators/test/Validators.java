@@ -1,5 +1,4 @@
 package fr.excilys.db.validators.test;
-
 import static org.junit.Assert.assertEquals;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -10,14 +9,11 @@ public class Validators {
 	String stringDateVide;
 	LocalDate locald=LocalDate.of(2013, 05, 25);
 	LocalDate localdNull=null;
-	
 	@Before
 	public void beforeValidateDate() {
 		stringDate="2010-01-01";
 		stringDateVide="";
-		
 	}
-
 	@Test
 	public void testValiDate() {
 		assertEquals(LocalDate.of(2010, 01, 01), DatesConversion.fromStringToLocalDate(stringDate));
@@ -28,5 +24,4 @@ public class Validators {
 		assertEquals(Date.valueOf(locald), DatesConversion.convertLocalToSql(locald));
 		assertEquals(null, DatesConversion.convertLocalToSql(localdNull));
 	}
-
 }

@@ -6,10 +6,6 @@ import java.util.List;
 import fr.excilys.db.exception.PageNotFoundException;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
-/**
- * @author Abdelilah Rami
- *Interface computerService
- */
 public interface ComputeService {
 	 List<Computer> getAllComputers(Connection conn)throws Exception;
 	 List<Company> getAllCompanies(Connection conn)throws Exception;

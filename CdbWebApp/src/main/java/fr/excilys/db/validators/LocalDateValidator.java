@@ -10,7 +10,6 @@ import fr.excilys.db.mapper.DatesConversion;
  *
  */
 public class LocalDateValidator {
-
 	/**
 	 * Validate the introduction date of computer.
 	 * @return LocalDate or null.
@@ -20,7 +19,7 @@ public class LocalDateValidator {
 		Scanner scn = new Scanner(System.in);
 		boolean inputIsNotValid = true;
 		while (inputIsNotValid) {
-		System.out.println("Please give the date of introduction : :(Exemple : yyyy-dd-mm or mm/dd/yyyy )");
+		System.out.println("Please give the date of introduction : (Exemple : yyyy-dd-mm or mm/dd/yyyy )");
 		String localDIntroduction = scn.nextLine();
 		try {
 			localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
@@ -30,7 +29,6 @@ public class LocalDateValidator {
 		}
 		}
 		return localDateIntro;
-
 	}
 	/**
 	 * Validate the discontinued date of computer.
@@ -49,7 +47,6 @@ public class LocalDateValidator {
 			} catch (DateTimeParseException exc) {
 				System.out.println(exc.getParsedString() + " Is not date Could you please retry !");
 			}
-
 		}
 		return localDateDicounted;
 	}

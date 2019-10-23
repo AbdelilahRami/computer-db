@@ -36,20 +36,20 @@ public class ComputerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = DtoConnection.getConnection();
-		
-		String pageSize=request.getParameter("size");
-		//int numPage=Integer.parseInt(request.getParameter("numPage"));
-		int beginPage=Integer.parseInt(request.getParameter("beginPage"));
-		int endPage=Integer.parseInt(request.getParameter("endPage"));
+		String begin =request.getParameter("beginPage");
+		int beginPage= (begin != null) ? Integer.parseInt(begin) : 1;
+		String size=request.getParameter("size");
+		int sizePage = (size != null) ? Integer.parseInt(size) : 10;
+		String end =request.getParameter("endPage");
+		int endPage= (end != null) ? Integer.parseInt(end) : 5;
 		int numPage=beginPage;
-		int pageSizeInt= Integer.parseInt(pageSize);
-		int numberOfPages=ComputerDaoImpl.getInstance().getNumberOfPages(conn, pageSizeInt);
+		int numberOfPages=ComputerDaoImpl.getInstance().getNumberOfPages(conn, sizePage);
 		request.setAttribute("numberOfPages", numberOfPages);
 		request.setAttribute("numPage", numPage);
-		request.setAttribute("size", pageSizeInt);
+		request.setAttribute("size", sizePage);
 		request.setAttribute("beginPage", beginPage);
 		request.setAttribute("endPage", endPage);
-		List<Computer> computers=ComputerServiceImpl.getInstance().getComputersByPage(numPage, conn, pageSizeInt);
+		List<Computer> computers=ComputerServiceImpl.getInstance().getComputersByPage(numPage, conn, sizePage);
 		List<fr.excilys.db.dto.Computer> computersDTO=ComputerMapper.fromListObjecToListString(computers);
 		request.setAttribute("computers", computersDTO);
 		this.getServletContext().getRequestDispatcher("/views/dashboard.jsp").forward(request, response);

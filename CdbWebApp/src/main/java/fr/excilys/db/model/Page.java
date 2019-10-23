@@ -2,7 +2,6 @@ package fr.excilys.db.model;
 public class Page {
 	private int pageNumber;
 	private int pageSize;
-	
 	public int getPageNumber() {
 		return pageNumber;
 	}

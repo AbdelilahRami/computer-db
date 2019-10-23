@@ -3,28 +3,24 @@ import java.sql.*;
 import org.slf4j.Logger;
 
 import org.slf4j.LoggerFactory;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 public class ComputerDBConnection {
-	private String url;
-	private String username;
-	private String password;
 	private static Connection conn;
+	private static HikariConfig cfg=new HikariConfig("src/main/ressources/hikari.properties");
+	private static HikariDataSource ds= new HikariDataSource(cfg);
 	private static final Logger logger=LoggerFactory.getLogger(ComputerDBConnection.class);	
-	public ComputerDBConnection(String url, String username, String password) {
-		this.url = url;
-		this.username = username;
-		this.password = password;
-	}
-	public Connection getConnection() throws ClassNotFoundException {
-		try {			
-			Class.forName("com.mysql.jdbc.Driver");
-			conn=DriverManager.getConnection(url, username, password);
-			logger.info("Connection is established successfully");
-		}catch(SQLException exc) {
-			for(Throwable e : exc) {
-				System.err.println("Connection problem " + e);
-			}
+	private ComputerDBConnection() {}
+	
+	public static Connection getConnection(){
+		conn=null; 
+		try {
+			conn=ds.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return conn;
+	return conn;
 	}	
 	public static Connection closeConnection() {	
 		if(conn!=null) {
@@ -32,7 +28,7 @@ public class ComputerDBConnection {
 				conn.close();
 				logger.error("Cannot close the connection");
 			} catch (SQLException e) {
-				System.out.println("Connection cannot be closed !");
+				System.out.println(e.getMessage());
 			}
 			conn=null;
 		}

@@ -17,6 +17,12 @@ public class TestDao {
 	@Before
 	public void beforeTestAllComputers() {
 		conn = H2DataBaseOperations.getConnection().get();
+		expectedComputer=computerDao.getComputerDetails(1, conn);
+		company = computerDao.getCompanyById(1, conn);
+		realComputer=ComputerBuilder.newInstance().setId(1).
+							setName("HP EliteBook").setIntroducedDate(null).
+							setDiscountedDate(null).setCompany(company).build();
+
 	}
 	@Test
 	public void testAllComputers() {
@@ -51,34 +57,17 @@ public class TestDao {
 		assertEquals(14, computers.size());
 		assertEquals(1, i);	
 	}
-
-	@Before
-	public void beforeUpdateComputerTest() {
-		conn=H2DataBaseOperations.getConnection().get();	
-		company = computerDao.getCompanyById(1, conn);
-		realComputer=ComputerBuilder.newInstance().setId(1).
-							setName("HP EliteBook").setIntroducedDate(null).
-							setDiscountedDate(null).setCompany(company).build();
-	}
 	@Test
 	public void testUpdateComputer() {
 		computerDao.updateComputer(realComputer, conn);
 		Computer expectedComputer=computerDao.getComputerDetails(1, conn);
 		assertEquals(expectedComputer.toString(), realComputer.toString());	
 	}
-	@Before
-	public void beforeDeleteComputerTest() {
-		conn=H2DataBaseOperations.getConnection().get();
-		expectedComputer=computerDao.getComputerDetails(1, conn);
-	}
-	
+
 	@Test
 	public void deleteTest() {
 		computerDao.deleteComputer(1, conn);
 		List<Computer> computers=computerDao.getAllComputers(conn);
-		assertEquals(12, computers.size());
-		
-		
+		assertEquals(12, computers.size());	
 	}
-	
 }
