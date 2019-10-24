@@ -3,12 +3,12 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import fr.excilys.db.connection.ComputerDBConnection;
 import fr.excilys.db.daoImp.ComputerDaoImpl;
 import fr.excilys.db.dto.CompanyMapper;
 import fr.excilys.db.dto.ComputerBuilder;
@@ -36,8 +36,8 @@ public class ServletAddingComputer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = DtoConnection.getConnection();
-		List<Company> companies=ComputerServiceImpl.getInstance().getAllCompanies(conn);
+		Connection conn = ComputerDBConnection.getInstance().getConnection();
+		List<Company> companies=ComputerServiceImpl.getInstance().getAllCompanies();
 		List<fr.excilys.db.dto.Company> companiesDto=CompanyMapper.fromListObjectsToListString(companies);
 		request.setAttribute("companies", companiesDto);
 		request.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
@@ -47,7 +47,7 @@ public class ServletAddingComputer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = DtoConnection.getConnection();
+		Connection conn = ComputerDBConnection.getInstance().getConnection();
 		Company company=null;
 		String name = request.getParameter("computerName");
 		String introducedDate=request.getParameter("introduced");
@@ -57,11 +57,11 @@ public class ServletAddingComputer extends HttpServlet {
 		if(inputIsValid) {
 			if(!request.getParameter("companyName").equals("")) {
 				int idCompany=Integer.parseInt(request.getParameter("companyName"));
-				company=ComputerDaoImpl.getInstance().getCompanyById(idCompany, conn);
+				company=ComputerDaoImpl.getInstance().getCompanyById(idCompany);
 			}
 			Computer computer=ComputerMapper.fromStringToObject(dtoComputer);
 			computer.setCompany(company);
-			ComputerDaoImpl.getInstance().createComputer(computer, conn);
+			ComputerDaoImpl.getInstance().createComputer(computer);
 			request.setAttribute("sucess", true);
 			request.setAttribute("message", "Success your computer has benn added");
 			request.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
@@ -69,7 +69,6 @@ public class ServletAddingComputer extends HttpServlet {
 			request.setAttribute("fails", true);
 			request.setAttribute("message", "Dicontinued date is after than introduced date !");
 			request.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
-
 		}
 	}
 	private static boolean valideInputs(fr.excilys.db.dto.Computer computer) {

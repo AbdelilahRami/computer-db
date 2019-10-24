@@ -47,7 +47,7 @@
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" name="introduced"
 									id="introduced" placeholder="Introduced date"
-									required="required">
+									>
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input

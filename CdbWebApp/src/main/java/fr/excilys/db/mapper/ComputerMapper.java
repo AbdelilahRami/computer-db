@@ -26,7 +26,7 @@ public class ComputerMapper {
 			return computerMapper;
 		}
 	 	 
-	public List<Computer> getAllComputerMapper(ResultSet rs,Connection conn){
+	public List<Computer> getAllComputerMapper(ResultSet rs){
 		List<Computer> computers =new ArrayList<Computer>();
 		ComputerDaoImpl computerDaoImpl=ComputerDaoImpl.getInstance();
 		try {
@@ -38,7 +38,7 @@ public class ComputerMapper {
 				LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
 				LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 				int idCompany = rs.getInt("company_id");
-				Company company=computerDaoImpl.getCompanyById(idCompany,conn);
+				Company company=computerDaoImpl.getCompanyById(idCompany);
 				Computer computer=ComputerBuilder.newInstance().
 													setId(id).
 													setName(name). 
@@ -66,7 +66,7 @@ public class ComputerMapper {
 		return companies;
 	}
 	
-	public Computer getComputerDetailsMapper(ResultSet rs,Connection conn) throws SQLException {
+	public Computer getComputerDetailsMapper(ResultSet rs) throws SQLException {
 		Computer computer=null;
 		ComputerDaoImpl computerDaoImpl=ComputerDaoImpl.getInstance();
 		while (rs.next()) {
@@ -77,7 +77,7 @@ public class ComputerMapper {
 			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
 			LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 			int idCompany = rs.getInt("company_id");
-			Company company=computerDaoImpl.getCompanyById(idCompany,conn);
+			Company company=computerDaoImpl.getCompanyById(idCompany);
 			computer=ComputerBuilder.newInstance().
 					setId(idComputer).
 					setName(name). 

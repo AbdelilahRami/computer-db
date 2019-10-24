@@ -79,8 +79,8 @@
 					<c:forEach var="item" items="${computers}">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
-							<td><a href="/servletEditing" onclick=""> ${item.name }</a>
+								class="cb" value="${item.id} }"></td>
+							<td><a href="servletEditing?id=${item.id}" onclick=""> ${item.name}</a>
 							</td>
 							<td>${item.localDateIntroduction}</td>
 							<td>${item.localDateDiscontinued}</td>

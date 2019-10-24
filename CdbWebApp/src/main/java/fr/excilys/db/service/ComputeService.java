@@ -7,11 +7,11 @@ import fr.excilys.db.exception.PageNotFoundException;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 public interface ComputeService {
-	 List<Computer> getAllComputers(Connection conn)throws Exception;
-	 List<Company> getAllCompanies(Connection conn)throws Exception;
-	 int updateComputer(Computer computer, Connection conn)throws Exception;
-	 int deleteComputer(int idComputer, Connection conn)throws Exception;
-	 int createComputer(Computer computer, Connection conn)throws Exception;
-	 List<Computer> getComputersByPage(int idpage, Connection conn,int pageSize)throws SQLException, PageNotFoundException;
+	 List<Computer> getAllComputers()throws Exception;
+	 List<Company> getAllCompanies()throws Exception;
+	 int updateComputer(Computer computer)throws Exception;
+	 int deleteComputer(int idComputer)throws Exception;
+	 int createComputer(Computer computer)throws Exception;
+	 List<Computer> getComputersByPage(int idpage,int pageSize)throws SQLException, PageNotFoundException;
 	 boolean datesExisted(LocalDate d1, LocalDate d2);
 }

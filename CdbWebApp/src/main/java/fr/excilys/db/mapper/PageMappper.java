@@ -12,7 +12,7 @@ import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.ComputerBuilder;
 
 public class PageMappper {
-	public static List<Computer> getComputersByPageNumberMapper(ResultSet rs, Connection conn) throws SQLException {
+	public static List<Computer> getComputersByPageNumberMapper(ResultSet rs) throws SQLException {
 		ComputerDaoImpl computerDaoImpl = ComputerDaoImpl.getInstance();
 		List<Computer> computers = new ArrayList<Computer>();
 		Computer computer;
@@ -24,7 +24,7 @@ public class PageMappper {
 			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
 			LocalDate discontinued = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 			int idCompany = rs.getInt("company_id");
-			Company company = computerDaoImpl.getCompanyById(idCompany,conn);
+			Company company = computerDaoImpl.getCompanyById(idCompany);
 			computer = ComputerBuilder.newInstance().setId(idComputer).setName(name)
 					.setIntroducedDate(introduced).setDiscountedDate(discontinued).setCompany(company).build();
 			computers.add(computer);

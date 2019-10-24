@@ -1,29 +1,31 @@
-package fr.excilys.db.coonection;
+package fr.excilys.db.connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Optional;
 public class H2DataBaseOperations {
 	private static String url ="jdbc:h2:mem:test;INIT=RUNSCRIPT FROM 'C:/Users/Utilisateur/Desktop/DB/training-java/config/db/1-SCHEMA.sql'";
 	private static String username ="root";
 	private static String password ="root";
-	private  static Connection conn;
-	public static Optional<Connection> getConnection(){
+	private  static Connection connection;
+	
+	public static Connection getConnection(){
 		try {
-			conn=DriverManager.getConnection(url, username, password);
+			connection=DriverManager.getConnection(url, username, password);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return Optional.of(conn);
+		return connection;
 	}
-	public static void closeConnection() {
-		if(conn!=null) {
+	public static Connection closeConnection() {
+		if(connection!=null) {
 			try {
-				conn.close();
+				connection.close();
+				connection=null;
 			} catch (SQLException e) {
 				System.out.println("Connection cannot be closed !");
 			}
-			conn=null;
+			connection=null;
 		}
+		return connection;
 	}
 }

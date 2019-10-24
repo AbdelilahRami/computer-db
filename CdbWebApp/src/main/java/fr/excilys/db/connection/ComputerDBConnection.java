@@ -1,36 +1,45 @@
 package fr.excilys.db.connection;
 import java.sql.*;
 import org.slf4j.Logger;
-
 import org.slf4j.LoggerFactory;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 public class ComputerDBConnection {
-	private static Connection conn;
-	private static HikariConfig cfg=new HikariConfig("src/main/ressources/hikari.properties");
-	private static HikariDataSource ds= new HikariDataSource(cfg);
-	private static final Logger logger=LoggerFactory.getLogger(ComputerDBConnection.class);	
-	private ComputerDBConnection() {}
-	
-	public static Connection getConnection(){
-		conn=null; 
+	private Connection connection;
+	private static HikariConfig cfg = new HikariConfig("/hikari.properties");
+	private static HikariDataSource ds = new HikariDataSource(cfg);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDBConnection.class);
+	private static ComputerDBConnection computerDb;
+	private ComputerDBConnection() {
+	}
+	public Connection getConnection() {
 		try {
-			conn=ds.getConnection();
+			if (connection == null || connection.isClosed()) {
+				connection = ds.getConnection();
+				return connection;
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
-	return conn;
-	}	
-	public static Connection closeConnection() {	
-		if(conn!=null) {
+		return connection;
+	}
+	public static ComputerDBConnection getInstance() {
+		if (computerDb == null) {
+			computerDb = new ComputerDBConnection();
+		}
+		return computerDb;
+	}
+
+	public static Connection closeConnection(Connection conn) {
+		if (conn != null) {
 			try {
 				conn.close();
-				logger.error("Cannot close the connection");
+				conn = null;
+				LOGGER.info("connection closed successufully");
 			} catch (SQLException e) {
+				LOGGER.error("Cannot close the connection !");
 				System.out.println(e.getMessage());
 			}
-			conn=null;
 		}
 		return conn;
 	}

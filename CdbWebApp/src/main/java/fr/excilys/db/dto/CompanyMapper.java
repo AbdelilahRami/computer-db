@@ -17,7 +17,6 @@ public class CompanyMapper {
 			Company companyDto=CompanyMapper.fromObjectToString(company);
 			companiesDto.add(companyDto);
 		}
-		
 		return companiesDto;
 	}
 }

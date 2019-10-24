@@ -24,40 +24,38 @@ public class Main {
 	static int value;
 
 	public static void main(String[] args) throws ClassNotFoundException {
-
 		showTheMenu();
-
 		Label: while (true) {
 			switch (value) {
 			case 1:	
-				Connection conn1=ComputerDBConnection.getConnection();
-				List<Computer> computers = manageAllComputers(conn1);
+				Connection conn1=ComputerDBConnection.getInstance().getConnection();
+				List<Computer> computers = manageAllComputers();
 				computers.forEach((c) -> System.out.println(c));
 				value = showTheMenu();
 				break;
 			case 2:
-				Connection conn2=ComputerDBConnection.getConnection();
-				List<Company> companies = manageAllCompanies(conn2);
+				Connection conn2=ComputerDBConnection.getInstance().getConnection();
+				List<Company> companies = manageAllCompanies();
 				companies.forEach((cp)->System.out.println(cp));
 				value = showTheMenu();
 				break;
 			case 3:
-				Connection conn3=ComputerDBConnection.getConnection();
-				Computer computer = computerCreate(conn3);
+				Connection conn3=ComputerDBConnection.getInstance().getConnection();
+				Computer computer = computerCreate();
 				manageCreate(computer,conn);
 				value = showTheMenu();
 				break;
 			case 4:
 				System.out.println("Your are about to get computer details :");
 				int idComputer = getIdOfComputer();
-				Connection conn4=ComputerDBConnection.getConnection();
-				Computer myComputer = manageDetails(idComputer,conn4);
+				Connection conn4=ComputerDBConnection.getInstance().getConnection();
+				Computer myComputer = manageDetails(idComputer);
 				System.out.println(myComputer.getId()+" "+myComputer.getName()+" "+myComputer.getIntroducedDate()+" "+myComputer.getDiscountedDate()+" "+myComputer.getCompany().getId());
 				value = showTheMenu();
 				break;
 			case 5:
 				System.out.println("Your are in the update part :");
-				Connection conn5=ComputerDBConnection.getConnection();
+				Connection conn5=ComputerDBConnection.getInstance().getConnection();
 				Computer updatComputer = getComputerToUpdate(conn5);
 				manageUpdate(updatComputer,conn5);
 				value = showTheMenu();
@@ -65,13 +63,13 @@ public class Main {
 			case 6:
 				System.out.println("Your are in the delete part :");
 				int idCom = getComputerToDelet();
-				Connection conn6=ComputerDBConnection.getConnection();
-				manageDelete(idCom,conn);
+				Connection conn6=ComputerDBConnection.getInstance().getConnection();
+				manageDelete(idCom);
 				value = showTheMenu();
 				break;
 			case 7:
 				System.out.println("Pagination part :");
-				Connection conn7=ComputerDBConnection.getConnection();
+				Connection conn7=ComputerDBConnection.getInstance().getConnection();
 				List<Computer> myComputers = computersByPage(conn);
 				myComputers.forEach((cp) -> System.out.println(cp.toString()));
 				value = showTheMenu();
@@ -90,7 +88,7 @@ public class Main {
 		value = sc.nextInt();
 		return value;
 	}
-	public static Computer computerCreate(Connection conn) {
+	public static Computer computerCreate() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
@@ -99,7 +97,7 @@ public class Main {
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
-		Company company = computerDao.getCompanyById(idCompany,conn);
+		Company company = computerDao.getCompanyById(idCompany);
 		Computer computer = ComputerBuilder.newInstance().setName(name).setIntroducedDate(localDateIntro)
 				.setDiscountedDate(localDateDicounted).setCompany(company).build();
 		return computer;
@@ -128,7 +126,7 @@ public class Main {
 		System.out.println("Please give the id of company :");
 		int idCompany = scn.nextInt();
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
-		Company company = computerDao.getCompanyById(idCompany,conn);
+		Company company = computerDao.getCompanyById(idCompany);
 		Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(name)
 				.setIntroducedDate(localDateIntro).setDiscountedDate(localDateDicounted).setCompany(company).build();
 		return computer;
@@ -139,7 +137,7 @@ public class Main {
 		int pageNumber = sc.nextInt();
 		List<Computer> computers = null;
 		
-			computers = computerServiceImpl.getComputersByPage(pageNumber,conn,50);
+			computers = computerServiceImpl.getComputersByPage(pageNumber,50);
 
 		return computers;
 	}
@@ -161,7 +159,7 @@ public class Main {
 	}
 	public static void manageCreate(Computer computer, Connection conn) {
 		try {
-			computerServiceImpl.createComputer(computer,conn);
+			computerServiceImpl.createComputer(computer);
 
 		} catch (DatesNotValidException e) {
 			System.out.println(e.getMessage());
@@ -173,7 +171,7 @@ public class Main {
 	}
 	public static void manageUpdate(Computer computer,Connection conn) {
 		try {
-			computerServiceImpl.updateComputer(computer,conn);
+			computerServiceImpl.updateComputer(computer);
 		} catch (DatesNotValidException e) {
 			System.out.println(e.getMessage());
 		} catch (NotFoundCompanyException e) {
@@ -182,28 +180,24 @@ public class Main {
 			System.out.println(e.getMessage());
 		}
 	}
-	public static List<Computer> manageAllComputers(Connection conn) {
+	public static List<Computer> manageAllComputers() {
 		List<Computer> computers = null;
-		computers = computerServiceImpl.getAllComputers(conn);
+		computers = computerServiceImpl.getAllComputers();
 		return computers;
 	}
-	public static List<Company> manageAllCompanies(Connection conn) {
+	public static List<Company> manageAllCompanies() {
 		List<Company> computers = null;
-		computers = computerServiceImpl.getAllCompanies(conn);
+		computers = computerServiceImpl.getAllCompanies();
 		return computers;
 	}
-	public static Computer manageDetails(int id,Connection conn) {
+	public static Computer manageDetails(int id) {
 		Computer computer = null;
-			computer = computerDAO.getComputerDetails(id,conn);
+			computer = computerDAO.getComputerDetails(id);
 		return computer;
 	}
-	public static void manageDelete(int idComputer, Connection conn) {
-		try {
-			computerServiceImpl.deleteComputer(idComputer,conn);
-		} catch (ComputerToDeleteNotFound e) {
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+	public static void manageDelete(int idComputer) {
+		
+			computerServiceImpl.deleteComputer(idComputer);
+		
 	}
 }
