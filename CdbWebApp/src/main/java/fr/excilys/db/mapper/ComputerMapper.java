@@ -1,8 +1,6 @@
 
 package fr.excilys.db.mapper;
-
 import java.time.LocalDate;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,7 +10,6 @@ import fr.excilys.db.daoImp.*;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.ComputerBuilder;
-
 public class ComputerMapper {
 	
 		private static ComputerMapper computerMapper;

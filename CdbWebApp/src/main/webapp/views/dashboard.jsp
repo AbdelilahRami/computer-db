@@ -17,7 +17,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
+			<a class="navbar-brand" href="computerServlet"> Application -
 				Computer Database </a>
 		</div>
 	</header>
@@ -30,12 +30,23 @@
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="#" method="GET" class="form-inline">
+					<form id="searchForm" action="computerServlet" method="GET"
+						class="form-inline">
 
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
+							value="${search}" class="form-control" placeholder="Search name" />
+						<input type="submit" id="searchsubmit" value="Filter by name"
 							class="btn btn-primary" />
+					</form>
+					</div>
+					<div>
+					<form action="computerServlet" method="GET" class="form-inline">	
+					<label for="exampleFormControlSelect1"></label> <select style="width: 200px;" name="ordre"
+                            class="form-control" id="exampleFormControlSelect1">
+                            <option value="DESC">Ordre décroissant</option>
+                            <option value="ASC">Ordre croisant</option>
+                        </select>
+                        <input type="submit" id="sortSubmit" value="Sort computers" class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
@@ -47,8 +58,8 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
-			<input type="hidden" name="selection" value="">
+		<form id="deleteForm" action="" method="POST">
+			<input type="hidden" name="selection" value="${computer.id}">
 		</form>
 
 		<div class="container" style="margin-top: 10px;">
@@ -71,7 +82,6 @@
 						<th>Discontinued date</th>
 						<!-- Table header for Company -->
 						<th>Company</th>
-
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
@@ -79,9 +89,9 @@
 					<c:forEach var="item" items="${computers}">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="${item.id} }"></td>
-							<td><a href="servletEditing?id=${item.id}" onclick=""> ${item.name}</a>
-							</td>
+								class="cb" value="${item.id}"></td>
+							<td><a href="servletEditing?id=${item.id}" onclick="">
+									${item.name}</a></td>
 							<td>${item.localDateIntroduction}</td>
 							<td>${item.localDateDiscontinued}</td>
 							<td>${item.idCompany}</td>
@@ -99,16 +109,15 @@
 				<%--For displaying Previous link except for the 1st page --%>
 				<c:if test="${beginPage!=1 && (endPage-beginPage+1) lt 5}">
 					<li><a aria-label="Previous"
-						href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage}&size=${size}"><span
+						href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage}&size=${size}&search=${search}&ordre=${order}"><span
 							aria-hidden="true">&laquo;</span></a></li>
 				</c:if>
-				
- 				<c:if test="${beginPage!=1 && (endPage-beginPage+1) ge 5}">
- 					<li class="page-item"><a aria-label="Previous" 
- 							href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage-1}&size=${size}"><span 
-								aria-hidden="true">&laquo;</span></a></li>
- 				</c:if> 
-				
+				<c:if test="${beginPage!=1 && (endPage-beginPage+1) ge 5}">
+					<li class="page-item"><a aria-label="Previous"
+						href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage-1}&size=${size}&search=${search}&ordre=${order}"><span
+							aria-hidden="true">&laquo;</span></a></li>
+				</c:if>
+
 				<c:forEach begin="${beginPage}" end="${endPage}" var="i">
 					<c:choose>
 						<c:when test="${beginPage eq i}">
@@ -118,13 +127,14 @@
 						</c:when>
 						<c:otherwise>
 							<c:choose>
-								<c:when test="${(endPage-beginPage+i) lt numberOfPages}">
+								<c:when
+									test="${(endPage-beginPage+i) lt numberOfPages}&search=${search}&ordre=${order}">
 									<li class="page-item"><a class="page-link"
-										href="computerServlet?beginPage=${i}&size=${size}&endPage=${i+(endPage-beginPage)}">${i}</a></li>
+										href="computerServlet?beginPage=${i}&size=${size}&endPage=${i+(endPage-beginPage)}&search=${search}&ordre=${order}">${i}</a></li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item"><a class="page-link"
-										href="computerServlet?beginPage=${i}&size=${size}&endPage=${endPage}">${i}</a></li>
+										href="computerServlet?beginPage=${i}&size=${size}&endPage=${endPage}&search=${search}&ordre=${order}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:otherwise>
@@ -132,20 +142,19 @@
 				</c:forEach>
 				<c:if test="${endPage lt numberOfPages}">
 					<li class="page-item"><a aria-label="Next"
-							href="computerServlet?beginPage=${beginPage +1}&endPage=${endPage + 1}&size=${size}"><span
-								aria-hidden="true">&raquo;</span></a></li>
+						href="computerServlet?beginPage=${beginPage +1}&endPage=${endPage + 1}&search=${search}&size=${size}&ordre=${order}"><span
+							aria-hidden="true">&raquo;</span></a></li>
 				</c:if>
 			</ul>
-
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<a
-					href="computerServlet?beginPage=${1}&endPage=${5}&size=${10}">
+					href="computerServlet?beginPage=${1}&endPage=${5}&size=${10}&search=${search}&ordre=${order}">
 					<button type="button" class="btn btn-default">10</button>
 				</a> <a class="page-link"
-					href="computerServlet?beginPage=${1}&endPage=${5}&size=${50}">
+					href="computerServlet?beginPage=${1}&endPage=${5}&size=${50}&search=${search}&ordre=${order}">
 					<button type="button" class="btn btn-default">50</button>
 				</a> <a
-					href="computerServlet?beginPage=${1}&endPage=${5}&size=${100}">
+					href="computerServlet?beginPage=${1}&endPage=${5}&size=${100}&search=${search}&ordre=${order}">
 					<button type="button" class="btn btn-default">100</button>
 				</a>
 			</div>

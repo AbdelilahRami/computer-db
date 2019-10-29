@@ -1,14 +1,8 @@
 package fr.excilys.db.validators;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-
 import fr.excilys.db.mapper.DatesConversion;
-/**
- * @author Rami Abdelilah.
- *
- */
 public class LocalDateValidator {
 	/**
 	 * Validate the introduction date of computer.

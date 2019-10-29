@@ -20,6 +20,12 @@
 		<description></description>
 		<servlet-class>fr.excilys.db.servlet.ServletPagination</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ServletByName</servlet-name>
+		<display-name>ServletByName</display-name>
+		<description></description>
+		<servlet-class>fr.excilys.db.servlet.ServletByName</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>ServletAddingComputer</servlet-name>
 		<url-pattern>/ServletAddingComputer</url-pattern>
@@ -31,4 +37,8 @@
 	<servlet-mapping>
 		<servlet-name>ServletPagination</servlet-name>
 		<url-pattern>/ServletPagination</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletByName</servlet-name>
+		<url-pattern>/ServletByName</url-pattern>
 	</servlet-mapping></web-app>

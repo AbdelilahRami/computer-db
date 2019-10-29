@@ -6,12 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 import fr.excilys.db.connection.ComputerDBConnection;
 import fr.excilys.db.daoImp.ComputerDaoImpl;
-import fr.excilys.db.exception.ComputerToDeleteNotFound;
 import fr.excilys.db.exception.DatesNotValidException;
-import fr.excilys.db.exception.NoCompanyFound;
-import fr.excilys.db.exception.NoComputerFound;
 import fr.excilys.db.exception.NotFoundCompanyException;
-import fr.excilys.db.exception.PageNotFoundException;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.ComputerBuilder;
@@ -28,19 +24,16 @@ public class Main {
 		Label: while (true) {
 			switch (value) {
 			case 1:	
-				Connection conn1=ComputerDBConnection.getInstance().getConnection();
 				List<Computer> computers = manageAllComputers();
 				computers.forEach((c) -> System.out.println(c));
 				value = showTheMenu();
 				break;
 			case 2:
-				Connection conn2=ComputerDBConnection.getInstance().getConnection();
 				List<Company> companies = manageAllCompanies();
 				companies.forEach((cp)->System.out.println(cp));
 				value = showTheMenu();
 				break;
 			case 3:
-				Connection conn3=ComputerDBConnection.getInstance().getConnection();
 				Computer computer = computerCreate();
 				manageCreate(computer,conn);
 				value = showTheMenu();
@@ -48,7 +41,6 @@ public class Main {
 			case 4:
 				System.out.println("Your are about to get computer details :");
 				int idComputer = getIdOfComputer();
-				Connection conn4=ComputerDBConnection.getInstance().getConnection();
 				Computer myComputer = manageDetails(idComputer);
 				System.out.println(myComputer.getId()+" "+myComputer.getName()+" "+myComputer.getIntroducedDate()+" "+myComputer.getDiscountedDate()+" "+myComputer.getCompany().getId());
 				value = showTheMenu();
@@ -63,24 +55,34 @@ public class Main {
 			case 6:
 				System.out.println("Your are in the delete part :");
 				int idCom = getComputerToDelet();
-				Connection conn6=ComputerDBConnection.getInstance().getConnection();
 				manageDelete(idCom);
 				value = showTheMenu();
 				break;
 			case 7:
 				System.out.println("Pagination part :");
-				Connection conn7=ComputerDBConnection.getInstance().getConnection();
 				List<Computer> myComputers = computersByPage(conn);
 				myComputers.forEach((cp) -> System.out.println(cp.toString()));
 				value = showTheMenu();
 				break;
-			case 8:
+			case 8 :
+				System.out.println("Delete company :");
+				deleteCompany();
+				value = showTheMenu();
+				break;
+			case 9:
 				System.out.print("Quit");
 				System.out.flush();
 				System.out.println("Thank you for using our Application.");
 				break Label;
 			}
 		}
+	}
+	private static void deleteCompany() {
+		System.out.println("Choose a company id:");
+		Scanner sc = new Scanner(System.in);
+		int idCompany = sc.nextInt();
+		computerServiceImpl.deleteCompany(idCompany);
+		
 	}
 	public static int getOperationNumber() {
 		System.out.println("Choose a number :");
@@ -153,7 +155,8 @@ public class Main {
 		System.out.println("5-Update a given computer :");
 		System.out.println("6-Delete a given computer :");
 		System.out.println("7-Pagination functionalities :");
-		System.out.println("8-Quit :");
+		System.out.println("8-Delete company :");
+		System.out.println("9-Quit :");
 		value = getOperationNumber();
 		return value;
 	}

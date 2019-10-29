@@ -1,6 +1,5 @@
 package fr.excilys.db.servlet;
 import java.io.IOException;
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -8,12 +7,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import fr.excilys.db.connection.ComputerDBConnection;
 import fr.excilys.db.daoImp.ComputerDaoImpl;
 import fr.excilys.db.dto.CompanyMapper;
 import fr.excilys.db.dto.ComputerBuilder;
 import fr.excilys.db.dto.ComputerMapper;
-import fr.excilys.db.dto.DtoConnection;
 import fr.excilys.db.mapper.DatesConversion;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
@@ -31,12 +28,10 @@ public class ServletAddingComputer extends HttpServlet {
     public ServletAddingComputer() {
         super();
     }
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = ComputerDBConnection.getInstance().getConnection();
 		List<Company> companies=ComputerServiceImpl.getInstance().getAllCompanies();
 		List<fr.excilys.db.dto.Company> companiesDto=CompanyMapper.fromListObjectsToListString(companies);
 		request.setAttribute("companies", companiesDto);
@@ -47,13 +42,12 @@ public class ServletAddingComputer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = ComputerDBConnection.getInstance().getConnection();
 		Company company=null;
 		String name = request.getParameter("computerName");
 		String introducedDate=request.getParameter("introduced");
 		String discontinuedDate=request.getParameter("discontinued");
 		fr.excilys.db.dto.Computer dtoComputer=ComputerBuilder.newInstance().setName(name).setLocalDateIntro(introducedDate).setLocaldateDiscontinued(discontinuedDate).build();
-		boolean inputIsValid=this.valideInputs(dtoComputer);
+		boolean inputIsValid=ServletAddingComputer.valideInputs(dtoComputer);
 		if(inputIsValid) {
 			if(!request.getParameter("companyName").equals("")) {
 				int idCompany=Integer.parseInt(request.getParameter("companyName"));

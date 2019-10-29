@@ -1,12 +1,10 @@
 //On load
 $(function() {
     // Default: hide edit mode
-    
     // Click on "selectall" box
     $("#selectall").click(function () {
         $('.cb').prop('checked', this.checked);
     });
-
     // Click on a checkbox
     $(".cb").click(function() {
         if ($(".cb").length == $(".cb:checked").length) {
@@ -65,11 +63,8 @@ $(function() {
             $('#deleteForm input[name=selection]').setCheckboxValues('selection','cb');
             $('#deleteForm').submit();
         }
-        
     };
 }( jQuery ));
-
-
 
 //Event handling
 //Onkeydown

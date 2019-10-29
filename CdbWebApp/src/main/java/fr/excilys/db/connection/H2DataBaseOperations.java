@@ -7,7 +7,6 @@ public class H2DataBaseOperations {
 	private static String username ="root";
 	private static String password ="root";
 	private  static Connection connection;
-	
 	public static Connection getConnection(){
 		try {
 			connection=DriverManager.getConnection(url, username, password);

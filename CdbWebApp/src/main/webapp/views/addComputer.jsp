@@ -67,7 +67,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" id="add" class="btn btn-primary">
-							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+							or <a href="computerServlet" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>
@@ -75,7 +75,7 @@
 		</div>
 	</section>
 	<script type="text/javascript">
-$("#introduced").change(function(){console.log("toto"); checkDate()})
+$("#introduced").change(function(){checkDate()})
 $("#discontinued").change(function() {checkDate()})
 function checkDate() {
     if($("#introduced").val()!="" && $("#discontinued").val()!=""){

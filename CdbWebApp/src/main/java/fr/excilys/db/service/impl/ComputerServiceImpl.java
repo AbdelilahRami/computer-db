@@ -61,12 +61,25 @@ public class ComputerServiceImpl implements ComputeService  {
 	@Override
 	public int deleteComputer(int idComputer) {
 		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
-		Computer  computer = computerDao.getComputerDetails(idComputer);
-			int k = computerDao.deleteComputer(idComputer);
+		int k = computerDao.deleteComputer(idComputer);
 		return k;
 	}
 	@Override
 	public boolean datesExisted(LocalDate d1, LocalDate d2) {
 		return ((d1 != null) && (d2 != null));
+	}
+	@Override
+	public List<Computer> getComputersByName(String name ,int limite, int offset) {
+		return ComputerDaoImpl.getInstance().getComputersByName(name,limite,offset);
+	}
+	@Override
+	public int getPagesNumberByName(int pageSize, String name) {
+		int pageNumbers=ComputerDaoImpl.getInstance().getPagesNumberByName(pageSize, name);
+		return pageNumbers;
+	}
+	@Override
+	public int deleteCompany(int id) {
+		return ComputerDaoImpl.getInstance().deleteCompany(id);
+	
 	}
 }
