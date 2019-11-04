@@ -11,6 +11,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import fr.excilys.db.connection.ComputerDBConnection;
 import fr.excilys.db.dao.DaoComputer;
@@ -30,7 +31,7 @@ public class ComputerDaoImpl implements DaoComputer {
 	private static final String GET_ALL_COMPUTERS = "select computer.id, computer.name, computer.introduced, "
 												  + "computer.discontinued, computer.company_id, company.name from computer "
 			+ "left join company on computer.company_id=company.id";
-	private static final String GET_ALL_COMPANIES = "select * from company";
+	private static final String GET_ALL_COMPANIES = "select *company.id, company.name from company";
 	private static final String GET_COMPUTERS_DETAILS = "select computer.id, computer.name, computer.introduced, "
 													  +"computer.discontinued, computer.company_id, company.name from computer "
 													  +"left join company on computer.company_id=company.id where computer.id=?";
@@ -41,9 +42,9 @@ public class ComputerDaoImpl implements DaoComputer {
 													  + " from computer left join company on computer.company_id=company.id LIMIT ?, ?";
 	private static final String GET_COMPANY_BY_ID = "select * from company where id = ?";
 	private static final String GET_COMPUTERS_BY_NAME = "select computer.id, computer.name, computer.introduced,"
-			+ " computer.discontinued,computer.company_id "
-			+ "from computer left join company on computer.company_id=company.id"
-			+ " where computer.name like ? or company.name like ? order by computer.name limit ? offset ?";
+													+ " computer.discontinued,computer.company_id "
+													+ "from computer left join company on computer.company_id=company.id"
+													+ " where computer.name like ? or company.name like ? order by computer.name limit ? offset ?";
 	private static final String GET_NUMBER_OF_COMPUTERS_BY_NAME = "select count(*) as number from computer left  join"
 			+ " company on computer.company_id = company.id " + "where computer.name like ? or company.name like ? ";
 	private static final String DELETE_COMPUTERS_BY_COMPANY = "delete from computer where company_id = ?";
@@ -54,7 +55,9 @@ public class ComputerDaoImpl implements DaoComputer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	private Connection connection;
 	// private boolean testConnection = false;
-
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+	
 	@Autowired
 	ComputerDBConnection computerDbConnection;
 	@Autowired
@@ -64,7 +67,7 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public List<Computer> getAllComputers() {
-		this.connection = computerDbConnection.getConnection();
+		//this.connection = computerDbConnection.getConnection();
 		LOGGER.info("The operations get all computers is running");
 		List<Computer> computers = null;
 		try {
@@ -130,53 +133,29 @@ public class ComputerDaoImpl implements DaoComputer {
 		LOGGER.info("Creation of the computer" + computer.getName() + " is running");
 		int i = 0;
 		try (PreparedStatement pstm = connection.prepareStatement(CREATE_COMPUTER);){
-			pstm.setString(1, computer.getName());
-			pstm.setDate(2, DatesConversion.convertLocalToSql(computer.getIntroducedDate()));
-			pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
-			if (DatesConversion.datesExisted(computer.getDiscountedDate(), computer.getIntroducedDate())
-					&& computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
-				throw new DatesNotValidException("Discounted date must be greater than introduced date");
-			}
-			if (computer.getCompany() == null || computer.getCompany().getName().equals("")) {
-				pstm.setString(4, null);
-			} else {
-				pstm.setInt(4, computer.getCompany().getId());
-			}
-			i = pstm.executeUpdate();
+			i = createIsValid(computer, pstm);
 		} catch (SQLException e) {
-			LOGGER.error("Creation of the computer fails" + e.getMessage());
-		} catch (DatesNotValidException e) {
-			LOGGER.error("Discounted date must be greater than introduced date" + e.getMessage());
-		}  finally {
+			LOGGER.error("Creation of the computer fails");
+		}catch (DatesNotValidException e) {
+			LOGGER.error("Discounted date must be greater than introduced date");
+		} finally {
 			connection = computerDbConnection.closeConnection();
 		}
 		return i;
 	}
-	
+
+		
 	@Override
 	public int updateComputer(Computer computer) {
 		this.connection = computerDbConnection.getConnection();
 		LOGGER.info("Update computer" + computer.getName() + " is runninng");
 		int i = 0;
 		try (PreparedStatement pstm = connection.prepareStatement(UPDATE_COMPUTER);) {
-			pstm.setString(1, computer.getName());
-			pstm.setDate(2, DatesConversion.convertLocalToSql(computer.getIntroducedDate()));
-			pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
-			if (DatesConversion.datesExisted(computer.getDiscountedDate(), computer.getIntroducedDate())
-					&& computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
-				throw new DatesNotValidException("Discounted date must be greater than introduced date");
-			}
-			if (computer.getCompany() == null || computer.getCompany().getName().equals("")) {
-				pstm.setString(4, null);
-			} else {
-				pstm.setInt(4, computer.getCompany().getId());
-			}
-			pstm.setInt(5, computer.getId());
-			i = pstm.executeUpdate();
+			i = updateIsValid(computer, pstm);
 		} catch (SQLException exc) {
-			LOGGER.error("Update cannot succed :" + exc.getMessage());
+			LOGGER.error("Update cannot succed :");
 		} catch (DatesNotValidException e) {
-			LOGGER.error("Update cannot succed :" + e.getMessage());
+			LOGGER.error("Update cannot succed : Date problem");
 		} finally {
 			connection = computerDbConnection.closeConnection();
 		}
@@ -236,7 +215,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			ResultSet rs = pstm.executeQuery();
 			computers = pageMapper.getComputersByPageNumberMapper(rs);
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.error("SQL Error");
 		} catch (PageNotFoundException e) {
 			LOGGER.error("You have exced the max number of pages");
 		}
@@ -362,4 +341,40 @@ public class ComputerDaoImpl implements DaoComputer {
 		}
 		return computers;
 	}
+	private int createIsValid(Computer computer, PreparedStatement pstm) throws SQLException, DatesNotValidException {
+		int i;
+		pstm.setString(1, computer.getName());
+		pstm.setDate(2, DatesConversion.convertLocalToSql(computer.getIntroducedDate()));
+		pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
+		if (DatesConversion.datesExisted(computer.getDiscountedDate(), computer.getIntroducedDate())
+				&& computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
+			throw new DatesNotValidException("Discounted date must be greater than introduced date");
+		}
+		if (computer.getCompany() == null || computer.getCompany().getName().equals("")) {
+			pstm.setString(4, null);
+		} else {
+			pstm.setInt(4, computer.getCompany().getId());
+		}
+		i = pstm.executeUpdate();
+		return i;
+	}
+	private int updateIsValid(Computer computer, PreparedStatement pstm) throws SQLException, DatesNotValidException {
+		int i;
+		pstm.setString(1, computer.getName());
+		pstm.setDate(2, DatesConversion.convertLocalToSql(computer.getIntroducedDate()));
+		pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
+		if (DatesConversion.datesExisted(computer.getDiscountedDate(), computer.getIntroducedDate())
+				&& computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
+			throw new DatesNotValidException("Discounted date must be greater than introduced date");
+		}
+		if (computer.getCompany() == null || computer.getCompany().getName().equals("")) {
+			pstm.setString(4, null);
+		} else {
+			pstm.setInt(4, computer.getCompany().getId());
+		}
+		pstm.setInt(5, computer.getId());
+		i = pstm.executeUpdate();
+		return i;
+	}
+
 }

@@ -22,7 +22,7 @@ public class ComputerDaoTest {
 	public void beforeTestAllComputers() {
 		Company company = computerDaoImpl.getCompanyById(1);
 		realComputer=ComputerBuilder.newInstance().setId(1).
-							setName("HP EliteBook").setIntroducedDate(null).
+							setName("MacBook Pro 15.4 inch").setIntroducedDate(null).
 							setDiscountedDate(null).setCompany(company).build();
 	}
 	@After
@@ -34,6 +34,15 @@ public class ComputerDaoTest {
 		List<Computer> computers=computerDaoImpl.getAllComputers();
 		assertEquals(13, computers.size());
 
+	}
+	@Test
+	public void getComputerDetails() {
+		Computer computer=computerDaoImpl.getComputerDetails(1);
+		assertEquals(computer.getId(), realComputer.getId());
+		assertEquals(computer.getName(), realComputer.getName());
+		assertEquals(computer.getIntroducedDate(), realComputer.getIntroducedDate());
+		assertEquals(computer.getDiscountedDate(), realComputer.getDiscountedDate());
+		assertEquals(computer.getCompany().toString(), realComputer.getCompany().toString());
 	}
 	@Test
 	public void testAddComputer() {

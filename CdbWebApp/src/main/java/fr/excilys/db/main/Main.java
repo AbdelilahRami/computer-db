@@ -3,7 +3,6 @@ import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
-import org.springframework.beans.factory.annotation.Autowired;
 import fr.excilys.db.connection.ComputerDBConnection;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
@@ -12,7 +11,7 @@ import fr.excilys.db.service.impl.*;
 import fr.excilys.db.validators.LocalDateValidator;
 public class Main {
 	static Connection conn;
-	@Autowired
+	
 	static ComputerServiceImpl computerServiceImpl;
 	static int value;
 
