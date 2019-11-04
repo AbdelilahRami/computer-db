@@ -113,8 +113,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		this.connection = computerDbConnection.getConnection();
 		LOGGER.info("The operation get the details of the id=" + id + " is running");
 		Computer computer = null;
-		try{
-			PreparedStatement pst = connection.prepareStatement(GET_COMPUTERS_DETAILS);
+		try (PreparedStatement pst = connection.prepareStatement(GET_COMPUTERS_DETAILS);){	
 			pst.setInt(1, id);
 			ResultSet rs = pst.executeQuery();
 			computer = computerMapper.getComputerDetailsMapper(rs);
@@ -185,8 +184,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			this.connection = computerDbConnection.getConnection();
 		}
 		Company company = null;
-		try {
-			PreparedStatement pst = connection.prepareStatement(GET_COMPANY_BY_ID);
+		try(PreparedStatement pst = connection.prepareStatement(GET_COMPANY_BY_ID);) {
 			pst.setInt(1, idCompany);
 			ResultSet rs = pst.executeQuery();
 			if (rs.next()) {
@@ -204,11 +202,10 @@ public class ComputerDaoImpl implements DaoComputer {
 		this.connection = computerDbConnection.getConnection();
 		LOGGER.info("Pagination is running");
 		List<Computer> computers = new ArrayList<Computer>();
-		try {
+		try (PreparedStatement pstm = this.connection.prepareStatement(GET_COMPUTERS_BY_PAGE);){
 			if (pageId > getNumberOfPages(pageSize)) {
 				throw new PageNotFoundException("You have exced the max number of pages");
 			}
-			PreparedStatement pstm = this.connection.prepareStatement(GET_COMPUTERS_BY_PAGE);
 			Page page = new Page(pageSize);
 			pstm.setInt(1, page.getPageSize() * (pageId - 1));
 			pstm.setInt(2, page.getPageSize());
@@ -264,21 +261,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		return computers;
 	}
 
-	private void mapperByName(List<Computer> computers, ResultSet rs) throws SQLException {
-		while (rs.next()) {
-			int idComputer = rs.getInt("computer.id");
-			String nameComputer = rs.getString("computer.name");
-			Date introducedDate = rs.getDate("computer.introduced");
-			Date discountedDate = rs.getDate("computer.discontinued");
-			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
-			LocalDate discontinued = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
-			int idCompany = rs.getInt("computer.company_id");
-			Company company = getCompanyById(idCompany);
-			Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(nameComputer)
-					.setIntroducedDate(introduced).setDiscountedDate(discontinued).setCompany(company).build();
-			computers.add(computer);
-		}
-	}
+
 
 	@Override
 	public int getPagesNumberByName(int pageSize, String name) {
@@ -341,6 +324,9 @@ public class ComputerDaoImpl implements DaoComputer {
 		}
 		return computers;
 	}
+	
+	
+	
 	private int createIsValid(Computer computer, PreparedStatement pstm) throws SQLException, DatesNotValidException {
 		int i;
 		pstm.setString(1, computer.getName());
@@ -375,6 +361,21 @@ public class ComputerDaoImpl implements DaoComputer {
 		pstm.setInt(5, computer.getId());
 		i = pstm.executeUpdate();
 		return i;
+	}
+	private void mapperByName(List<Computer> computers, ResultSet rs) throws SQLException {
+		while (rs.next()) {
+			int idComputer = rs.getInt("computer.id");
+			String nameComputer = rs.getString("computer.name");
+			Date introducedDate = rs.getDate("computer.introduced");
+			Date discountedDate = rs.getDate("computer.discontinued");
+			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
+			LocalDate discontinued = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
+			int idCompany = rs.getInt("computer.company_id");
+			Company company = getCompanyById(idCompany);
+			Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(nameComputer)
+					.setIntroducedDate(introduced).setDiscountedDate(discontinued).setCompany(company).build();
+			computers.add(computer);
+		}
 	}
 
 }
