@@ -45,13 +45,13 @@
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
-									type="date" class="form-control" name="introduced"
+									type="date" class="form-control" name="introduced" value="${computer.introduced}"
 									id="introduced" placeholder="Introduced date"
 									>
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
-									type="date" class="form-control" name="discontinued"
+									type="date" class="form-control" name="discontinued" value="${computer.discontinued}"
 									id="discontinued" placeholder="Discontinued date">
 							</div>
 							<div id="error" style="display:none; color: red">Discontinued date must be greater than introduced date !</div>

@@ -22,6 +22,7 @@ public class LocalDateValidator {
 			System.out.println(exc.getParsedString() + " Is not a date Could you please retry !");
 		}
 		}
+		scn.close();
 		return localDateIntro;
 	}
 	/**
@@ -42,6 +43,7 @@ public class LocalDateValidator {
 				System.out.println(exc.getParsedString() + " Is not date Could you please retry !");
 			}
 		}
+		scn.close();
 		return localDateDicounted;
 	}
 }

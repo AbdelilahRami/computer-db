@@ -1,24 +1,27 @@
 package fr.excilys.db.service.impl;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import fr.excilys.db.daoImp.ComputerDaoImpl;
-import fr.excilys.db.exception.DatesNotValidException;
-import fr.excilys.db.exception.NotFoundCompanyException;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.service.ComputeService;
+@Service
 public class ComputerServiceImpl implements ComputeService  {
-	private static ComputerDaoImpl computerDaoImpl = ComputerDaoImpl.getInstance();
-	private static ComputerServiceImpl computerServiceImpl;
+	
+	@Autowired
+	private  ComputerDaoImpl computerDaoImpl;
+	
 	private  ComputerServiceImpl() {
 	}
-	public static ComputerServiceImpl getInstance() {
-		if (computerServiceImpl == null) {
-			computerServiceImpl = new ComputerServiceImpl();
-		}
-		return computerServiceImpl;
-	}
+//	public static ComputerServiceImpl getInstance() {
+//		if (computerServiceImpl == null) {
+//			computerServiceImpl = new ComputerServiceImpl();
+//		}
+//		return computerServiceImpl;
+//	}
+	
 	@Override
 	public List<Computer> getAllComputers()  {
 		List<Computer> computers = computerDaoImpl.getAllComputers();
@@ -30,26 +33,12 @@ public class ComputerServiceImpl implements ComputeService  {
 		return companies;
 	}
 	@Override
-	public int updateComputer(Computer computer) throws DatesNotValidException, NotFoundCompanyException, SQLException {
-		LocalDate ds = computer.getDiscountedDate();
-		LocalDate di = computer.getIntroducedDate();
-			if ((datesExisted(ds, di) && computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0)) {
-				throw new DatesNotValidException("Discounted date must be greater than introduced date");
-			} else if (computer.getCompany() == null) {
-				throw new NotFoundCompanyException("The company doesn't exist");
-			}
+	public int updateComputer(Computer computer) {
 			int value = computerDaoImpl.updateComputer(computer);
 				return value;
 	}
 	@Override
-	public int createComputer(Computer computer) throws NotFoundCompanyException, DatesNotValidException, SQLException {
-		LocalDate ds = computer.getDiscountedDate();
-		LocalDate di = computer.getIntroducedDate();
-			if (datesExisted(ds, di) && ds.compareTo(di) <= 0) {
-				throw new DatesNotValidException("Discounted date must be greater than introduced date");
-			} else if (computer.getCompany() == null) {
-				throw new NotFoundCompanyException("The company doesn't exist");
-			}
+	public int createComputer(Computer computer) {
 			int k = computerDaoImpl.createComputer(computer);
 			return k;
 	}
@@ -60,8 +49,7 @@ public class ComputerServiceImpl implements ComputeService  {
 	}
 	@Override
 	public int deleteComputer(int idComputer) {
-		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
-		int k = computerDao.deleteComputer(idComputer);
+		int k = computerDaoImpl.deleteComputer(idComputer);
 		return k;
 	}
 	@Override
@@ -70,16 +58,36 @@ public class ComputerServiceImpl implements ComputeService  {
 	}
 	@Override
 	public List<Computer> getComputersByName(String name ,int limite, int offset) {
-		return ComputerDaoImpl.getInstance().getComputersByName(name,limite,offset);
+		return computerDaoImpl.getComputersByName(name,limite,offset);
 	}
 	@Override
 	public int getPagesNumberByName(int pageSize, String name) {
-		int pageNumbers=ComputerDaoImpl.getInstance().getPagesNumberByName(pageSize, name);
+		int pageNumbers=computerDaoImpl.getPagesNumberByName(pageSize, name);
 		return pageNumbers;
 	}
 	@Override
 	public int deleteCompany(int id) {
-		return ComputerDaoImpl.getInstance().deleteCompany(id);
-	
+		return computerDaoImpl.deleteCompany(id);
+	}
+	@Override
+	public int getNumberOfPages(int pageSize) {
+		return computerDaoImpl.getNumberOfPages(pageSize);
+	}
+	@Override
+	public List<Computer> getComputersByOrder(String order, int sizePage, int numPage) {
+		
+		return computerDaoImpl.getComputersByOrder(order, sizePage, numPage);
+	}
+
+	@Override
+	public Computer getComputerDetails(int id) {
+		
+		return computerDaoImpl.getComputerDetails(id);
+	}
+
+	@Override
+	public Company getCompanyById(int idCompany) {
+		
+		return computerDaoImpl.getCompanyById(idCompany);
 	}
 }

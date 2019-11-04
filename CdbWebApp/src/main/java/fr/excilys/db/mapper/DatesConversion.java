@@ -2,9 +2,11 @@ package fr.excilys.db.mapper;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+@Component
 public class DatesConversion {
 	    public static Date convertLocalToSql(LocalDate locald) {
 	    	if (locald == null){
@@ -23,7 +25,7 @@ public class DatesConversion {
 			   return localDate;
 		   }
 	   }
-	   @SuppressWarnings("null")
+	@SuppressWarnings("null")
 	public static LocalDate fromStringToLocalDate(String s) throws DateTimeParseException {
 		   if (s.equals("")) { return null;
 		   }
@@ -38,5 +40,7 @@ public class DatesConversion {
 				throw new DateTimeParseException("Input is not valid", null, (Integer) null, null);
 			}
 		   }
+	public static boolean datesExisted(LocalDate d1, LocalDate d2) {
+		return ((d1 != null) && (d2 != null));
+	}
 	   }
-	   

@@ -2,12 +2,17 @@ package fr.excilys.db.servlet;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import fr.excilys.db.daoImp.ComputerDaoImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import fr.excilys.db.dto.CompanyMapper;
 import fr.excilys.db.dto.ComputerBuilder;
 import fr.excilys.db.dto.ComputerMapper;
@@ -19,22 +24,38 @@ import fr.excilys.db.service.impl.ComputerServiceImpl;
  * Servlet implementation class ServletAddingComputer
  */
 @WebServlet("/servletAddingComputer")
+@Controller
 public class ServletAddingComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	@Autowired
+	ComputerServiceImpl computerService;
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ServletAddingComputer() {
         super();
     }
+    
+	@Override
+	public void init() throws ServletException {
+		super.init();
+	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Company> companies=ComputerServiceImpl.getInstance().getAllCompanies();
+		int id = Integer.parseInt(request.getParameter("id"));
+		Computer computer=computerService.getComputerDetails(id);
+		List<Company> companies=computerService.getAllCompanies();
 		List<fr.excilys.db.dto.Company> companiesDto=CompanyMapper.fromListObjectsToListString(companies);
 		request.setAttribute("companies", companiesDto);
+		request.setAttribute("computer", computer);
 		request.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 	}
 
@@ -51,11 +72,11 @@ public class ServletAddingComputer extends HttpServlet {
 		if(inputIsValid) {
 			if(!request.getParameter("companyName").equals("")) {
 				int idCompany=Integer.parseInt(request.getParameter("companyName"));
-				company=ComputerDaoImpl.getInstance().getCompanyById(idCompany);
+				company=computerService.getCompanyById(idCompany);
 			}
 			Computer computer=ComputerMapper.fromStringToObject(dtoComputer);
 			computer.setCompany(company);
-			ComputerDaoImpl.getInstance().createComputer(computer);
+			computerService.createComputer(computer);
 			request.setAttribute("sucess", true);
 			request.setAttribute("message", "Success your computer has benn added");
 			request.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
@@ -67,7 +88,6 @@ public class ServletAddingComputer extends HttpServlet {
 	}
 	private static boolean valideInputs(fr.excilys.db.dto.Computer computer) {
 		boolean inputValid=false;
-		ComputerServiceImpl computerService=ComputerServiceImpl.getInstance();
 		String computerName=computer.getName();
 		if(computerName.isEmpty()) {
 			return inputValid;
@@ -75,10 +95,10 @@ public class ServletAddingComputer extends HttpServlet {
 		LocalDate lci=DatesConversion.fromStringToLocalDate(computer.getLocalDateIntroduction());
 		LocalDate lcd=DatesConversion.fromStringToLocalDate(computer.getLocalDateDiscontinued());
 		if((lci ==null || (lci instanceof LocalDate)) &&(lcd ==null ||lcd instanceof LocalDate)) {		
-			if(computerService.datesExisted(lci, lcd) && lcd.compareTo(lci)<0) {
+			if(DatesConversion.datesExisted(lci, lcd) && lcd.compareTo(lci)<0) {
 				return inputValid;
 			}
-			else if((computerService.datesExisted(lci, lcd) && lcd.compareTo(lci)>0) ||!computerService.datesExisted(lci, lcd)) {
+			else if((DatesConversion.datesExisted(lci, lcd) && lcd.compareTo(lci)>0) ||!DatesConversion.datesExisted(lci, lcd)) {
 				return !inputValid;
 			}
 		}

@@ -5,14 +5,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import fr.excilys.db.daoImp.ComputerDaoImpl;
+import org.springframework.stereotype.Component;
 import fr.excilys.db.model.Company;
+import fr.excilys.db.model.CompanyBuilder;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.ComputerBuilder;
-
+@Component
 public class PageMappper {
-	public static List<Computer> getComputersByPageNumberMapper(ResultSet rs) throws SQLException {
-		ComputerDaoImpl computerDaoImpl = ComputerDaoImpl.getInstance();
+	
+	public List<Computer> getComputersByPageNumberMapper(ResultSet rs) throws SQLException {
 		List<Computer> computers = new ArrayList<Computer>();
 		Computer computer;
 		while (rs.next()) {
@@ -22,8 +23,10 @@ public class PageMappper {
 			Date discountedDate = rs.getDate("discontinued");
 			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
 			LocalDate discontinued = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
-			int idCompany = rs.getInt("company_id");
-			Company company = computerDaoImpl.getCompanyById(idCompany);
+			int idCompany = rs.getInt("computer.company_id");
+			String companyName=rs.getString("company.name");
+			
+			Company company = CompanyBuilder.newInstance().setIdCompany(idCompany).setNameCompany(companyName).build();
 			computer = ComputerBuilder.newInstance().setId(idComputer).setName(name)
 					.setIntroducedDate(introduced).setDiscountedDate(discontinued).setCompany(company).build();
 			computers.add(computer);

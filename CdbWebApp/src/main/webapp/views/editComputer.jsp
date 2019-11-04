@@ -38,11 +38,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" name="introduced" value="${computer.localDateIntroduction}" id="introduced" placeholder="Introduced date">
+                                <input type="date" class="form-control" name="introduced" value="${computer.introducedDate}" id="introduced" placeholder="Introduced date">
                             </div>
                             <div class="form-group">
-                                <label for="discontinued">Discontinued date</label>${computer.localDateDiscontinued}
-                                <input type="date" class="form-control" name="discontinued"  value='<c:out value="${computer.localDateDiscontinued}"/>' id="discontinued" placeholder="Discontinued date">
+                                <label for="discontinued">Discontinued date</label>
+                                <input type="date" class="form-control" name="discontinued"  value='<c:out value="${computer.discountedDate}"/>' id="discontinued" placeholder="Discontinued date">
                             </div>
                             <span id="error" style="display: none; color: red">Discontinued date must be greater than introduced date !</span>
                             <div class="form-group">

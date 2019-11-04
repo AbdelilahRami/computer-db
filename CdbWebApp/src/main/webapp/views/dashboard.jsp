@@ -43,6 +43,7 @@
 					<form action="computerServlet" method="GET" class="form-inline">	
 					<label for="exampleFormControlSelect1"></label> <select style="width: 200px;" name="ordre"
                             class="form-control" id="exampleFormControlSelect1">
+                            <option value="" disabled selected="selected">Sort</option>
                             <option value="DESC">Ordre décroissant</option>
                             <option value="ASC">Ordre croisant</option>
                         </select>

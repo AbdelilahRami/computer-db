@@ -1,44 +1,8 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
-<web-app>
-	<servlet>
-		<servlet-name>ServletAddingComputer</servlet-name>
-		<display-name>ServletAddingComputer</display-name>
-		<description></description>
-		<servlet-class>fr.excilys.db.servlet.ServletAddingComputer</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>ServletEditing</servlet-name>
-		<display-name>ServletEditing</display-name>
-		<description></description>
-		<servlet-class>fr.excilys.db.servlet.ServletEditing</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>ServletPagination</servlet-name>
-		<display-name>ServletPagination</display-name>
-		<description></description>
-		<servlet-class>fr.excilys.db.servlet.ServletPagination</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>ServletByName</servlet-name>
-		<display-name>ServletByName</display-name>
-		<description></description>
-		<servlet-class>fr.excilys.db.servlet.ServletByName</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ServletAddingComputer</servlet-name>
-		<url-pattern>/ServletAddingComputer</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>ServletEditing</servlet-name>
-		<url-pattern>/ServletEditing</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>ServletPagination</servlet-name>
-		<url-pattern>/ServletPagination</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>ServletByName</servlet-name>
-		<url-pattern>/ServletByName</url-pattern>
-	</servlet-mapping></web-app>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+    version="3.1">
+
+</web-app>

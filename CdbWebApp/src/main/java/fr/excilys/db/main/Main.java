@@ -1,13 +1,10 @@
 package fr.excilys.db.main;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+import org.springframework.beans.factory.annotation.Autowired;
 import fr.excilys.db.connection.ComputerDBConnection;
-import fr.excilys.db.daoImp.ComputerDaoImpl;
-import fr.excilys.db.exception.DatesNotValidException;
-import fr.excilys.db.exception.NotFoundCompanyException;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.ComputerBuilder;
@@ -15,8 +12,8 @@ import fr.excilys.db.service.impl.*;
 import fr.excilys.db.validators.LocalDateValidator;
 public class Main {
 	static Connection conn;
-	static ComputerDaoImpl computerDAO = ComputerDaoImpl.getInstance();
-	static ComputerServiceImpl computerServiceImpl = ComputerServiceImpl.getInstance();
+	@Autowired
+	static ComputerServiceImpl computerServiceImpl;
 	static int value;
 
 	public static void main(String[] args) throws ClassNotFoundException {
@@ -47,7 +44,7 @@ public class Main {
 				break;
 			case 5:
 				System.out.println("Your are in the update part :");
-				Connection conn5=ComputerDBConnection.getInstance().getConnection();
+				Connection conn5=ComputerDBConnection.getConnection();
 				Computer updatComputer = getComputerToUpdate(conn5);
 				manageUpdate(updatComputer,conn5);
 				value = showTheMenu();
@@ -98,8 +95,7 @@ public class Main {
 		LocalDate localDateDicounted=LocalDateValidator.inputIsValidForDiscontinued();
 		System.out.println("Please give the id of company :");
 		int idCompany = sc.nextInt();
-		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
-		Company company = computerDao.getCompanyById(idCompany);
+		Company company = computerServiceImpl.getCompanyById(idCompany);
 		Computer computer = ComputerBuilder.newInstance().setName(name).setIntroducedDate(localDateIntro)
 				.setDiscountedDate(localDateDicounted).setCompany(company).build();
 		return computer;
@@ -127,8 +123,7 @@ public class Main {
 		LocalDate localDateDicounted=LocalDateValidator.inputIsValidForDiscontinued();
 		System.out.println("Please give the id of company :");
 		int idCompany = scn.nextInt();
-		ComputerDaoImpl computerDao = ComputerDaoImpl.getInstance();
-		Company company = computerDao.getCompanyById(idCompany);
+		Company company = computerServiceImpl.getCompanyById(idCompany);
 		Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(name)
 				.setIntroducedDate(localDateIntro).setDiscountedDate(localDateDicounted).setCompany(company).build();
 		return computer;
@@ -161,27 +156,12 @@ public class Main {
 		return value;
 	}
 	public static void manageCreate(Computer computer, Connection conn) {
-		try {
 			computerServiceImpl.createComputer(computer);
-
-		} catch (DatesNotValidException e) {
-			System.out.println(e.getMessage());
-		} catch (NotFoundCompanyException e) {
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
 	}
 	public static void manageUpdate(Computer computer,Connection conn) {
-		try {
+		
 			computerServiceImpl.updateComputer(computer);
-		} catch (DatesNotValidException e) {
-			System.out.println(e.getMessage());
-		} catch (NotFoundCompanyException e) {
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+		
 	}
 	public static List<Computer> manageAllComputers() {
 		List<Computer> computers = null;
@@ -189,13 +169,13 @@ public class Main {
 		return computers;
 	}
 	public static List<Company> manageAllCompanies() {
-		List<Company> computers = null;
-		computers = computerServiceImpl.getAllCompanies();
-		return computers;
+		List<Company> companies = null;
+		companies = computerServiceImpl.getAllCompanies();
+		return companies;
 	}
 	public static Computer manageDetails(int id) {
 		Computer computer = null;
-			computer = computerDAO.getComputerDetails(id);
+			computer = computerServiceImpl.getComputerDetails(id);
 		return computer;
 	}
 	public static void manageDelete(int idComputer) {
