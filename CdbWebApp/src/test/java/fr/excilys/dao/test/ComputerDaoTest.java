@@ -46,14 +46,14 @@ public class ComputerDaoTest {
 	@Test
 	public void testUpdateComputer() {
 		int i=computerDaoImpl.updateComputer(realComputer);
-		assertEquals(i, 1);	
+		assertEquals(1, i);	
 	}
 
-//	@Test
-//	public void deleteTest() {
-//		int i=computerDaoImpl.deleteComputer(10);
-//		assertEquals(1, i);	
-//	}
+	@Test
+	public void deleteTest() {
+		int i=computerDaoImpl.deleteComputer(10);
+		assertEquals(1, i);	
+	}
 	
 	
 }
