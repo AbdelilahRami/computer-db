@@ -29,22 +29,22 @@ import fr.excilys.db.model.Page;
 @Repository
 public class ComputerDaoImpl implements DaoComputer {
 	private static final String GET_ALL_COMPUTERS = "select computer.id, computer.name, computer.introduced, "
-												  + "computer.discontinued, computer.company_id, company.name from computer "
+			+ "computer.discontinued, computer.company_id, company.name from computer "
 			+ "left join company on computer.company_id=company.id";
 	private static final String GET_ALL_COMPANIES = "select *company.id, company.name from company";
 	private static final String GET_COMPUTERS_DETAILS = "select computer.id, computer.name, computer.introduced, "
-													  +"computer.discontinued, computer.company_id, company.name from computer "
-													  +"left join company on computer.company_id=company.id where computer.id=?";
+			+"computer.discontinued, computer.company_id, company.name from computer "
+			+"left join company on computer.company_id=company.id where computer.id=?";
 	private static final String CREATE_COMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private static final String UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 	private static final String DELETE_COMPUTER = "delete from computer where id = ?";
 	private static final String GET_COMPUTERS_BY_PAGE = "select computer.id, computer.name, computer.introduced, computer.discontinued, company.name, computer.company_id"
-													  + " from computer left join company on computer.company_id=company.id LIMIT ?, ?";
+			+ " from computer left join company on computer.company_id=company.id LIMIT ?, ?";
 	private static final String GET_COMPANY_BY_ID = "select * from company where id = ?";
 	private static final String GET_COMPUTERS_BY_NAME = "select computer.id, computer.name, computer.introduced,"
-													+ " computer.discontinued,computer.company_id "
-													+ "from computer left join company on computer.company_id=company.id"
-													+ " where computer.name like ? or company.name like ? order by computer.name limit ? offset ?";
+			+ " computer.discontinued,computer.company_id "
+			+ "from computer left join company on computer.company_id=company.id"
+			+ " where computer.name like ? or company.name like ? order by computer.name limit ? offset ?";
 	private static final String GET_NUMBER_OF_COMPUTERS_BY_NAME = "select count(*) as number from computer left  join"
 			+ " company on computer.company_id = company.id " + "where computer.name like ? or company.name like ? ";
 	private static final String DELETE_COMPUTERS_BY_COMPANY = "delete from computer where company_id = ?";
