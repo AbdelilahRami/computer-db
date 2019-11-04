@@ -64,7 +64,6 @@ public class ComputerDaoImpl implements DaoComputer {
 			ResultSet rs = stm.executeQuery(GET_ALL_COMPANIES);
 			companies = ComputerMapper.getInstance().getAllCompaniesMapper(rs);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			this.conn = ComputerDBConnection.closeConnection();
@@ -136,7 +135,6 @@ public class ComputerDaoImpl implements DaoComputer {
 			pstm.setInt(1, id);
 			value = pstm.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			this.conn = ComputerDBConnection.closeConnection();

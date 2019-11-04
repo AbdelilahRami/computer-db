@@ -17,7 +17,6 @@ import fr.excilys.db.dao.DaoComputer;
 import fr.excilys.db.exception.DatesNotValidException;
 import fr.excilys.db.exception.NoCompanyFound;
 import fr.excilys.db.exception.NoComputerFound;
-import fr.excilys.db.exception.NotFoundCompanyException;
 import fr.excilys.db.exception.PageNotFoundException;
 import fr.excilys.db.mapper.ComputerMapper;
 import fr.excilys.db.mapper.DatesConversion;
@@ -137,9 +136,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			if (DatesConversion.datesExisted(computer.getDiscountedDate(), computer.getIntroducedDate())
 					&& computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
 				throw new DatesNotValidException("Discounted date must be greater than introduced date");
-			} else if (computer.getCompany() == null) {
-				throw new NotFoundCompanyException("The company doesn't exist");
-			}
+			} else if (computer.getCompany() == null) 
 			if (computer.getCompany() == null || computer.getCompany().getName().equals("")) {
 				pstm.setString(4, null);
 			} else {
@@ -149,10 +146,8 @@ public class ComputerDaoImpl implements DaoComputer {
 		} catch (SQLException e) {
 			LOGGER.error("Creation of the computer fails" + e.getMessage());
 		} catch (DatesNotValidException e) {
-			e.printStackTrace();
-		} catch (NotFoundCompanyException e) {
-			e.printStackTrace();
-		} finally {
+			LOGGER.error("Discounted date must be greater than introduced date" + e.getMessage());
+		}  finally {
 			connection = computerDbConnection.closeConnection();
 		}
 		return i;
@@ -170,8 +165,6 @@ public class ComputerDaoImpl implements DaoComputer {
 			if (DatesConversion.datesExisted(computer.getDiscountedDate(), computer.getIntroducedDate())
 					&& computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
 				throw new DatesNotValidException("Discounted date must be greater than introduced date");
-			} else if (computer.getCompany() == null) {
-				throw new NotFoundCompanyException("The company doesn't exist");
 			}
 			if (computer.getCompany() == null || computer.getCompany().getName().equals("")) {
 				pstm.setString(4, null);
@@ -184,8 +177,6 @@ public class ComputerDaoImpl implements DaoComputer {
 			LOGGER.error("Update cannot succed :" + exc.getMessage());
 		} catch (DatesNotValidException e) {
 			LOGGER.error("Update cannot succed :" + e.getMessage());
-		} catch (NotFoundCompanyException e) {
-			LOGGER.error("Company not found !" + e.getMessage());
 		} finally {
 			connection = computerDbConnection.closeConnection();
 		}
@@ -285,25 +276,29 @@ public class ComputerDaoImpl implements DaoComputer {
 			pstm.setInt(3, size);
 			pstm.setInt(4, offset);
 			ResultSet rs = pstm.executeQuery();
-			while (rs.next()) {
-				int idComputer = rs.getInt("computer.id");
-				String nameComputer = rs.getString("computer.name");
-				Date introducedDate = rs.getDate("computer.introduced");
-				Date discountedDate = rs.getDate("computer.discontinued");
-				LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
-				LocalDate discontinued = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
-				int idCompany = rs.getInt("computer.company_id");
-				Company company = getCompanyById(idCompany);
-				Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(nameComputer)
-						.setIntroducedDate(introduced).setDiscountedDate(discontinued).setCompany(company).build();
-				computers.add(computer);
-			}
+			mapperByName(computers, rs);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
 			connection = computerDbConnection.closeConnection();
 		}
 		return computers;
+	}
+
+	private void mapperByName(List<Computer> computers, ResultSet rs) throws SQLException {
+		while (rs.next()) {
+			int idComputer = rs.getInt("computer.id");
+			String nameComputer = rs.getString("computer.name");
+			Date introducedDate = rs.getDate("computer.introduced");
+			Date discountedDate = rs.getDate("computer.discontinued");
+			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
+			LocalDate discontinued = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
+			int idCompany = rs.getInt("computer.company_id");
+			Company company = getCompanyById(idCompany);
+			Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(nameComputer)
+					.setIntroducedDate(introduced).setDiscountedDate(discontinued).setCompany(company).build();
+			computers.add(computer);
+		}
 	}
 
 	@Override
@@ -359,19 +354,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			pstm.setInt(1, sizePage);
 			pstm.setInt(2, offset);
 			ResultSet rs = pstm.executeQuery();
-			while (rs.next()) {
-				int idComputer = rs.getInt("computer.id");
-				String nameComputer = rs.getString("computer.name");
-				Date introducedDate = rs.getDate("computer.introduced");
-				Date discountedDate = rs.getDate("computer.discontinued");
-				LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
-				LocalDate discontinued = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
-				int idCompany = rs.getInt("computer.company_id");
-				Company company = getCompanyById(idCompany);
-				Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(nameComputer)
-						.setIntroducedDate(introduced).setDiscountedDate(discontinued).setCompany(company).build();
-				computers.add(computer);
-			}
+			mapperByName(computers, rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -44,7 +44,7 @@ public class Main {
 				break;
 			case 5:
 				System.out.println("Your are in the update part :");
-				Connection conn5=ComputerDBConnection.getConnection();
+				Connection conn5= new ComputerDBConnection().getConnection();
 				Computer updatComputer = getComputerToUpdate(conn5);
 				manageUpdate(updatComputer,conn5);
 				value = showTheMenu();
