@@ -50,12 +50,12 @@ public class ServletAddingComputer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		Computer computer=computerService.getComputerDetails(id);
+		//int id = Integer.parseInt(request.getParameter("id"));
+		//Computer computer=computerService.getComputerDetails(id);
 		List<Company> companies=computerService.getAllCompanies();
 		List<fr.excilys.db.dto.Company> companiesDto=CompanyMapper.fromListObjectsToListString(companies);
 		request.setAttribute("companies", companiesDto);
-		request.setAttribute("computer", computer);
+		//request.setAttribute("computer", computer);
 		request.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 	}
 
@@ -70,8 +70,8 @@ public class ServletAddingComputer extends HttpServlet {
 		fr.excilys.db.dto.Computer dtoComputer=ComputerBuilder.newInstance().setName(name).setLocalDateIntro(introducedDate).setLocaldateDiscontinued(discontinuedDate).build();
 		boolean inputIsValid=ServletAddingComputer.valideInputs(dtoComputer);
 		if(inputIsValid) {
-			if(!request.getParameter("companyName").equals("")) {
-				int idCompany=Integer.parseInt(request.getParameter("companyName"));
+			if(!request.getParameter("companyId").equals("")) {
+				int idCompany=Integer.parseInt(request.getParameter("companyId"));
 				company=computerService.getCompanyById(idCompany);
 			}
 			Computer computer=ComputerMapper.fromStringToObject(dtoComputer);

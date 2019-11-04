@@ -27,12 +27,6 @@ public class ComputerDBConnection {
 		return connection;
 	}
 
-//	public static ComputerDBConnection getInstance() {
-//		if (computerDb == null) {
-//			computerDb = new ComputerDBConnection();
-//		}
-//		return computerDb;
-//	}
 	public  Connection closeConnection() {
 		if (connection != null) {
 			try {

@@ -136,7 +136,7 @@ public class ComputerDaoImpl implements DaoComputer {
 			if (DatesConversion.datesExisted(computer.getDiscountedDate(), computer.getIntroducedDate())
 					&& computer.getDiscountedDate().compareTo(computer.getIntroducedDate()) <= 0) {
 				throw new DatesNotValidException("Discounted date must be greater than introduced date");
-			} else if (computer.getCompany() == null) 
+			}
 			if (computer.getCompany() == null || computer.getCompany().getName().equals("")) {
 				pstm.setString(4, null);
 			} else {

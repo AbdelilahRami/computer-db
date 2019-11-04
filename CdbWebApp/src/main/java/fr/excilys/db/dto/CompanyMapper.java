@@ -1,8 +1,6 @@
 package fr.excilys.db.dto;
-
 import java.util.ArrayList;
 import java.util.List;
-
 public class CompanyMapper {
 	
 	public static Company fromObjectToString(fr.excilys.db.model.Company company) {

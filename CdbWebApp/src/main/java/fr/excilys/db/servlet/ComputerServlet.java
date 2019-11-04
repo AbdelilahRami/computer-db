@@ -86,8 +86,8 @@ public class ComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String[] s = request.getParameterValues("selection");
-		List<String> list = Arrays.asList(s[0].split(","));
+		String s = request.getParameter("selection");
+		List<String> list = Arrays.asList(s.split(","));
 		for (String str : list) {
 			int idComputer = Integer.parseInt(str);
 			computerService.deleteComputer(idComputer);

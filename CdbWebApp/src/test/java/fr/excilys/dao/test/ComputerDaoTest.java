@@ -38,8 +38,7 @@ public class ComputerDaoTest {
 	@Test
 	public void testAddComputer() {
 		Company company = computerDaoImpl.getCompanyById(1);
-		Computer computer= ComputerBuilder.newInstance().
-				setId(44).setName("ThinkPad Carbon").setIntroducedDate(null).setDiscountedDate(null).setCompany(company).build();
+		Computer computer= ComputerBuilder.newInstance().setName("ThinkPad Carbon").setIntroducedDate(null).setDiscountedDate(null).setCompany(company).build();
 		int i=computerDaoImpl.createComputer(computer);
 		assertEquals(1, i);	
 	}
@@ -52,7 +51,7 @@ public class ComputerDaoTest {
 	@Test
 	public void deleteTest() {
 		int i=computerDaoImpl.deleteComputer(10);
-		assertEquals(1, i);	
+		assertEquals(1, i);
 	}
 	
 	

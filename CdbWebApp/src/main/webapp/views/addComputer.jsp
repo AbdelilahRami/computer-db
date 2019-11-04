@@ -57,7 +57,7 @@
 							<div id="error" style="display:none; color: red">Discontinued date must be greater than introduced date !</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId" name="companyName">
+									class="form-control" id="companyId" name="companyId">
 									<option></option>
 									<c:forEach var="company" items="${companies}">
 										<option value="${company.id}">${company.name}</option>
@@ -89,7 +89,7 @@ function checkDate() {
                 $("#error").css("display", 'block');
         }
     }else{
-            console.log("123")
+            console.log("I'm in the last condition")
                $("#add").attr("disabled", false);
                $("#error").css("display", 'none');
     }
