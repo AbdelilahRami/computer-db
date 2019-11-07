@@ -3,12 +3,9 @@ import java.sql.SQLException;
 import java.util.List;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.exception.PageNotFoundException;
-import fr.excilys.db.model.Company;
 public interface DaoComputer {
 	public List<Computer> getAllComputers()throws SQLException;
 	public Computer getComputerDetails(int id)throws SQLException ;
-	public List<Company> getAllyCompanies() throws SQLException;
-	public Company getCompanyById(int idCompany) throws SQLException ;
 	public int createComputer(Computer computer) throws Exception;
 	public int updateComputer(Computer computer)throws Exception;
 	public int deleteComputer(int id)throws SQLException;

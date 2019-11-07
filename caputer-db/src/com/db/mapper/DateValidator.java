@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-public class DatesConversion {
+public class DateValidator {
 	    public static Date convertLocalToSql(LocalDate locald) {
 	    	if(locald == null){
 	    		return null;

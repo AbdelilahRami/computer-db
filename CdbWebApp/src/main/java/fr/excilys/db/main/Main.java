@@ -3,16 +3,18 @@ import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import fr.excilys.db.connection.ComputerDBConnection;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.ComputerBuilder;
 import fr.excilys.db.service.impl.*;
-import fr.excilys.db.validators.LocalDateValidator;
+@Component
 public class Main {
 	static Connection conn;
-	
-	static ComputerServiceImpl computerServiceImpl;
+	@Autowired
+	private ComputerServiceImpl computerServiceImpl;
 	static int value;
 
 	public static void main(String[] args) throws ClassNotFoundException {
@@ -31,7 +33,7 @@ public class Main {
 				break;
 			case 3:
 				Computer computer = computerCreate();
-				manageCreate(computer,conn);
+				manageCreate(computer);
 				value = showTheMenu();
 				break;
 			case 4:
@@ -73,7 +75,7 @@ public class Main {
 			}
 		}
 	}
-	private static void deleteCompany() {
+	private  void deleteCompany() {
 		System.out.println("Choose a company id:");
 		Scanner sc = new Scanner(System.in);
 		int idCompany = sc.nextInt();
@@ -86,7 +88,7 @@ public class Main {
 		value = sc.nextInt();
 		return value;
 	}
-	public static Computer computerCreate() {
+	public  Computer computerCreate() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
@@ -111,7 +113,7 @@ public class Main {
 		int idComputer = sc.nextInt();
 		return idComputer;
 	}
-	public static Computer getComputerToUpdate(Connection conn) {
+	public  Computer getComputerToUpdate(Connection conn) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer to update");
 		Scanner scn = new Scanner(System.in);
@@ -127,7 +129,7 @@ public class Main {
 				.setIntroducedDate(localDateIntro).setDiscountedDate(localDateDicounted).setCompany(company).build();
 		return computer;
 	}
-	public static List<Computer> computersByPage(Connection conn) {
+	public  List<Computer> computersByPage(Connection conn) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please enter the number of page");
 		int pageNumber = sc.nextInt();
@@ -154,30 +156,31 @@ public class Main {
 		value = getOperationNumber();
 		return value;
 	}
-	public static void manageCreate(Computer computer, Connection conn) {
+	public  void manageCreate(Computer computer) {
 			computerServiceImpl.createComputer(computer);
 	}
-	public static void manageUpdate(Computer computer,Connection conn) {
+	public  void manageUpdate(Computer computer,Connection conn) {
 		
 			computerServiceImpl.updateComputer(computer);
 		
 	}
-	public static List<Computer> manageAllComputers() {
+	public static  List<Computer> manageAllComputers() {
+		ComputerServiceImpl computerServiceImpl= new ComputerServiceImpl();
 		List<Computer> computers = null;
 		computers = computerServiceImpl.getAllComputers();
 		return computers;
 	}
-	public static List<Company> manageAllCompanies() {
+	public   List<Company> manageAllCompanies() {
 		List<Company> companies = null;
 		companies = computerServiceImpl.getAllCompanies();
 		return companies;
 	}
-	public static Computer manageDetails(int id) {
+	public  Computer manageDetails(int id) {
 		Computer computer = null;
 			computer = computerServiceImpl.getComputerDetails(id);
 		return computer;
 	}
-	public static void manageDelete(int idComputer) {
+	public  void manageDelete(int idComputer) {
 		
 			computerServiceImpl.deleteComputer(idComputer);
 		

@@ -1,17 +1,13 @@
 package fr.excilys.db.dto;
-public class Computer {
-	private String id;
+
+public class ComputerDto {
 	private String name;
 	private String localDateIntroduction;
 	private String localDateDiscontinued;
 	private String idCompany ;
-	public Computer(ComputerBuilder builder) {
-		this.id=builder.getId();
-		this.name=builder.getName();
-		this.localDateIntroduction=builder.getLocalDateIntro();
-		this.localDateDiscontinued=builder.getLocaldateDiscontinued();
-		this.idCompany=builder.getCompany();
-	}
+	private String id;
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -39,7 +35,8 @@ public class Computer {
 	public String getIdCompany() {
 		return idCompany;
 	}
-	public void setIdcompany(String idcompany) {
-		this.idCompany = idcompany;
+	public void setIdCompany(String idCompany) {
+		this.idCompany = idCompany;
 	}
+	
 }

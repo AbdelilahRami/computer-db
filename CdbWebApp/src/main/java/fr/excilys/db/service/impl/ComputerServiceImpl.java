@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import fr.excilys.db.daoImp.ComputerDaoImpl;
-import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.service.ComputeService;
 @Service
@@ -12,25 +11,11 @@ public class ComputerServiceImpl implements ComputeService  {
 	
 	@Autowired
 	private  ComputerDaoImpl computerDaoImpl;
-	
-	private  ComputerServiceImpl() {
-	}
-//	public static ComputerServiceImpl getInstance() {
-//		if (computerServiceImpl == null) {
-//			computerServiceImpl = new ComputerServiceImpl();
-//		}
-//		return computerServiceImpl;
-//	}
-	
+		
 	@Override
 	public List<Computer> getAllComputers()  {
 		List<Computer> computers = computerDaoImpl.getAllComputers();
 		return computers;
-	}
-	@Override
-	public List<Company> getAllCompanies() {
-		List<Company> companies = computerDaoImpl.getAllyCompanies();
-		return companies;
 	}
 	@Override
 	public int updateComputer(Computer computer) {
@@ -84,10 +69,8 @@ public class ComputerServiceImpl implements ComputeService  {
 		
 		return computerDaoImpl.getComputerDetails(id);
 	}
-
-	@Override
-	public Company getCompanyById(int idCompany) {
-		
-		return computerDaoImpl.getCompanyById(idCompany);
+	public ComputerServiceImpl() {
+		super();
 	}
+	
 }

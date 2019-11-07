@@ -24,8 +24,8 @@ public class PageMappper {
 			String name = rs.getString("name");
 			Date introducedDate = rs.getDate("introduced");
 			Date discountedDate = rs.getDate("discontinued");
-			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
-			LocalDate discontinued = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
+			LocalDate introduced = DateValidator.convertDatetoLocalDate(introducedDate, rs, "introduced");
+			LocalDate discontinued = DateValidator.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 			int idCompany = rs.getInt("company_id");
 			Company company=computerDaoImpl.getCompanyById(idCompany);
 			computer = ComputerBuilder.newInstance().setId(idComputer).setName(name)

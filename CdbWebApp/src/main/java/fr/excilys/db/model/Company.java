@@ -1,20 +1,20 @@
 package fr.excilys.db.model;
 public class Company {
-	private int id;
+	private int idCompany;
 	private String name;
-	public Company(int id, String name) {
-		this.id = id;
+	public Company(int idCompany, String name) {
+		this.idCompany = idCompany;
 		this.name = name;
 	}
 	public Company(CompanyBuilder companyBuilder) {
-			this.id=companyBuilder.getIdCompany();
+			this.idCompany=companyBuilder.getIdCompany();
 			this.name=companyBuilder.getNameCompany();
 	}
-	public int getId() {
-		return id;
+	public int getIdCompany() {
+		return idCompany;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIdCompany(int idCompany) {
+		this.idCompany = idCompany;
 	}
 	public String getName() {
 		return name;
@@ -24,6 +24,6 @@ public class Company {
 	}
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", name=" + name +  "]";
+		return "Company [id=" + idCompany + ", name=" + name +  "]";
 	}
 }

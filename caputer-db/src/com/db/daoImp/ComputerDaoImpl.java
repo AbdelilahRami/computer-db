@@ -11,7 +11,7 @@ import com.db.connection.ComputerDBConnection;
 import com.db.dao.DaoComputer;
 import com.db.exception.PageNotFoundException;
 import com.db.mapper.ComputerMapper;
-import com.db.mapper.DatesConversion;
+import com.db.mapper.DateValidator;
 import com.db.mapper.PageMappper;
 import com.db.model.Company;
 import com.db.model.Computer;
@@ -94,8 +94,8 @@ public class ComputerDaoImpl implements DaoComputer {
 		String query = CREATE_COMPUTER;
 		try (PreparedStatement pstm = conn.prepareStatement(query);) {
 			pstm.setString(1, computer.getName());
-			pstm.setDate(2, DatesConversion.convertLocalToSql(computer.getIntroducedDate()));
-			pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
+			pstm.setDate(2, DateValidator.convertLocalToSql(computer.getIntroducedDate()));
+			pstm.setDate(3, DateValidator.convertLocalToSql(computer.getDiscountedDate()));
 			pstm.setInt(4, computer.getCompany().getId());
 			i = pstm.executeUpdate();
 		} catch (SQLException e) {
@@ -113,8 +113,8 @@ public class ComputerDaoImpl implements DaoComputer {
 		String query = UPDATE_COMPUTER;
 		try (PreparedStatement pstm = conn.prepareStatement(query);) {
 			pstm.setString(1, computer.getName());
-			pstm.setDate(2, DatesConversion.convertLocalToSql(computer.getIntroducedDate()));
-			pstm.setDate(3, DatesConversion.convertLocalToSql(computer.getDiscountedDate()));
+			pstm.setDate(2, DateValidator.convertLocalToSql(computer.getIntroducedDate()));
+			pstm.setDate(3, DateValidator.convertLocalToSql(computer.getDiscountedDate()));
 			pstm.setInt(4, computer.getCompany().getId());
 			pstm.setInt(5, computer.getId());
 			i = pstm.executeUpdate();

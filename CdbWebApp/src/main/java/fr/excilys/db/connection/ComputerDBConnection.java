@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ComputerDBConnection {
 	private static Connection connection;
-	//private static HikariConfig cfg = new HikariConfig("/hikari.properties");
-	//private static HikariDataSource ds = new HikariDataSource(cfg);
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDBConnection.class);
-	//private static ComputerDBConnection computerDb;
 	@Autowired
 	 DataSource dataSource;
 	

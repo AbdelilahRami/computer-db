@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="<c:url value="/ressources/js/jquery.min.js" />"></script>
+    <script src="<c:url value="/ressources/js/bootstrap.min.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href="<c:url value="/ressources/css/bootstrap.css"/>" rel="stylesheet" media="screen">
+<link href="<c:url value="/ressources/css/font-awesome.css"/>" rel="stylesheet" media="screen">
+<link href="<c:url value="/ressources/css/main.css"/>"  rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -36,44 +37,43 @@
 							<span>${message}</span>
 						</div>
 					</c:if>
-					<form id="form" action="servletAddingComputer" method="POST">
+					<form:form id="form" action="addComputer" modelAttribute="computer"  method="POST">
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" name="computerName"
-									id="computerName" placeholder="Computer name" required="required">
+								<label for="computerName">Computer name</label> <form:input
+									type="text" class="form-control" name="computerName" path="name"
+									id="computerName" placeholder="Computer name" required="required"/>
 							</div>
 							<div class="form-group">
-								<label for="introduced">Introduced date</label> <input
-									type="date" class="form-control" name="introduced" value="${computer.introduced}"
-									id="introduced" placeholder="Introduced date"
-									>
+								<label for="introduced">Introduced date</label> <form:input
+									type="date" class="form-control" id="introduced" path="localDateIntroduction" 
+									 placeholder="Introduced date"
+									/>
 							</div>
 							<div class="form-group">
-								<label for="discontinued">Discontinued date</label> <input
-									type="date" class="form-control" name="discontinued" value="${computer.discontinued}"
-									id="discontinued" placeholder="Discontinued date">
+								<label for="discontinued">Discontinued date</label> <form:input
+									type="date" class="form-control" path="localDateDiscontinued" 
+									id="discontinued" placeholder="Discontinued date"/>
 							</div>
 							<div id="error" style="display:none; color: red">Discontinued date must be greater than introduced date !</div>
 							<div class="form-group">
-								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId" name="companyId">
-									<option></option>
-									<c:forEach var="company" items="${companies}">
-										<option value="${company.id}">${company.name}</option>
-									</c:forEach>
-								</select>
+								<form:label for="name" path="name">Company</form:label> <form:select
+									class="form-control" path="idCompany" >
+									<form:option value=""></form:option>
+									<form:options items="${companies}" itemValue="idCompany" itemLabel="name"/>
+								</form:select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" id="add" class="btn btn-primary">
 							or <a href="computerServlet" class="btn btn-default">Cancel</a>
 						</div>
-					</form>
+					</form:form>
 				</div>
 			</div>
 		</div>
 	</section>
+	
 	<script type="text/javascript">
 $("#introduced").change(function(){checkDate()})
 $("#discontinued").change(function() {checkDate()})

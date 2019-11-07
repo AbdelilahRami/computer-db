@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<%@page import="fr.excilys.db.dto.Computer"%>
+<%@page import="fr.excilys.db.dto.ComputerDto"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
@@ -10,9 +11,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href="<c:url value="/ressources/css/bootstrap.css"/>" rel="stylesheet" media="screen">
+<link href="<c:url value="/ressources/css/font-awesome.css"/>" rel="stylesheet" media="screen">
+<link href="<c:url value="/ressources/css/main.css"/>" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -30,7 +31,7 @@
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="computerServlet" method="GET"
+					<form id="searchForm" action="getAllComputersByPage" method="GET"
 						class="form-inline">
 
 						<input type="search" id="searchbox" name="search"
@@ -40,8 +41,8 @@
 					</form>
 					</div>
 					<div>
-					<form action="computerServlet" method="GET" class="form-inline">	
-					<label for="exampleFormControlSelect1"></label> <select style="width: 200px;" name="ordre"
+					<form action="getAllComputersByPage?order=${order}" method="GET" class="form-inline">	
+					<label for="exampleFormControlSelect1"></label> <select style="width: 200px;" name="order"
                             class="form-control" id="exampleFormControlSelect1">
                             <option value="" disabled selected="selected">Sort</option>
                             <option value="DESC">Ordre décroissant</option>
@@ -52,15 +53,14 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="servletAddingComputer">Add Computer</a> <a
+						href="showAddingForm">Add Computer</a> <a
 						class="btn btn-default" id="editComputer" href=""
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>
-
-		<form id="deleteForm" action="" method="POST">
-			<input type="hidden" name="selection" value="${computer.id}">
+		<form id="deleteForm" action=""method="POST">
+			<input type="hidden"  name="selection" value="${computer.id}" >
 		</form>
 
 		<div class="container" style="margin-top: 10px;">
@@ -89,9 +89,12 @@
 				<tbody id="results">
 					<c:forEach var="item" items="${computers}">
 						<tr>
+						<c:url var="updateLink" value="/showEditForm">
+						  <c:param name="computerId" value="${item.id}"></c:param>
+						</c:url>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${item.id}"></td>
-							<td><a href="servletEditing?id=${item.id}" onclick="">
+							<td><a href="${updateLink}" onclick="">
 									${item.name}</a></td>
 							<td>${item.localDateIntroduction}</td>
 							<td>${item.localDateDiscontinued}</td>
@@ -110,12 +113,12 @@
 				<%--For displaying Previous link except for the 1st page --%>
 				<c:if test="${beginPage!=1 && (endPage-beginPage+1) lt 5}">
 					<li><a aria-label="Previous"
-						href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage}&size=${size}&search=${search}&ordre=${order}"><span
+						href="getAllComputersByPage?beginPage=${beginPage -1}&endPage=${endPage}&size=${size}&search=${search}&ordre=${order}"><span
 							aria-hidden="true">&laquo;</span></a></li>
 				</c:if>
 				<c:if test="${beginPage!=1 && (endPage-beginPage+1) ge 5}">
 					<li class="page-item"><a aria-label="Previous"
-						href="computerServlet?beginPage=${beginPage -1}&endPage=${endPage-1}&size=${size}&search=${search}&ordre=${order}"><span
+						href="getAllComputersByPage?beginPage=${beginPage -1}&endPage=${endPage-1}&size=${size}&search=${search}&ordre=${order}"><span
 							aria-hidden="true">&laquo;</span></a></li>
 				</c:if>
 
@@ -131,11 +134,11 @@
 								<c:when
 									test="${(endPage-beginPage+i) lt numberOfPages}&search=${search}&ordre=${order}">
 									<li class="page-item"><a class="page-link"
-										href="computerServlet?beginPage=${i}&size=${size}&endPage=${i+(endPage-beginPage)}&search=${search}&ordre=${order}">${i}</a></li>
+										href="getAllComputersByPage?beginPage=${i}&size=${size}&endPage=${i+(endPage-beginPage)}&search=${search}&ordre=${order}">${i}</a></li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item"><a class="page-link"
-										href="computerServlet?beginPage=${i}&size=${size}&endPage=${endPage}&search=${search}&ordre=${order}">${i}</a></li>
+										href="getAllComputersByPage?beginPage=${i}&size=${size}&endPage=${endPage}&search=${search}&ordre=${order}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:otherwise>
@@ -143,26 +146,26 @@
 				</c:forEach>
 				<c:if test="${endPage lt numberOfPages}">
 					<li class="page-item"><a aria-label="Next"
-						href="computerServlet?beginPage=${beginPage +1}&endPage=${endPage + 1}&search=${search}&size=${size}&ordre=${order}"><span
+						href="getAllComputersByPage?beginPage=${beginPage +1}&endPage=${endPage + 1}&search=${search}&size=${size}&ordre=${order}"><span
 							aria-hidden="true">&raquo;</span></a></li>
 				</c:if>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<a
-					href="computerServlet?beginPage=${1}&endPage=${5}&size=${10}&search=${search}&ordre=${order}">
+					href="getAllComputersByPage?beginPage=${1}&endPage=${5}&size=${10}&search=${search}&ordre=${order}">
 					<button type="button" class="btn btn-default">10</button>
 				</a> <a class="page-link"
-					href="computerServlet?beginPage=${1}&endPage=${5}&size=${50}&search=${search}&ordre=${order}">
+					href="getAllComputersByPage?beginPage=${1}&endPage=${5}&size=${50}&search=${search}&ordre=${order}">
 					<button type="button" class="btn btn-default">50</button>
 				</a> <a
-					href="computerServlet?beginPage=${1}&endPage=${5}&size=${100}&search=${search}&ordre=${order}">
+					href="getAllComputersByPage?beginPage=${1}&endPage=${5}&size=${100}&search=${search}&ordre=${order}">
 					<button type="button" class="btn btn-default">100</button>
 				</a>
 			</div>
 		</div>
 	</footer>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+	<script src="<c:url value="/ressources/js/jquery.min.js" />"></script>
+	<script src="<c:url value="/ressources/js/bootstrap.min.js" />"></script>
+	<script src="<c:url value="/ressources/js/dashboard.js" />"></script>
 </body>
 </html>

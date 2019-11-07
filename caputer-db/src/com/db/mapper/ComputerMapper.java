@@ -28,8 +28,8 @@ public class ComputerMapper {
 				String name = rs.getString("name");
 				Date introducedDate = rs.getDate("introduced");
 				Date discountedDate = rs.getDate("discontinued");
-				LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
-				LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
+				LocalDate introduced = DateValidator.convertDatetoLocalDate(introducedDate, rs, "introduced");
+				LocalDate discounted = DateValidator.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 				int idCompany = rs.getInt("company_id");
 				Company company = computerDaoImpl.getCompanyById(idCompany);
 				Computer computer = ComputerBuilder.newInstance().
@@ -67,8 +67,8 @@ public class ComputerMapper {
 			String name = rs.getString("name");
 			Date introducedDate = rs.getDate("introduced");
 			Date discountedDate = rs.getDate("discontinued");
-			LocalDate introduced = DatesConversion.convertDatetoLocalDate(introducedDate, rs, "introduced");
-			LocalDate discounted = DatesConversion.convertDatetoLocalDate(discountedDate, rs, "discontinued");
+			LocalDate introduced = DateValidator.convertDatetoLocalDate(introducedDate, rs, "introduced");
+			LocalDate discounted = DateValidator.convertDatetoLocalDate(discountedDate, rs, "discontinued");
 			int idCompany = rs.getInt("company_id");
 			Company company = computerDaoImpl.getCompanyById(idCompany);
 			computer = ComputerBuilder.newInstance().

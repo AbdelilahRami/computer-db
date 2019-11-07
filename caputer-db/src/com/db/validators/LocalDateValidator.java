@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-import com.db.mapper.DatesConversion;
+import com.db.mapper.DateValidator;
 
 public class LocalDateValidator {
 
@@ -16,7 +16,7 @@ public class LocalDateValidator {
 		System.out.println("Please give the date of introduction : :(Exemple : yyyy-dd-mm or mm/dd/yyyy )");
 		String localDIntroduction = scn.nextLine();
 		try {
-			localDateIntro = DatesConversion.fromStringToLocalDate(localDIntroduction);
+			localDateIntro = DateValidator.fromStringToLocalDate(localDIntroduction);
 			inputIsNotValid = false;
 		} catch (DateTimeParseException exc) {
 			System.out.println(exc.getParsedString() + " Is not a date Could you please retry !");
@@ -34,7 +34,7 @@ public class LocalDateValidator {
 			System.out.println("Please give the date of discontinued : :(Exemple : yyyy-dd-mm or mm/dd/yyyy )");
 			String localDiscounted = scn.nextLine();
 			try {
-				localDateDicounted = DatesConversion.fromStringToLocalDate(localDiscounted);
+				localDateDicounted = DateValidator.fromStringToLocalDate(localDiscounted);
 				inputIsNotValid = false;
 			} catch (DateTimeParseException exc) {
 				System.out.println(exc.getParsedString() + " Is not date Could you please retry !");
