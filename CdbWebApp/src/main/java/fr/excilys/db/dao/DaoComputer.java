@@ -13,6 +13,5 @@ public interface DaoComputer {
 	public List<Computer> getComputersByPageNumber(int pageId, int pageSize)throws PageNotFoundException,SQLException;
 	public List<Computer> getComputersByName(String name, int limit, int offset);
 	public int getPagesNumberByName(int pageSize, String name);
-	public int deleteCompany(int id);
 	public List<Computer> getComputersByOrder(String order, int sizePage, int numPage);
 }

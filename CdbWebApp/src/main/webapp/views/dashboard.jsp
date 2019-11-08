@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@page import="fr.excilys.db.dto.ComputerDto"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -18,8 +19,8 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="computerServlet"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="computerServlet"><spring:message code="application.name"/> 
+				 </a>
 		</div>
 	</header>
 

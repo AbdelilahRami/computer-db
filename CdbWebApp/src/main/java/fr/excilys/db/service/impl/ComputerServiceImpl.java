@@ -50,10 +50,7 @@ public class ComputerServiceImpl implements ComputeService  {
 		int pageNumbers=computerDaoImpl.getPagesNumberByName(pageSize, name);
 		return pageNumbers;
 	}
-	@Override
-	public int deleteCompany(int id) {
-		return computerDaoImpl.deleteCompany(id);
-	}
+	
 	@Override
 	public int getNumberOfPages(int pageSize) {
 		return computerDaoImpl.getNumberOfPages(pageSize);

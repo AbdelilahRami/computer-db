@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration                                             
-@ComponentScan(basePackages = {"fr.excilys.db.controller","fr.excilys.db.connection",
+@ComponentScan(basePackages = {"fr.excilys.db.controller",
 		"fr.excilys.db.daoImp","fr.excilys.db.dto","fr.excilys.db.mapper","fr.excilys.db.model",
 		"fr.excilys.db.service.impl","fr.excilys.db.validators"})
 @PropertySource("classpath:application.properties")
@@ -63,7 +63,7 @@ public class SpringConfiguration extends AbstractContextLoaderInitializer implem
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
-
+	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/ressources/**").addResourceLocations("/ressources/");

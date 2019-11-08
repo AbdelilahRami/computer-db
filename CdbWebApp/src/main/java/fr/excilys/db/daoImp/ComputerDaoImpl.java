@@ -1,7 +1,4 @@
 package fr.excilys.db.daoImp;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import fr.excilys.db.connection.ComputerDBConnection;
 import fr.excilys.db.dao.DaoComputer;
 import fr.excilys.db.mapper.CompanMapper;
 import fr.excilys.db.mapper.ComputerMapper;
@@ -35,16 +31,13 @@ public class ComputerDaoImpl implements DaoComputer {
 	private static final String GET_NUMBER_OF_COMPUTERS_BY_NAME = "select count(*) as number from computer left  join"
 			+ " company on computer.company_id = company.id " + "where computer.name like ? or company.name like ? ";
 	private static final String DELETE_COMPUTERS_BY_COMPANY = "delete from computer where company_id = ?";
-	private static final String DELETE_COMPANY_BY_ID = "delete from company where id = ?";
 	private static final String GET_COMPUTERS_BY_ORDER = "select computer.id, computer.name, computer.introduced, computer.discontinued,"
 			+ "computer.company_id, company.name from computer left join company on computer.company_id=company.id order by computer.name ";
 	private static final String LIMIT = " limit ? offset ?";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
-	private Connection connection;
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	@Autowired
-	ComputerDBConnection computerDbConnection;
+	
 	@Autowired
 	ComputerMapper computerMapper;
 	@Autowired
@@ -153,29 +146,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		return numberOfPages;
 	}
 
-	@Override
-	public int deleteCompany(int id) {
-		this.connection = computerDbConnection.getConnection();
-		int executedQueryCompany = 0;
-		try (PreparedStatement pstm = connection.prepareStatement(DELETE_COMPUTERS_BY_COMPANY);) {
-			connection.setAutoCommit(false);
-			pstm.setInt(1, id);
-			PreparedStatement stm = connection.prepareStatement(DELETE_COMPANY_BY_ID);
-			stm.setInt(1, id);
-			executedQueryCompany = stm.executeUpdate();
-			connection.commit();
-			connection.setAutoCommit(true);
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				System.out.println(e1.getMessage());
-			} finally {
-				connection = computerDbConnection.closeConnection();
-			}
-		}
-		return executedQueryCompany;
-	}
+
 
 	@Override
 	public List<Computer> getComputersByOrder(String order, int sizePage, int numPage) {
