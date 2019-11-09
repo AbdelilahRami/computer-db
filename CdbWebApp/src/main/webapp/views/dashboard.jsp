@@ -37,7 +37,8 @@
                             <spring:message code="search.name" var="searchVar"/>
 						<input type="search" id="searchbox" name="search"
 							value="${search}" class="form-control" placeholder="${searchVar}" />
-						<input type="submit" id="searchsubmit" value="Filter by name"
+						 <spring:message code="filter.name" var="filterButoon"/>
+						<input type="submit" id="searchsubmit" value="${filterButoon}"
 							class="btn btn-primary" />
 					</form>
 					</div>
