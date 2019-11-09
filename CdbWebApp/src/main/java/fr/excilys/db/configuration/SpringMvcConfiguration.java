@@ -17,8 +17,8 @@ import org.springframework.web.servlet.view.JstlView;
 public class SpringMvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**")
-          .addResourceLocations("/resources/");
+        registry.addResourceHandler("/ressources/**")
+          .addResourceLocations("/ressources/");
     }
 	
 	@Bean

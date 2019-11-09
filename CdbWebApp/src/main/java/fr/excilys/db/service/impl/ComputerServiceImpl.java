@@ -37,10 +37,7 @@ public class ComputerServiceImpl implements ComputeService  {
 		int k = computerDaoImpl.deleteComputer(idComputer);
 		return k;
 	}
-	@Override
-	public boolean datesExisted(LocalDate d1, LocalDate d2) {
-		return ((d1 != null) && (d2 != null));
-	}
+
 	@Override
 	public List<Computer> getComputersByName(String name ,int limite, int offset) {
 		return computerDaoImpl.getComputersByName(name,limite,offset);

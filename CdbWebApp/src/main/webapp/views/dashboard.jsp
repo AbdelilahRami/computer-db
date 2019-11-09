@@ -28,15 +28,15 @@
 		<div class="container">
 			<h1 id="homeTitle">
 				<c:out value="${fn:length(computers)}"></c:out>
-				Computers found
+        <spring:message code="computer.found" />
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="getAllComputersByPage" method="GET"
 						class="form-inline">
-
+                            <spring:message code="search.name" var="searchVar"/>
 						<input type="search" id="searchbox" name="search"
-							value="${search}" class="form-control" placeholder="Search name" />
+							value="${search}" class="form-control" placeholder="${searchVar}" />
 						<input type="submit" id="searchsubmit" value="Filter by name"
 							class="btn btn-primary" />
 					</form>

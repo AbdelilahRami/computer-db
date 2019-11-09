@@ -10,7 +10,6 @@ public interface ComputeService {
 	 public List<Computer> getComputersByPage(int idpage,int pageSize);
 	 public List<Computer> getComputersByName(String name ,int limite, int offset);
 	 public int getPagesNumberByName(int pageSize, String name);
-	 public boolean datesExisted(LocalDate d1, LocalDate d2);
 	 public int getNumberOfPages(int pageSize);
 	 public List<Computer> getComputersByOrder(String order, int sizePage, int numPage);
 	 public Computer getComputerDetails(int id);
