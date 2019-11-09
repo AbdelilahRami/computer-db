@@ -19,7 +19,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="computerServlet"><spring:message code="application.name"/> 
+			<a class="navbar-brand" href="computerServlet"><spring:message code="application.name"></spring:message>
 				 </a>
 		</div>
 	</header>

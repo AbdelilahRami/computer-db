@@ -58,8 +58,13 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public Computer getComputerDetails(int id) {
-		
-		return jdbcTemplate.queryForObject(GET_COMPUTERS_DETAILS,computerMapper, id );
+		Computer computer=null;
+		try {
+			computer= jdbcTemplate.queryForObject(GET_COMPUTERS_DETAILS,computerMapper, id );
+		}catch (DataAccessException e) {
+			LOGGER.error("Data acces exception "+e.getMessage());
+		}
+		return computer;
 	}
 
 	@Override
@@ -140,8 +145,6 @@ public class ComputerDaoImpl implements DaoComputer {
 	public int getPagesNumberByName(int pageSize, String name) {
 		int numberOflines = jdbcTemplate.queryForObject
 				(GET_NUMBER_OF_COMPUTERS_BY_NAME, new Object[] {"%" + name + "%","%" + name + "%"}, Integer.class);
-		
-		
 		int	numberOfPages = (numberOflines % pageSize == 0) ? numberOflines / pageSize : numberOflines / pageSize + 1;
 		return numberOfPages;
 	}

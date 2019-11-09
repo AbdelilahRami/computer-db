@@ -8,12 +8,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import fr.excilys.db.configuration.SpringConfiguration;
 import fr.excilys.db.daoImp.ComputerDaoImpl;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.service.impl.CompanyServiceImpl;
 @RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
 @ContextConfiguration(classes = {SpringConfiguration.class})
 public class CompanyDaoTest {
 	@Autowired

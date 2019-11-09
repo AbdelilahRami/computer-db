@@ -1,11 +1,11 @@
 package fr.excilys.dao.test;
-import static org.junit.Assert.assertEquals;
 import java.util.List;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import fr.excilys.db.configuration.SpringConfiguration;
 import fr.excilys.db.daoImp.ComputerDaoImpl;
@@ -13,9 +13,11 @@ import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.ComputerBuilder;
 import fr.excilys.db.service.impl.CompanyServiceImpl;
+import junit.framework.TestCase;
 @RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
 @ContextConfiguration(classes = {SpringConfiguration.class})
-public class ComputerDaoTest {
+public class ComputerDaoTest extends TestCase {
 	Computer realComputer;
 	@Autowired
 	ComputerDaoImpl computerDaoImpl;

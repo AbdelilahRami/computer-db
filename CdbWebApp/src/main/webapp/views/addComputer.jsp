@@ -19,7 +19,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.jsp"><spring:message></spring:message> Application -
+			<a class="navbar-brand" href="dashboard.jsp"> Application -
 				Comp </a>
 		</div>
 	</header>
