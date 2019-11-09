@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 import fr.excilys.db.dao.DaoComputer;
 import fr.excilys.db.mapper.CompanMapper;
 import fr.excilys.db.mapper.ComputerMapper;
-import fr.excilys.db.mapper.PageMappper;
 import fr.excilys.db.model.Computer;
 @Repository
 public class ComputerDaoImpl implements DaoComputer {
 	private static final String GET_ALL_COMPUTERS = "select computer.id, computer.name, computer.introduced, "
 			+ "computer.discontinued, computer.company_id, company.name from computer "
 			+ "left join company on computer.company_id=company.id";
+	private static final String GET_COMPUTERS_NUMBER="select count(*) as number from computer";
 	private static final String GET_COMPUTERS_DETAILS = "select computer.id, computer.name, computer.introduced, "
 			+"computer.discontinued, computer.company_id, company.name from computer "
 			+"left join company on computer.company_id=company.id where computer.id=?";
@@ -30,7 +30,6 @@ public class ComputerDaoImpl implements DaoComputer {
 			+ " where computer.name like ? or company.name like ? order by computer.name limit ? offset ?";
 	private static final String GET_NUMBER_OF_COMPUTERS_BY_NAME = "select count(*) as number from computer left  join"
 			+ " company on computer.company_id = company.id " + "where computer.name like ? or company.name like ? ";
-	private static final String DELETE_COMPUTERS_BY_COMPANY = "delete from computer where company_id = ?";
 	private static final String GET_COMPUTERS_BY_ORDER = "select computer.id, computer.name, computer.introduced, computer.discontinued,"
 			+ "computer.company_id, company.name from computer left join company on computer.company_id=company.id order by computer.name ";
 	private static final String LIMIT = " limit ? offset ?";
@@ -40,8 +39,7 @@ public class ComputerDaoImpl implements DaoComputer {
 	
 	@Autowired
 	ComputerMapper computerMapper;
-	@Autowired
-	PageMappper pageMapper;
+	
 	@Autowired
 	CompanMapper compannMapper;
 
@@ -124,7 +122,12 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public int getNumberOfPages(int pageSize) {
-		int numberOflines = jdbcTemplate.queryForObject("select count(*) as number from computer", Integer.class);
+		int numberOflines=0;
+		try {
+		numberOflines = jdbcTemplate.queryForObject(GET_COMPUTERS_NUMBER, Integer.class);
+		}catch (DataAccessException e) {
+			LOGGER.error("Data acces exception "+e.getMessage());
+		}
 		int	numberOfPages = (numberOflines % pageSize == 0) ? numberOflines / pageSize : numberOflines / pageSize + 1;
 
 		return numberOfPages;
@@ -133,9 +136,14 @@ public class ComputerDaoImpl implements DaoComputer {
 	@Override
 	public List<Computer> getComputersByName(String name, int size, int numPage) {
 		LOGGER.info("getting computer by name is running");
+		List<Computer> computers=null;
 		int offset = (numPage - 1) * size + 1;
-		List<Computer> computers=jdbcTemplate.query(GET_COMPUTERS_BY_NAME, 
+		try {
+		computers=jdbcTemplate.query(GET_COMPUTERS_BY_NAME, 
 				new Object[] {"%"+name+"%","%"+name+"%",size,offset}, computerMapper);
+		}catch (DataAccessException e) {
+			LOGGER.error("Data acces exception "+e.getMessage());
+		}
 		return computers;
 	}
 

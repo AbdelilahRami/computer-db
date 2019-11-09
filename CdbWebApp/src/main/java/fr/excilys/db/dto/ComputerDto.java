@@ -1,12 +1,11 @@
 package fr.excilys.db.dto;
 
 public class ComputerDto {
+	private String id;
 	private String name;
 	private String localDateIntroduction;
 	private String localDateDiscontinued;
 	private String idCompany ;
-	private String id;
-	
 	
 	public String getId() {
 		return id;

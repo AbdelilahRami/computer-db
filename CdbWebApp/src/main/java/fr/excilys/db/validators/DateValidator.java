@@ -7,7 +7,6 @@ import fr.excilys.db.exception.DatesNotValidException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 @Component
 public class DateValidator {
 	public  Date convertLocalToSql(LocalDate locald) {
@@ -38,7 +37,7 @@ public class DateValidator {
 		if (LocalDate.parse(s, formatter) instanceof LocalDate) {
 			localDate= LocalDate.parse(s);
 		}else {
-			throw new DateTimeParseException("Input is not valid", null, (Integer) null, null);
+			throw new DateTimeParseException("Input is not valid", null,  (Integer) null, null);
 		}
 		return localDate;
 	}
