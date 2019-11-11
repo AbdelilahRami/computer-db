@@ -36,10 +36,8 @@ public class ComputerDaoImpl implements DaoComputer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	
 	@Autowired
 	ComputerMapper computerMapper;
-	
 	@Autowired
 	CompanMapper compannMapper;
 

@@ -17,7 +17,8 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration                                             
-@ComponentScan(basePackages = {"fr.excilys.db"})
+@ComponentScan(basePackages = {"fr.excilys.db.configuration","fr.excilys.db.controller","fr.excilys.db.daoImp",
+		"fr.excilys.db.mapper","fr.excilys.db.service.impl","fr.excilys.db.validators"})
 @PropertySource("classpath:application.properties")
 @EnableWebMvc
 public class SpringConfiguration implements WebApplicationInitializer  {
@@ -56,11 +57,11 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 	}
 	
 	@Override
-	public void onStartup(ServletContext ctx) throws ServletException {
+	public void onStartup(ServletContext context) throws ServletException {
 		AnnotationConfigWebApplicationContext webCtx = new AnnotationConfigWebApplicationContext();
 		webCtx.register(SpringConfiguration.class, SpringMvcConfiguration.class);
-		webCtx.setServletContext(ctx);
-		ServletRegistration.Dynamic servlet = ctx.addServlet("SpringApplication", new DispatcherServlet(webCtx));
+		webCtx.setServletContext(context);
+		ServletRegistration.Dynamic servlet = context.addServlet("SpringApplication", new DispatcherServlet(webCtx));
 		servlet.setLoadOnStartup(1);
 		servlet.addMapping("/");
 		

@@ -32,9 +32,9 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
 	
 	@Bean
 	public LocaleResolver localeResolver() {
-	    SessionLocaleResolver slr = new SessionLocaleResolver();
-	    slr.setDefaultLocale(Locale.FRENCH);
-	    return slr;
+	    SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+	    sessionLocaleResolver.setDefaultLocale(Locale.FRENCH);
+	    return sessionLocaleResolver;
 	}
 	
 	@Bean
@@ -52,7 +52,7 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
 	@Bean
 	public MessageSource messageSource() {
 	     ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-	     messageSource.setBasename("classpath:messages");
+	     messageSource.setBasename("classpath:config/messages");
 	     return messageSource;
 	}
 	

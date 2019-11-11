@@ -41,24 +41,25 @@
 					<form:form id="form" action="addComputer" modelAttribute="computer"  method="POST">
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> <form:input
+							<spring:message code="computer.name" var="computer.name"/>
+								<label for="computerName"><spring:message code="computer.name"/></label> <form:input
 									type="text" class="form-control" name="computerName" path="name"
-									id="computerName" placeholder="Computer name" required="required"/>
+									id="computerName" placeholder="${computer.name}" required="required"/>
 							</div>
 							<div class="form-group">
-								<label for="introduced">Introduced date</label> <form:input
+								<label for="introduced"><spring:message code="introduced"/></label> <form:input
 									type="date" class="form-control" id="introduced" path="localDateIntroduction" 
 									 placeholder="Introduced date"
 									/>
 							</div>
 							<div class="form-group">
-								<label for="discontinued">Discontinued date</label> <form:input
+								<label for="discontinued"><spring:message code="discontinued"/></label> <form:input
 									type="date" class="form-control" path="localDateDiscontinued" 
 									id="discontinued" placeholder="Discontinued date"/>
 							</div>
 							<div id="error" style="display:none; color: red">Discontinued date must be greater than introduced date !</div>
 							<div class="form-group">
-								<form:label for="name" path="name">Company</form:label> <form:select
+								<form:label for="name" path="name"><spring:message code="company"/></form:label> <form:select
 									class="form-control" path="idCompany" >
 									<form:option value=""></form:option>
 									<form:options items="${companies}" itemValue="idCompany" itemLabel="name"/>

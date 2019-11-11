@@ -46,16 +46,17 @@
 					<form action="getAllComputersByPage?order=${order}" method="GET" class="form-inline">	
 					<label for="exampleFormControlSelect1"></label> <select style="width: 200px;" name="order"
                             class="form-control" id="exampleFormControlSelect1">
-                            <option value="" disabled selected="selected">Sort</option>
-                            <option value="DESC">Ordre décroissant</option>
-                            <option value="ASC">Ordre croisant</option>
+                            <option value="" disabled selected="selected"><spring:message code="sort.default"/></option>
+                            <option value="DESC"><spring:message code="sort.descending"/></option>
+                            <option value="ASC"><spring:message code="sort.ascending"/></option>
                         </select>
-                        <input type="submit" id="sortSubmit" value="Sort computers" class="btn btn-primary" />
+                        <spring:message code="sort.button" var="buttonOrder"/>
+                        <input type="submit" id="sortSubmit" value="${buttonOrder}" class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="showAddingForm">Add Computer</a> <a
+						href="showAddingForm"><spring:message code="add.button" /></a> <a
 						class="btn btn-default" id="editComputer" href=""
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -79,12 +80,12 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
+						<th><spring:message code="computer.name" /></th>
+						<th><spring:message code="introduced" /></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th><spring:message code="discontinued" /></th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><spring:message code="company" /></th>
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
