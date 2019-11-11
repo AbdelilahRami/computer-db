@@ -1,5 +1,6 @@
 package fr.excilys.db.model;
 import java.time.LocalDate;
+
 public class Computer {
 	private int id;
 	private String name;
