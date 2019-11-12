@@ -19,6 +19,9 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import fr.excilys.db.model.Company;
+import fr.excilys.db.model.Computer;
 @Configuration                                             
 @ComponentScan(basePackages = {"fr.excilys.db.configuration","fr.excilys.db.controller","fr.excilys.db.daoImp",
 		"fr.excilys.db.mapper","fr.excilys.db.service.impl","fr.excilys.db.validators"})
@@ -49,6 +52,7 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 		
 		LocalSessionFactoryBean factoryBean= new LocalSessionFactoryBean();
 		factoryBean.setDataSource(dataSource());
+		factoryBean.setAnnotatedClasses(Computer.class, Company.class);
 		return factoryBean;
 	}
 	@Bean
