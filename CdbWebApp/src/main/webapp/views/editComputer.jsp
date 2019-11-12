@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
@@ -19,8 +20,8 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.html"> Application -
-                Computer Database </a>
+            <a class="navbar-brand" href="dashboard.html"> <spring:message code="application.name"/>
+               </a>
         </div>
     </header>
     <section id="main">
@@ -28,34 +29,33 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <div class="label label-default pull-right">${computer.id}</div>
-                    <h1>Edit Computer</h1>
+                    <h1><spring:message code="edit.computer"/></h1>
 
                     <form:form action="editComputer" modelAttribute="computer" method="POST">
                         <input type="hidden" name="id" value="${computer.id}" id="id" />
                         <!-- TODO: Change this value with the computer id -->
                         <fieldset>
                             <div class="form-group">
-                                <form:label path="" for="computerName">Computer name</form:label> <form:input
+                                <form:label path="" for="computerName"><spring:message code="application.name"/></form:label> <form:input
                                     required="required" type="text" name="name" path="name"
                                     class="form-control" value="${computer.name}" id="computerName"
                                     placeholder="Computer name" />
                             </div>
                             <div class="form-group">
-                                <form:label path="" for="introduced">Introduced date</form:label> <form:input
+                                <form:label path="" for="introduced"><spring:message code="introduced"/></form:label> <form:input
                                     type="date" class="form-control" name="introduced" path="localDateIntroduction"
                                     value="${computer.localDateIntroduction}" id="introduced"
                                     placeholder="Introduced date" />
                             </div>
                             <div class="form-group">
-                                <form:label path="" for="discontinued">Discontinued date</form:label> <form:input
+                                <form:label path="" for="discontinued"><spring:message code="discontinued"/></form:label> <form:input
                                     type="date" class="form-control" name="discontinued" path="localDateDiscontinued"
                                     value='<c:out value="${computer.localDateDiscontinued}"/>'
                                     id="discontinued" placeholder="Discontinued date"/>
                             </div>
-                            <span id="error" style="display: none; color: red">Discontinued
-                                date must be greater than introduced date !</span>
+                            <span id="error" style="display: none; color: red"><spring:message code="error.dates"/></span>
                             <div class="form-group">
-                                <form:label path="" for="companyId">Company</form:label> <form:select 
+                                <form:label path="" for="companyId"><spring:message code="company"/></form:label> <form:select 
                                     class="form-control" id="companyId" path="idCompany" name="companyId">
                                     <option value=""></option>
                                     <c:forEach var="item" items="${companies}">
@@ -67,7 +67,7 @@
                         <div class="actions pull-right">
                             <input type="submit" value="Edit" id="edit"
                                 class="btn btn-primary"> or <a href="dashboard.jsp"
-                                class="btn btn-default">Cancel</a>
+                                class="btn btn-default"><spring:message code="butoon.cancel"/></a>
                         </div>
                     </form:form>
                 </div>
