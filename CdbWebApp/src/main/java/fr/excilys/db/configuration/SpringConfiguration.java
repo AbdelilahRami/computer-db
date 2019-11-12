@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -20,6 +23,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = {"fr.excilys.db.configuration","fr.excilys.db.controller","fr.excilys.db.daoImp",
 		"fr.excilys.db.mapper","fr.excilys.db.service.impl","fr.excilys.db.validators"})
 @PropertySource("classpath:application.properties")
+@EnableTransactionManagement
 @EnableWebMvc
 public class SpringConfiguration implements WebApplicationInitializer  {
 	@Value("${dataSource.driver}")
@@ -30,7 +34,6 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 	private String user;
 	@Value("${dataSource.password}")
 	private String password;
-
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -42,10 +45,17 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 	}
 
 	@Bean
-	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.setResultsMapCaseInsensitive(true);
-		return jdbcTemplate;
+	public LocalSessionFactoryBean getSessionFactory() {
+		
+		LocalSessionFactoryBean factoryBean= new LocalSessionFactoryBean();
+		factoryBean.setDataSource(dataSource());
+		return factoryBean;
+	}
+	@Bean
+	public HibernateTransactionManager getTransactionManager() {
+		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+		transactionManager.setSessionFactory(getSessionFactory().getObject());
+		return transactionManager;
 	}
 
 	@Bean

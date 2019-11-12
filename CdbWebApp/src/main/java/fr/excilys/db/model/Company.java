@@ -1,6 +1,17 @@
 package fr.excilys.db.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Company {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idCompany;
+	@Column
 	private String name;
 	public Company(int idCompany, String name) {
 		this.idCompany = idCompany;
