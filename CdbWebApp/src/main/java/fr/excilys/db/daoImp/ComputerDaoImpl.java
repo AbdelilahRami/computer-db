@@ -2,9 +2,11 @@ package fr.excilys.db.daoImp;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaQuery;
+import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +47,11 @@ public class ComputerDaoImpl implements DaoComputer {
 	@Autowired
 	private SessionFactory sessionFactory;
 	@Override
+	@Transactional
 	public List<Computer> getAllComputers() {
-		Session session=sessionFactory.openSession();
-		CriteriaQuery<Computer> criteriaQuery=session.getCriteriaBuilder().createQuery(Computer.class);
-		criteriaQuery.from(Computer.class);
-		List<Computer> computers=session.createQuery(criteriaQuery).getResultList();
-		session.close();
-		return computers;
+		Session currentSession=sessionFactory.getCurrentSession();
+		Query<Computer> query=currentSession.createQuery("from Computer", Computer.class);
+		return query.getResultList();
 		
 	}
 
@@ -68,12 +68,8 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public void createComputer(Computer computer) {
-	
 		 sessionFactory.getCurrentSession().save(computer);
-		
 	}
-
-		
 	@Override
 	public int updateComputer(Computer computer) {
 		LOGGER.info("updating a computer is running");
