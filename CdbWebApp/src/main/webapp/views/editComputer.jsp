@@ -36,7 +36,7 @@
                         <!-- TODO: Change this value with the computer id -->
                         <fieldset>
                             <div class="form-group">
-                                <form:label path="" for="computerName"><spring:message code="application.name"/></form:label> <form:input
+                                <form:label path="" for="computerName"><spring:message code="computer.name"/></form:label> <form:input
                                     required="required" type="text" name="name" path="name"
                                     class="form-control" value="${computer.name}" id="computerName"
                                     placeholder="Computer name" />

@@ -19,7 +19,6 @@ import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.service.impl.CompanyServiceImpl;
 import fr.excilys.db.service.impl.ComputerServiceImpl;
-
 @Controller
 public class AddingController {
 	@Autowired
