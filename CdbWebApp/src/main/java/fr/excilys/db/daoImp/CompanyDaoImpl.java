@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import fr.excilys.db.dao.DaoCompany;
 import fr.excilys.db.mapper.CompanMapper;
-import fr.excilys.db.mapper.ComputerMapper;
 import fr.excilys.db.model.Company;
 @Repository
 public class CompanyDaoImpl implements DaoCompany {
@@ -16,11 +15,9 @@ public class CompanyDaoImpl implements DaoCompany {
 	private static final String GET_COMPANY_BY_ID = "select * from company where id = ?";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 	@Autowired
-	ComputerMapper computerMapper;
-	@Autowired
-	CompanMapper compannMapper;
+	private CompanMapper compannMapper;
 	@Override
 	public List<Company> getAllyCompanies() {
 		List<Company> companies=null;

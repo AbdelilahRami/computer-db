@@ -23,11 +23,11 @@ import fr.excilys.db.service.impl.ComputerServiceImpl;
 @Controller
 public class EditingController {
 	@Autowired
-	ComputerServiceImpl computerSrvice;
+	private ComputerServiceImpl computerSrvice;
 	@Autowired
-	CompanyServiceImpl companyService;
+	private CompanyServiceImpl companyService;
 	@Autowired
-	ComputerMapper computerMapper;
+	private ComputerMapper computerMapper;
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
 	@GetMapping("/showEditForm")

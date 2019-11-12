@@ -7,7 +7,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import fr.excilys.db.dao.DaoComputer;
-import fr.excilys.db.mapper.CompanMapper;
 import fr.excilys.db.mapper.ComputerMapper;
 import fr.excilys.db.model.Computer;
 @Repository
@@ -35,11 +34,9 @@ public class ComputerDaoImpl implements DaoComputer {
 	private static final String LIMIT = " limit ? offset ?";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 	@Autowired
-	ComputerMapper computerMapper;
-	@Autowired
-	CompanMapper compannMapper;
+	private ComputerMapper computerMapper;
 
 	@Override
 	public List<Computer> getAllComputers() {
