@@ -86,7 +86,7 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public int deleteComputer(int id) throws DataAccessException {
+	public int deleteComputer(int id)  {
 		LOGGER.info("deleting a computer is running");
 		int isDeleted=0;
 		try {
