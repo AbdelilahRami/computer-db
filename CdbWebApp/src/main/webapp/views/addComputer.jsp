@@ -19,25 +19,14 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.jsp"> Application -
-				Comp </a>
+			<a class="navbar-brand" href="dashboard.jsp"> <spring:message code="application.name"/> </a>
 		</div>
 	</header>
 	<section id="main">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<h1>Add Computer</h1>
-					<c:if test="${sucess!=null}">
-						<div class="alert alert-success">
-							<span>${message}</span>
-						</div>
-					</c:if>
-					<c:if test="${fails!=null}">
-						<div class="alert alert-danger">
-							<span>${message}</span>
-						</div>
-					</c:if>
+					<h1><spring:message code="add.computer.label"/></h1>
 					<form:form id="form" action="addComputer" modelAttribute="computer"  method="POST">
 						<fieldset>
 							<div class="form-group">
@@ -57,7 +46,7 @@
 									type="date" class="form-control" path="localDateDiscontinued" 
 									id="discontinued" placeholder="Discontinued date"/>
 							</div>
-							<div id="error" style="display:none; color: red">Discontinued date must be greater than introduced date !</div>
+							<div id="error" style="display:none; color: red"><spring:message code="error.dates"/></div>
 							<div class="form-group">
 								<form:label for="name" path="name"><spring:message code="company"/></form:label> <form:select
 									class="form-control" path="idCompany" >
@@ -68,7 +57,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" id="add" class="btn btn-primary">
-							or <a href="computerServlet" class="btn btn-default">Cancel</a>
+							or <a href="computerServlet" class="btn btn-default"><spring:message code="butoon.cancel"/></a>
 						</div>
 					</form:form>
 				</div>

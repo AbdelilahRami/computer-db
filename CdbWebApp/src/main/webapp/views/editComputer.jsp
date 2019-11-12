@@ -66,7 +66,7 @@
                         </fieldset>
                         <div class="actions pull-right">
                             <input type="submit" value="Edit" id="edit"
-                                class="btn btn-primary"> or <a href="dashboard.jsp"
+                                class="btn btn-primary"><spring:message code="or.label"/><a href="dashboard.jsp"
                                 class="btn btn-default"><spring:message code="butoon.cancel"/></a>
                         </div>
                     </form:form>
