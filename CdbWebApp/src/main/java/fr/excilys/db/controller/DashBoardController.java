@@ -63,6 +63,7 @@ public class DashBoardController {
 				computerService.deleteComputer(id);
 			}catch(NumberFormatException e){
 				LOGGER.error("your input is not a number"+e.getMessage());
+				return "500";
 			}
 		}
 		return "redirect:/getAllComputersByPage";

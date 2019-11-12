@@ -1,7 +1,6 @@
 package fr.excilys.db.controller;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +50,11 @@ public class AddingController {
 				computerService.createComputer(computer);
 			} catch (DateTimeParseException e) {
 				LOGGER.error("the input is not a date"+e.getMessage());
+				return "500";
 			} catch (DatesNotValidException e) {
 				LOGGER.error("discontinued must be gretaer than introduced"+e.getMessage());
+				return "500";
 			}
-		
-				
 		return "redirect:/getAllComputersByPage";		
 	}
 }
