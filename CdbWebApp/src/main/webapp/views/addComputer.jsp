@@ -19,7 +19,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.jsp"> <spring:message code="application.name"/> </a>
+			<a class="navbar-brand" href="getAllComputersByPage"> <spring:message code="application.name"/> </a>
 		</div>
 	</header>
 	<section id="main">
@@ -57,7 +57,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" id="add" class="btn btn-primary">
-							or <a href="computerServlet" class="btn btn-default"><spring:message code="butoon.cancel"/></a>
+							or <a href="getAllComputersByPage" class="btn btn-default"><spring:message code="butoon.cancel"/></a>
 						</div>
 					</form:form>
 				</div>
