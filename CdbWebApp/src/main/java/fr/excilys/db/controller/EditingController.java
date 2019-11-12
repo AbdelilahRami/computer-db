@@ -48,8 +48,10 @@ public class EditingController {
 			computerSrvice.updateComputer(computer);
 		} catch (DateTimeParseException e) {
 			LOGGER.error("the input is not a date"+e.getMessage());
+			return "500";
 		} catch (DatesNotValidException e) {
 			LOGGER.error("discontinued must be gretaer than introduced"+e.getMessage());
+			return "500";
 		}
 		return "redirect:/getAllComputersByPage";
 	}
