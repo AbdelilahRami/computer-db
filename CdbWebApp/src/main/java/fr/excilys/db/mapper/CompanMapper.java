@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import fr.excilys.db.dto.CompanyDto;
 import fr.excilys.db.model.Company;
+import fr.excilys.db.model.CompanyBuilder;
 @Component
 public class CompanMapper implements RowMapper<Company> {
 
@@ -32,7 +33,7 @@ public class CompanMapper implements RowMapper<Company> {
 	public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
 		int idComapny = rs.getInt("id");
 		String nameCompany = rs.getString("name");
-		Company company = new Company(idComapny, nameCompany);
+		Company company=CompanyBuilder.newInstance().setIdCompany(idComapny).setNameCompany(nameCompany).build();
 		return company;
 	}
 

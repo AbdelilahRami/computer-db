@@ -2,10 +2,6 @@ package fr.excilys.db.model;
 public class Company {
 	private int idCompany;
 	private String name;
-	public Company(int idCompany, String name) {
-		this.idCompany = idCompany;
-		this.name = name;
-	}
 	public Company(CompanyBuilder companyBuilder) {
 			this.idCompany=companyBuilder.getIdCompany();
 			this.name=companyBuilder.getNameCompany();
@@ -26,4 +22,5 @@ public class Company {
 	public String toString() {
 		return "Company [id=" + idCompany + ", name=" + name +  "]";
 	}
+	
 }

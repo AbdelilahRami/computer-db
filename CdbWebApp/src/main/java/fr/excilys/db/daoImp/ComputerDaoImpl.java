@@ -47,7 +47,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		try {
 		computers=jdbcTemplate.query(GET_ALL_COMPUTERS, computerMapper);
 		}catch (DataAccessException e){
-			LOGGER.error("Data acces exception"+e.getMessage());
+			LOGGER.error("Data acces exception : error in getting all computers"+e.getMessage());
 		}
 		return computers;
 	}
@@ -58,7 +58,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		try {
 			computer= jdbcTemplate.queryForObject(GET_COMPUTERS_DETAILS,computerMapper, id );
 		}catch (DataAccessException e) {
-			LOGGER.error("Data acces exception "+e.getMessage());
+			LOGGER.error("Data acces exception : error in getting a computer by Id "+e.getMessage());
 		}
 		return computer;
 	}
@@ -72,7 +72,7 @@ public class ComputerDaoImpl implements DaoComputer {
 				computer.getName(),computer.getIntroducedDate(),computer.getDiscountedDate(),
 				computer.getCompany().getIdCompany());
 		}catch (DataAccessException e){
-			LOGGER.error("Data acces exception "+e.getMessage());
+			LOGGER.error("Data acces exception : error in adding a computer "+e.getMessage());
 		}
 		 return isCreated;
 	}
@@ -87,7 +87,7 @@ public class ComputerDaoImpl implements DaoComputer {
 				computer.getName(),computer.getIntroducedDate(),computer.getDiscountedDate(),
 				computer.getCompany().getIdCompany(), computer.getId());
 		}catch (DataAccessException e){
-			LOGGER.error("Data acces exception "+e.getMessage());
+			LOGGER.error("Data acces exception : error in updating a computer "+e.getMessage());
 		}
 		return isUpdated;
 	}
@@ -99,7 +99,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		try {
 			isDeleted=jdbcTemplate.update(DELETE_COMPUTER,id);
 		}catch (DataAccessException e){
-			LOGGER.error("Data acces exception "+e.getMessage());
+			LOGGER.error("Data acces exception : error in deleting a computer "+e.getMessage());
 		}
 		return isDeleted;
 	}
@@ -112,7 +112,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		try {
 			computers = jdbcTemplate.query(GET_COMPUTERS_BY_PAGE, computerMapper,pageId,pageSize);
 		}catch (DataAccessException e){
-			LOGGER.error("Data acces exception "+e.getMessage());
+			LOGGER.error("Data acces exception : error in pagination"+e.getMessage());
 		}
 		return computers;
 	}
@@ -149,9 +149,14 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public int getPagesNumberByName(int pageSize, String name) {
+		int	numberOfPages=0;
+		try {
 		int numberOflines = jdbcTemplate.queryForObject
 				(GET_NUMBER_OF_COMPUTERS_BY_NAME, new Object[] {"%" + name + "%","%" + name + "%"}, Integer.class);
-		int	numberOfPages = (numberOflines % pageSize == 0) ? numberOflines / pageSize : numberOflines / pageSize + 1;
+		numberOfPages = (numberOflines % pageSize == 0) ? numberOflines / pageSize : numberOflines / pageSize + 1;
+		}catch (DataAccessException e) {
+			LOGGER.error("Data acces exception "+e.getMessage());
+		}
 		return numberOfPages;
 	}
 
@@ -159,9 +164,14 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public List<Computer> getComputersByOrder(String order, int sizePage, int numPage) {
+		List<Computer> computers=null;
+		try {
 		int offset = (numPage - 1) * sizePage + 1;
-		List<Computer> computers=jdbcTemplate.
+		computers=jdbcTemplate.
 				query(GET_COMPUTERS_BY_ORDER + order + LIMIT, new Object[] {sizePage,offset}, computerMapper);
+		}catch (DataAccessException e) {
+			LOGGER.error("Data acces exception "+e.getMessage());
+		}
 		return computers;
 	}
 
