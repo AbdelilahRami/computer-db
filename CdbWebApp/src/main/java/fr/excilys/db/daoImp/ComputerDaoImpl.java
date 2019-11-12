@@ -1,6 +1,9 @@
 package fr.excilys.db.daoImp;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaQuery;
+
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,13 +46,13 @@ public class ComputerDaoImpl implements DaoComputer {
 	private SessionFactory sessionFactory;
 	@Override
 	public List<Computer> getAllComputers() {
-		List<Computer> computers=null;
-		try {
-		computers=jdbcTemplate.query(GET_ALL_COMPUTERS, computerMapper);
-		}catch (DataAccessException e){
-			LOGGER.error("Data acces exception"+e.getMessage());
-		}
+		Session session=sessionFactory.openSession();
+		CriteriaQuery<Computer> criteriaQuery=session.getCriteriaBuilder().createQuery(Computer.class);
+		criteriaQuery.from(Computer.class);
+		List<Computer> computers=session.createQuery(criteriaQuery).getResultList();
+		session.close();
 		return computers;
+		
 	}
 
 	@Override
@@ -86,15 +89,9 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public int deleteComputer(int id)  {
-		LOGGER.info("deleting a computer is running");
-		int isDeleted=0;
-		try {
-			isDeleted=jdbcTemplate.update(DELETE_COMPUTER,id);
-		}catch (DataAccessException e){
-			LOGGER.error("Data acces exception "+e.getMessage());
-		}
-		return isDeleted;
+	public void deleteComputer(int id)  {
+		Computer computer=sessionFactory.getCurrentSession().get(Computer.class, id);
+		sessionFactory.getCurrentSession().delete(computer);
 	}
 
 

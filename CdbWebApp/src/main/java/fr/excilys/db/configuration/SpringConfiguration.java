@@ -1,15 +1,15 @@
 package fr.excilys.db.configuration;
 import java.util.Properties;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -27,40 +27,32 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableTransactionManagement
 @EnableWebMvc
 public class SpringConfiguration implements WebApplicationInitializer  {
-	@Value("${dataSource.driver}")
-	private String driver;
-	@Value("${dataSource.url}")
-	private String url;
-	@Value("${dataSource.user}")
-	private String user;
-	@Value("${dataSource.password}")
-	private String password;
-	@Value("${show.sql}")
-	private String showSql;
-	@Value("${hbm2ddl.auto}")
-	private String hbm2ddl;
-	@Value("${hibernate.dialect}")
-	private String hibernateDialect;
+	
+	
+	@Autowired
+	private Environment env;
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(driver);
-		dataSource.setUrl(url);
-		dataSource.setUsername(user);
-		dataSource.setPassword(password);
+		dataSource.setDriverClassName(env.getProperty("dataSource.driver"));
+		dataSource.setUrl(env.getProperty("dataSource.url"));
+		dataSource.setUsername(env.getProperty("dataSource.user"));
+		dataSource.setPassword(env.getProperty("dataSource.password"));
 		return dataSource;
+	}
+	private Properties getHibernateProperties() {
+		Properties properties= new Properties();
+		properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+		properties.setProperty("hibernate.show_sql",env.getProperty("hibernate.show_sql"));
+		return properties;
 	}
 
 	@Bean
 	public LocalSessionFactoryBean getSessionFactory() {
-		
 		LocalSessionFactoryBean factoryBean= new LocalSessionFactoryBean();
 		factoryBean.setDataSource(dataSource());
 		factoryBean.setPackagesToScan("fr.excilys.db.model");
-		Properties properties= new Properties();
-		properties.setProperty("show.sql", showSql);
-		properties.setProperty("hbm2ddl.auto", hbm2ddl);
-		properties.setProperty("hibernate.dialect", hibernateDialect);
+		factoryBean.setHibernateProperties(getHibernateProperties());
 		return factoryBean;
 	}
 	@Bean
