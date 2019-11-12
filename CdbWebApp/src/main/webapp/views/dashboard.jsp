@@ -8,7 +8,7 @@
 <%@ page isELIgnored="false"%>
 <html>
 <head>
-<title>Computer Database</title>
+<title><spring:message code="application.title"/> Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -19,7 +19,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="computerServlet"><spring:message code="application.name"></spring:message>
+			<a class="navbar-brand" href="computerServlet"><spring:message code="application.name"/>
 				 </a>
 		</div>
 	</header>

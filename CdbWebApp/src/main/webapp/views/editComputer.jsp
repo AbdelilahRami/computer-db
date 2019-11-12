@@ -5,7 +5,7 @@
 <%@ page isELIgnored="false"%>
 <html>
 <head>
-<title>Computer Database</title>
+<title><spring:message code="application.title"/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="<c:url value="/ressources/js/jquery.min.js" />"></script>
 <script src="<c:url value="/ressources/js/dashboard.js"/>"></script>

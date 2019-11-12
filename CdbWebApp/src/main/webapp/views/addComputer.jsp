@@ -6,7 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
-<title>Computer Database</title>
+<title><spring:message code="application.title"/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="<c:url value="/ressources/js/jquery.min.js" />"></script>
     <script src="<c:url value="/ressources/js/bootstrap.min.js" />"></script>
