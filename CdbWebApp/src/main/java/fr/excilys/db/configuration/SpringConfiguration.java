@@ -1,4 +1,6 @@
 package fr.excilys.db.configuration;
+import java.util.Properties;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -8,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -19,9 +20,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-
-import fr.excilys.db.model.Company;
-import fr.excilys.db.model.Computer;
 @Configuration                                             
 @ComponentScan(basePackages = {"fr.excilys.db.configuration","fr.excilys.db.controller","fr.excilys.db.daoImp",
 		"fr.excilys.db.mapper","fr.excilys.db.service.impl","fr.excilys.db.validators"})
@@ -37,6 +35,12 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 	private String user;
 	@Value("${dataSource.password}")
 	private String password;
+	@Value("${show.sql}")
+	private String showSql;
+	@Value("${hbm2ddl.auto}")
+	private String hbm2ddl;
+	@Value("${hibernate.dialect}")
+	private String hibernateDialect;
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -52,7 +56,11 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 		
 		LocalSessionFactoryBean factoryBean= new LocalSessionFactoryBean();
 		factoryBean.setDataSource(dataSource());
-		factoryBean.setAnnotatedClasses(Computer.class, Company.class);
+		factoryBean.setPackagesToScan("fr.excilys.db.model");
+		Properties properties= new Properties();
+		properties.setProperty("show.sql", showSql);
+		properties.setProperty("hbm2ddl.auto", hbm2ddl);
+		properties.setProperty("hibernate.dialect", hibernateDialect);
 		return factoryBean;
 	}
 	@Bean
