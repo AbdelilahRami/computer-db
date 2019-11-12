@@ -1,5 +1,7 @@
 package fr.excilys.db.daoImp;
 import java.util.List;
+
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import fr.excilys.db.dao.DaoComputer;
-import fr.excilys.db.mapper.CompanMapper;
 import fr.excilys.db.mapper.ComputerMapper;
 import fr.excilys.db.model.Computer;
 @Repository
@@ -35,12 +36,11 @@ public class ComputerDaoImpl implements DaoComputer {
 	private static final String LIMIT = " limit ? offset ?";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 	@Autowired
-	ComputerMapper computerMapper;
+	private ComputerMapper computerMapper;
 	@Autowired
-	CompanMapper compannMapper;
-
+	private SessionFactory sessionFactory;
 	@Override
 	public List<Computer> getAllComputers() {
 		List<Computer> computers=null;
@@ -64,17 +64,10 @@ public class ComputerDaoImpl implements DaoComputer {
 	}
 
 	@Override
-	public int createComputer(Computer computer) {
-		LOGGER.info("creation of a computer is running");
-		int isCreated=0;
-		try {
-			isCreated=jdbcTemplate.update(CREATE_COMPUTER, 
-				computer.getName(),computer.getIntroducedDate(),computer.getDiscountedDate(),
-				computer.getCompany().getIdCompany());
-		}catch (DataAccessException e){
-			LOGGER.error("Data acces exception "+e.getMessage());
-		}
-		 return isCreated;
+	public void createComputer(Computer computer) {
+	
+		 sessionFactory.getCurrentSession().save(computer);
+		
 	}
 
 		

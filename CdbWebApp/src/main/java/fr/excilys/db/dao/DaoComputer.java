@@ -6,7 +6,7 @@ import fr.excilys.db.exception.PageNotFoundException;
 public interface DaoComputer {
 	public List<Computer> getAllComputers()throws SQLException;
 	public Computer getComputerDetails(int id)throws SQLException ;
-	public int createComputer(Computer computer) throws Exception;
+	public void createComputer(Computer computer) throws Exception;
 	public int updateComputer(Computer computer)throws Exception;
 	public int deleteComputer(int id)throws SQLException;
 	public int getNumberOfPages(int pageSize)throws SQLException;

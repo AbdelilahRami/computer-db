@@ -3,9 +3,11 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 @Entity
 public class Computer {
@@ -18,7 +20,8 @@ public class Computer {
 	private LocalDate introducedDate;
 	@Column
 	private LocalDate discountedDate;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="comapny_id")
 	private Company company;
 	public Computer(ComputerBuilder computerBuilder) {
 		this.id = computerBuilder.getId();
