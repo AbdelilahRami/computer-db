@@ -1,10 +1,7 @@
 package fr.excilys.db.service.impl;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import fr.excilys.db.daoImp.CompanyDaoImpl;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.service.CompanyService;
