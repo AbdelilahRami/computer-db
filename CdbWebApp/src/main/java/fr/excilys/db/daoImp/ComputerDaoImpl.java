@@ -1,9 +1,6 @@
 package fr.excilys.db.daoImp;
 import java.util.List;
-
-import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -68,20 +65,13 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	@Override
 	public void createComputer(Computer computer) {
-		 sessionFactory.getCurrentSession().save(computer);
+		 Session currentsession=sessionFactory.getCurrentSession();
+		 currentsession.save(computer);
 	}
 	@Override
-	public int updateComputer(Computer computer) {
-		LOGGER.info("updating a computer is running");
-		int isUpdated=0;
-		try {
-			isUpdated= jdbcTemplate.update(UPDATE_COMPUTER, 
-				computer.getName(),computer.getIntroducedDate(),computer.getDiscountedDate(),
-				computer.getCompany().getIdCompany(), computer.getId());
-		}catch (DataAccessException e){
-			LOGGER.error("Data acces exception "+e.getMessage());
-		}
-		return isUpdated;
+	public void updateComputer(Computer computer) {
+		Session currentsession=sessionFactory.getCurrentSession();
+		 currentsession.saveOrUpdate(computer);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ public interface DaoComputer {
 	public List<Computer> getAllComputers()throws SQLException;
 	public Computer getComputerDetails(int id)throws SQLException ;
 	public void createComputer(Computer computer) throws Exception;
-	public int updateComputer(Computer computer)throws Exception;
+	public void updateComputer(Computer computer)throws Exception;
 	public void deleteComputer(int id)throws SQLException;
 	public int getNumberOfPages(int pageSize)throws SQLException;
 	public List<Computer> getComputersByPageNumber(int pageId, int pageSize)throws PageNotFoundException,SQLException;
