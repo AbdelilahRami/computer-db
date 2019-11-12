@@ -57,10 +57,10 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 	
 	@Override
 	public void onStartup(ServletContext context) throws ServletException {
-		AnnotationConfigWebApplicationContext webCtx = new AnnotationConfigWebApplicationContext();
-		webCtx.register(SpringConfiguration.class, SpringMvcConfiguration.class);
-		webCtx.setServletContext(context);
-		ServletRegistration.Dynamic servlet = context.addServlet("SpringApplication", new DispatcherServlet(webCtx));
+		AnnotationConfigWebApplicationContext webApplicationContext = new AnnotationConfigWebApplicationContext();
+		webApplicationContext.register(SpringConfiguration.class, SpringMvcConfiguration.class);
+		webApplicationContext.setServletContext(context);
+		ServletRegistration.Dynamic servlet = context.addServlet("SpringApplication", new DispatcherServlet(webApplicationContext));
 		servlet.setLoadOnStartup(1);
 		servlet.addMapping("/");
 		
