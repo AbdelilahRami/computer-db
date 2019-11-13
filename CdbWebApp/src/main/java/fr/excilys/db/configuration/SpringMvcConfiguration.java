@@ -12,7 +12,6 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-
 public class SpringMvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
@@ -35,14 +34,12 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
 	    sessionLocaleResolver.setDefaultLocale(Locale.FRENCH);
 	    return sessionLocaleResolver;
 	}
-	
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 	    LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
 	    lci.setParamName("lang");
 	    return lci;
 	}
-	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 	    registry.addInterceptor(localeChangeInterceptor());

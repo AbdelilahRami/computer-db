@@ -14,13 +14,13 @@ public class Computer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	@Column
+	@Column(name = "name")
 	private String name;
-	@Column
+	@Column(name = "introduced")
 	private LocalDate introducedDate;
-	@Column
+	@Column(name = "discontinued")
 	private LocalDate discountedDate;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="comapny_id")
 	private Company company;
 	public Computer(ComputerBuilder computerBuilder) {

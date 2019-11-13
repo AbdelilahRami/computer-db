@@ -10,6 +10,7 @@ import javax.persistence.Id;
 public class Company {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private int idCompany;
 	@Column
 	private String name;

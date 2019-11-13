@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import fr.excilys.db.dao.DaoComputer;
@@ -79,11 +80,9 @@ public class ComputerDaoImpl implements DaoComputer {
 		Computer computer=sessionFactory.getCurrentSession().get(Computer.class, id);
 		sessionFactory.getCurrentSession().delete(computer);
 	}
-
-
-
 	@Override
 	public List<Computer> getComputersByPageNumber(int pageId, int pageSize) {
+		Session session=sessionFactory.openSession();
 		List<Computer> computers=null;
 		try {
 			computers = jdbcTemplate.query(GET_COMPUTERS_BY_PAGE, computerMapper,pageId,pageSize);

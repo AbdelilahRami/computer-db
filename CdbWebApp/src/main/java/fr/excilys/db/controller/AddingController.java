@@ -24,7 +24,7 @@ import fr.excilys.db.service.impl.ComputerServiceImpl;
 @Controller
 public class AddingController {
 	@Autowired
-	private ComputerServiceImpl computerService;
+	private ComputerServiceImpl computerServiceImpl;
 	@Autowired
 	private CompanyServiceImpl companyServiceImpl;
 	@Autowired
@@ -48,7 +48,7 @@ public class AddingController {
 		Computer computer=null;
 			try {
 				computer = computerMapper.fromStringToObject(computerDto);
-				computerService.createComputer(computer);
+				computerServiceImpl.createComputer(computer);
 			} catch (DateTimeParseException e) {
 				LOGGER.error("the input is not a date"+e.getMessage());
 			} catch (DatesNotValidException e) {

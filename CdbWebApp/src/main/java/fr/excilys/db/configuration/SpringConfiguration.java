@@ -21,8 +21,7 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration                                             
-@ComponentScan(basePackages = {"fr.excilys.db.configuration","fr.excilys.db.controller","fr.excilys.db.daoImp",
-		"fr.excilys.db.mapper","fr.excilys.db.service.impl","fr.excilys.db.validators"})
+@ComponentScan(basePackages = {"fr.excilys.db"})
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 @EnableWebMvc

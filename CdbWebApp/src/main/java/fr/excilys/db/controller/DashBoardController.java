@@ -23,7 +23,7 @@ public class DashBoardController {
 	private ComputerMapper computerMapper;
 	private static final Logger LOGGER = LoggerFactory.getLogger(DashBoardController.class);
 
-	@RequestMapping("/getAllComputersByPage")
+	@RequestMapping("/dashbord")
 	public String getComputers(@RequestParam(required = false, defaultValue = "") String search,
 			@RequestParam(required = false, defaultValue = "") String order,
 			@RequestParam(required = false, defaultValue = "1") Integer beginPage,
@@ -53,7 +53,7 @@ public class DashBoardController {
 		model.addAttribute("endPage", endPage);
 		return "dashboard";
 	}
-	@PostMapping("/getAllComputersByPage")
+	@PostMapping("/delete")
 	public String deleteComputers(HttpServletRequest request, HttpServletResponse response) {
 		String computersToDelete= request.getParameter("selection");
 		String[] listComputers=computersToDelete.split(",");
