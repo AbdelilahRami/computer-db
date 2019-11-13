@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -21,7 +22,8 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration                                             
-@ComponentScan(basePackages = {"fr.excilys.db"})
+@ComponentScan(basePackages = {"fr.excilys.db.configuration","fr.excilys.db.controller",
+		"fr.excilys.db.daoImp","fr.excilys.db.service.impl","fr.excilys.db.mapper","fr.excilys.db.validators"})
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 @EnableWebMvc
@@ -39,16 +41,21 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 		dataSource.setPassword(env.getProperty("dataSource.password"));
 		return dataSource;
 	}
-	
+	@Bean
+	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate;
+	}
 	private Properties getHibernateProperties() {
 		Properties properties= new Properties();
-		properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-		properties.setProperty("hibernate.show_sql",env.getProperty("hibernate.show_sql"));
+		properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+		properties.put("hbm2ddl.auto", env.getProperty("hbm2ddl.auto"));
+		properties.put("hibernate.show_sql",env.getProperty("hibernate.show_sql"));
 		return properties;
 	}
 
 	@Bean
-	public LocalSessionFactoryBean getSessionFactory() {
+	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean factoryBean= new LocalSessionFactoryBean();
 		factoryBean.setDataSource(dataSource());
 		factoryBean.setPackagesToScan("fr.excilys.db.model");
@@ -58,7 +65,7 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 	@Bean
 	public HibernateTransactionManager getTransactionManager() {
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-		transactionManager.setSessionFactory(getSessionFactory().getObject());
+		transactionManager.setSessionFactory(sessionFactory().getObject());
 		return transactionManager;
 	}
 
