@@ -39,6 +39,7 @@ public class SpringConfiguration implements WebApplicationInitializer  {
 		dataSource.setPassword(env.getProperty("dataSource.password"));
 		return dataSource;
 	}
+	
 	private Properties getHibernateProperties() {
 		Properties properties= new Properties();
 		properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
