@@ -9,17 +9,22 @@ public class ComputerServiceImpl  {
 	
 	@Autowired
 	private  ComputerDaoImpl computerDaoImpl;
+		
+	
 	public List<Computer> getAllComputers()  {
 		List<Computer> computers = computerDaoImpl.getAllComputers();
 		return computers;
 	}
+	
 	public void updateComputer(Computer computer) {
-			computerDaoImpl.updateComputer(computer);
+			 computerDaoImpl.updateComputer(computer);
 	}
 	
 	public void createComputer(Computer computer) {
-			computerDaoImpl.createComputer(computer);
+			 computerDaoImpl.createComputer(computer);
+			
 	}
+	
 	public List<Computer> getComputersByPage(int numPage,int pageSize)  {
 		List<Computer> computers = computerDaoImpl.getComputersByPageNumber(numPage,pageSize);
 		return computers;

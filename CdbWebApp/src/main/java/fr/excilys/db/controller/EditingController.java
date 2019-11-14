@@ -23,11 +23,11 @@ import fr.excilys.db.service.impl.ComputerServiceImpl;
 @Controller
 public class EditingController {
 	@Autowired
-	ComputerServiceImpl computerSrvice;
+	private ComputerServiceImpl computerSrvice;
 	@Autowired
-	CompanyServiceImpl companyService;
+	private CompanyServiceImpl companyService;
 	@Autowired
-	ComputerMapper computerMapper;
+	private ComputerMapper computerMapper;
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
 	@GetMapping("/showEditForm")
@@ -41,15 +41,20 @@ public class EditingController {
 		return "editComputer";
 	}
 	@PostMapping("/editComputer")
-	public String editComputer(@ModelAttribute("computer") ComputerDto computerDto) {
+	public String editComputer(@ModelAttribute("computer") ComputerDto computerDto, @RequestParam("computerId") String computerId) {
 		Computer computer;
 		try {
+			Company company=companyService.getCompanyById(Integer.parseInt(computerDto.getIdCompany()));
 			computer = computerMapper.fromStringToObject(computerDto);
+			computer.setId(Integer.parseInt(computerId));
+			computer.setCompany(company);
 			computerSrvice.updateComputer(computer);
 		} catch (DateTimeParseException e) {
 			LOGGER.error("the input is not a date"+e.getMessage());
+			return "500";
 		} catch (DatesNotValidException e) {
 			LOGGER.error("discontinued must be gretaer than introduced"+e.getMessage());
+			return "500";
 		}
 		return "redirect:/getAllComputersByPage";
 	}

@@ -1,18 +1,18 @@
 package fr.excilys.db.model;
 import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 @Entity
+@Table(name="computer")
 public class Computer {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(name = "name")
 	private String name;
@@ -20,9 +20,12 @@ public class Computer {
 	private LocalDate introducedDate;
 	@Column(name = "discontinued")
 	private LocalDate discountedDate;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="comapny_id")
+	@ManyToOne
+	@JoinColumn(name="company_id")
 	private Company company;
+	public Computer() {
+		super();
+	}
 	public Computer(ComputerBuilder computerBuilder) {
 		this.id = computerBuilder.getId();
 		this.name = computerBuilder.getName();

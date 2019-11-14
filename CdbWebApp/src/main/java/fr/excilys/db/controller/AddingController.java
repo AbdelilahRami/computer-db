@@ -1,7 +1,6 @@
 package fr.excilys.db.controller;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import fr.excilys.db.daoImp.ComputerDaoImpl;
 import fr.excilys.db.dto.CompanyDto;
 import fr.excilys.db.dto.ComputerDto;
@@ -20,11 +21,10 @@ import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
 import fr.excilys.db.service.impl.CompanyServiceImpl;
 import fr.excilys.db.service.impl.ComputerServiceImpl;
-
 @Controller
 public class AddingController {
 	@Autowired
-	private ComputerServiceImpl computerServiceImpl;
+	private ComputerServiceImpl computerService;
 	@Autowired
 	private CompanyServiceImpl companyServiceImpl;
 	@Autowired
@@ -48,14 +48,16 @@ public class AddingController {
 		Computer computer=null;
 			try {
 				computer = computerMapper.fromStringToObject(computerDto);
-				computerServiceImpl.createComputer(computer);
+				Company company=computerDto.getIdCompany().isEmpty() ? null :companyServiceImpl.getCompanyById(Integer.parseInt(computerDto.getIdCompany()));
+				computer.setCompany(company);
+				computerService.createComputer(computer);
 			} catch (DateTimeParseException e) {
 				LOGGER.error("the input is not a date"+e.getMessage());
+				return "500";
 			} catch (DatesNotValidException e) {
 				LOGGER.error("discontinued must be gretaer than introduced"+e.getMessage());
+				return "500";
 			}
-		
-				
 		return "redirect:/getAllComputersByPage";		
 	}
 }

@@ -28,7 +28,7 @@ public class ComputerMapper implements RowMapper<Computer>{
 		computerDto.setName(computer.getName());
 		computerDto.setLocalDateIntroduction(computer.getIntroducedDate() == null ? "" : computer.getIntroducedDate().toString());
 		computerDto.setLocalDateDiscontinued(computer.getDiscountedDate() == null ? "" : computer.getDiscountedDate().toString());
-		String companyName=computer.getCompany().getName()==null ? "":String.valueOf(computer.getCompany().getName());
+		String companyName=computer.getCompany()==null ? "":String.valueOf(computer.getCompany().getName());
 		computerDto.setIdCompany(companyName);
 		return computerDto;
 	}
@@ -38,7 +38,8 @@ public class ComputerMapper implements RowMapper<Computer>{
 		lci = dateValidator.fromStringToLocalDate(computer.getLocalDateIntroduction());
 		lcd = dateValidator.fromStringToLocalDate(computer.getLocalDateDiscontinued());
 		dateValidator.datesAreValid(lci, lcd);
-		Company company = (computer.getIdCompany()!=null) ? CompanyBuilder.newInstance().setIdCompany(Integer.parseInt(computer.getIdCompany())).build() : null;
+		System.out.println(computer.getIdCompany());
+		Company company = (!computer.getIdCompany().isEmpty()) ? CompanyBuilder.newInstance().setIdCompany(Integer.parseInt(computer.getIdCompany())).build() : null;
 		Computer objComputer=ComputerBuilder.newInstance().setName(name) 
 										.setIntroducedDate(lci).setDiscountedDate(lcd).setCompany(company).build();
 		return objComputer;

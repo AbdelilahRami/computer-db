@@ -23,14 +23,14 @@ public class DashBoardController {
 	private ComputerMapper computerMapper;
 	private static final Logger LOGGER = LoggerFactory.getLogger(DashBoardController.class);
 
-	@RequestMapping("/dashbord")
+	@RequestMapping("/getAllComputersByPage")
 	public String getComputers(@RequestParam(required = false, defaultValue = "") String search,
 			@RequestParam(required = false, defaultValue = "") String order,
 			@RequestParam(required = false, defaultValue = "1") Integer beginPage,
 			@RequestParam(required = false, defaultValue = "5") Integer endPage,
 			@RequestParam(required = false, defaultValue = "10") Integer size, Model model) {
 		List<ComputerDto> computersDto = null;
-		int numberOfpages = 0;
+		int numberOfpages = computerService.getNumberOfPages(size);
 		if (!order.isEmpty()) {
 			numberOfpages = computerService.getNumberOfPages(size);
 			computersDto = computerMapper
@@ -39,9 +39,9 @@ public class DashBoardController {
 			numberOfpages = computerService.getPagesNumberByName(size, search);
 			List<Computer> computers = computerService.getComputersByName(search, size, beginPage);
 			computersDto = computerMapper.fromListObjecToListString(computers);
-			while (endPage > numberOfpages) {
-				endPage--;
-			}
+//			while (endPage > numberOfpages) {
+//				endPage--;
+//			}
 		} else {
 			computersDto = computerMapper
 					.fromListObjecToListString(computerService.getComputersByPage(beginPage, size));
@@ -53,7 +53,7 @@ public class DashBoardController {
 		model.addAttribute("endPage", endPage);
 		return "dashboard";
 	}
-	@PostMapping("/delete")
+	@PostMapping("/getAllComputersByPage")
 	public String deleteComputers(HttpServletRequest request, HttpServletResponse response) {
 		String computersToDelete= request.getParameter("selection");
 		String[] listComputers=computersToDelete.split(",");
@@ -63,6 +63,7 @@ public class DashBoardController {
 				computerService.deleteComputer(id);
 			}catch(NumberFormatException e){
 				LOGGER.error("your input is not a number"+e.getMessage());
+				return "500";
 			}
 		}
 		return "redirect:/getAllComputersByPage";

@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -25,7 +24,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = {"fr.excilys.db.configuration","fr.excilys.db.controller",
 		"fr.excilys.db.daoImp","fr.excilys.db.service.impl","fr.excilys.db.mapper","fr.excilys.db.validators"})
 @PropertySource("classpath:application.properties")
-@EnableTransactionManagement
 @EnableWebMvc
 public class SpringConfiguration implements WebApplicationInitializer  {
 	

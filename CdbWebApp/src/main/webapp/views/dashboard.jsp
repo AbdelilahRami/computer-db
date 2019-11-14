@@ -147,7 +147,7 @@
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-				<c:if test="${endPage lt numberOfPages}">
+				<c:if test="${endPage lt numberOfpages}">
 					<li class="page-item"><a aria-label="Next"
 						href="getAllComputersByPage?beginPage=${beginPage +1}&endPage=${endPage + 1}&search=${search}&size=${size}&ordre=${order}"><span
 							aria-hidden="true">&raquo;</span></a></li>
