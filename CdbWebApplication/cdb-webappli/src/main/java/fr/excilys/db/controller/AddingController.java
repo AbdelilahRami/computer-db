@@ -56,6 +56,6 @@ public class AddingController {
 				LOGGER.error("discontinued must be gretaer than introduced"+e.getMessage());
 				return "500";
 			}
-		return "redirect:/getAllComputersByPage";		
+		return "redirect:/dashboard";		
 	}
 }

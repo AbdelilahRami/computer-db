@@ -32,7 +32,7 @@
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="getAllComputersByPage" method="GET"
+					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
                             <spring:message code="search.name" var="searchVar"/>
 						<input type="search" id="searchbox" name="search"
@@ -43,7 +43,7 @@
 					</form>
 					</div>
 					<div>
-					<form action="getAllComputersByPage?order=${order}" method="GET" class="form-inline">	
+					<form action="dashboard?order=${order}" method="GET" class="form-inline">	
 					<label for="exampleFormControlSelect1"></label> <select style="width: 200px;" name="order"
                             class="form-control" id="exampleFormControlSelect1">
                             <option value="" disabled selected="selected"><spring:message code="sort.default"/></option>
@@ -116,12 +116,12 @@
 				<%--For displaying Previous link except for the 1st page --%>
 				<c:if test="${beginPage!=1 && (endPage-beginPage+1) lt 5}">
 					<li><a aria-label="Previous"
-						href="getAllComputersByPage?beginPage=${beginPage -1}&endPage=${endPage}&size=${size}&search=${search}&ordre=${order}"><span
+						href="dashboard?beginPage=${beginPage -1}&endPage=${endPage}&size=${size}&search=${search}&ordre=${order}"><span
 							aria-hidden="true">&laquo;</span></a></li>
 				</c:if>
 				<c:if test="${beginPage!=1 && (endPage-beginPage+1) ge 5}">
 					<li class="page-item"><a aria-label="Previous"
-						href="getAllComputersByPage?beginPage=${beginPage -1}&endPage=${endPage-1}&size=${size}&search=${search}&ordre=${order}"><span
+						href="dashboard?beginPage=${beginPage -1}&endPage=${endPage-1}&size=${size}&search=${search}&ordre=${order}"><span
 							aria-hidden="true">&laquo;</span></a></li>
 				</c:if>
 
@@ -137,11 +137,11 @@
 								<c:when
 									test="${(endPage-beginPage+i) lt numberOfPages}&search=${search}&ordre=${order}">
 									<li class="page-item"><a class="page-link"
-										href="getAllComputersByPage?beginPage=${i}&size=${size}&endPage=${i+(endPage-beginPage)}&search=${search}&ordre=${order}">${i}</a></li>
+										href="dashboard?beginPage=${i}&size=${size}&endPage=${i+(endPage-beginPage)}&search=${search}&ordre=${order}">${i}</a></li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item"><a class="page-link"
-										href="getAllComputersByPage?beginPage=${i}&size=${size}&endPage=${endPage}&search=${search}&ordre=${order}">${i}</a></li>
+										href="dashboard?beginPage=${i}&size=${size}&endPage=${endPage}&search=${search}&ordre=${order}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:otherwise>
@@ -149,19 +149,19 @@
 				</c:forEach>
 				<c:if test="${endPage lt numberOfpages}">
 					<li class="page-item"><a aria-label="Next"
-						href="getAllComputersByPage?beginPage=${beginPage +1}&endPage=${endPage + 1}&search=${search}&size=${size}&ordre=${order}"><span
+						href="dashboard?beginPage=${beginPage +1}&endPage=${endPage + 1}&search=${search}&size=${size}&ordre=${order}"><span
 							aria-hidden="true">&raquo;</span></a></li>
 				</c:if>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<a
-					href="getAllComputersByPage?beginPage=${1}&endPage=${5}&size=${10}&search=${search}&ordre=${order}">
+					href="dashboard?beginPage=${1}&endPage=${5}&size=${10}&search=${search}&ordre=${order}">
 					<button type="button" class="btn btn-default">10</button>
 				</a> <a class="page-link"
-					href="getAllComputersByPage?beginPage=${1}&endPage=${5}&size=${50}&search=${search}&ordre=${order}">
+					href="dashboard?beginPage=${1}&endPage=${5}&size=${50}&search=${search}&ordre=${order}">
 					<button type="button" class="btn btn-default">50</button>
 				</a> <a
-					href="getAllComputersByPage?beginPage=${1}&endPage=${5}&size=${100}&search=${search}&ordre=${order}">
+					href="dashboard?beginPage=${1}&endPage=${5}&size=${100}&search=${search}&ordre=${order}">
 					<button type="button" class="btn btn-default">100</button>
 				</a>
 			</div>

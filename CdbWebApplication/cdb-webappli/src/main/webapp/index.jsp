@@ -1,2 +1,2 @@
-<%response.sendRedirect("getAllComputersByPage"); %>
+<%response.sendRedirect("dashboard"); %>
 
