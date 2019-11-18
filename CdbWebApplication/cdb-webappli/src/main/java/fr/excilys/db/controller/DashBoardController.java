@@ -66,7 +66,7 @@ public class DashBoardController {
 				return "500";
 			}
 		}
-		return "redirect:/getAllComputersByPage";
+		return "redirect:/dashboard";
 	}
 
 }
