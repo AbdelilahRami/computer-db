@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<%@page import="java.util.List"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page isELIgnored="false"%>
 <html>
 <head>
 	<title>Computer Database</title>

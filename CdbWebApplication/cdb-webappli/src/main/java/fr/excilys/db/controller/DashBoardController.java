@@ -54,7 +54,7 @@ public class DashBoardController {
 		return "dashboard";
 	}
 	@PostMapping("/delete")
-	public String deleteComputers(HttpServletRequest request, HttpServletResponse response) {
+	public String deleteComputers(HttpServletRequest request, HttpServletResponse response, Model model) {
 		String computersToDelete= request.getParameter("selection");
 		String[] listComputers=computersToDelete.split(",");
 		for(String idComputer :listComputers) {
