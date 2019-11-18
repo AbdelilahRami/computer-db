@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import fr.excilys.db.daoImp.ComputerDaoImpl;
+import fr.excilys.db.dao.ComputerDaoImpl;
 import fr.excilys.db.dto.ComputerDto;
 import fr.excilys.db.exception.DatesNotValidException;
 import fr.excilys.db.mapper.ComputerMapper;
 import fr.excilys.db.model.Company;
 import fr.excilys.db.model.Computer;
-import fr.excilys.db.service.impl.CompanyServiceImpl;
-import fr.excilys.db.service.impl.ComputerServiceImpl;
+import fr.excilys.db.service.CompanyServiceImpl;
+import fr.excilys.db.service.ComputerServiceImpl;
 @Controller
 public class EditingController {
 	@Autowired

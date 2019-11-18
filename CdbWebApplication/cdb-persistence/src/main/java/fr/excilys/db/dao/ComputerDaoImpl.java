@@ -1,4 +1,4 @@
-package fr.excilys.db.daoImp;
+package fr.excilys.db.dao;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,14 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import fr.excilys.db.dao.DaoComputer;
 import fr.excilys.db.model.Computer;
 @Repository
-public class ComputerDaoImpl implements DaoComputer {
+public class ComputerDaoImpl  {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	@Autowired
 	SessionFactory sessionFactory;
-	@Override
+	
 	public List<Computer> getAllComputers() {
 		Session session = sessionFactory.openSession();
 		Query<Computer> query=session.createQuery("from Computer", Computer.class);
@@ -23,20 +22,18 @@ public class ComputerDaoImpl implements DaoComputer {
 		return computers;
 	}
 
-	@Override
 	public Computer getComputerDetails(int id) {
 		Session session=sessionFactory.openSession();
 		Computer computer=session.get(Computer.class, id);
 		return computer;
 	}
 
-	@Override
+	
 	public void createComputer(Computer computer) {
 		Session session = sessionFactory.openSession();
 		session.saveOrUpdate(computer);
 	}
 
-	@Override
 	public void updateComputer(Computer computer) {
 		Session session= sessionFactory.openSession();
 		Transaction transaction=session.beginTransaction();
@@ -45,7 +42,6 @@ public class ComputerDaoImpl implements DaoComputer {
 
 	}
 
-	@Override
 	public void deleteComputer(int id) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction=session.beginTransaction();
@@ -54,7 +50,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		transaction.commit();
 	}
 
-	@Override
+	
 	public List<Computer> getComputersByPageNumber(int pageId, int pageSize) {
 		Session session = sessionFactory.openSession();
 
@@ -63,14 +59,13 @@ public class ComputerDaoImpl implements DaoComputer {
 		return computers;
 	}
 
-	@Override
 	public int getNumberOfPages(int pageSize) {
 		int numberOflines = getAllComputers().size();
 		int numberOfPages = (numberOflines % pageSize == 0) ? numberOflines / pageSize : numberOflines / pageSize + 1;
 		return numberOfPages;
 	}
 
-	@Override
+	
 	public List<Computer> getComputersByName(String name, int size, int numPage) {
 		LOGGER.info("getting computer by name is running");
 		Session session = sessionFactory.openSession();
@@ -80,7 +75,7 @@ public class ComputerDaoImpl implements DaoComputer {
 		return query.getResultList();
 	}
 
-	@Override
+	
 	public int getPagesNumberByName(int pageSize, String name) {
 		Session session=sessionFactory.openSession();
 		javax.persistence.Query query=session.createQuery("from Computer where name like concat('%',:name,'%')", Computer.class);
@@ -89,7 +84,6 @@ public class ComputerDaoImpl implements DaoComputer {
 		return numberOfPages;
 	}
 
-	@Override
 	public List<Computer> getComputersByOrder(String order, int sizePage, int numPage) {
 		Session session = sessionFactory.openSession();
 		Query<Computer> query = session.createQuery("from Computer order by name " + order, Computer.class);
