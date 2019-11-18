@@ -10,10 +10,15 @@ import fr.excilys.db.model.Company;
 @Repository
 public class CompanyDaoImpl {
 	private static final String GET_ALL_COMPANIES = "from Company";
-	//private static final String GET_COMPANY_BY_ID = "select * from company where id = ?";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
-	@Autowired
+	
 	SessionFactory sessionFactory;
+	@Autowired
+	public CompanyDaoImpl(SessionFactory sessionFactory) {
+		super();
+		this.sessionFactory = sessionFactory;
+	}
+
 	public List<Company> getAllyCompanies() {
 		Session session=sessionFactory.openSession();
 		return session.createQuery( GET_ALL_COMPANIES, Company.class).getResultList();
@@ -22,7 +27,7 @@ public class CompanyDaoImpl {
 	public Company getCompanyById(int idCompany) {
 		Session session=sessionFactory.openSession();
 		Company company=session.get(Company.class, idCompany);
-		 return company;
+		return company;
 	}
 
 

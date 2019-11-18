@@ -1,4 +1,4 @@
-package fr.db.configuration;
+package fr.excilys.db.configuration;
 import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

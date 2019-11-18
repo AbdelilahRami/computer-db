@@ -1,4 +1,4 @@
-package fr.db.configuration;
+package fr.excilys.db.configuration;
 import java.util.Properties;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
