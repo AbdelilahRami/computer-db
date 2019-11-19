@@ -22,17 +22,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.jdbcAuthentication().dataSource(dataSource);
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().
-		anyRequest().
-		authenticated().
-		and().formLogin().
-		loginPage("/login").
-		defaultSuccessUrl("/dashboard").
-		failureUrl("/login?error=true").
-		permitAll().and().
-		logout().permitAll();
-	}
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+//		http.authorizeRequests().
+//		anyRequest().
+//		authenticated().
+//		and().formLogin().
+//		loginPage("/login").
+//		defaultSuccessUrl("/dashboard").
+//		failureUrl("/login?error=true").
+//		permitAll().and().
+//		logout().permitAll();
+//	}
 
 }
