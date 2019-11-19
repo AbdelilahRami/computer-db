@@ -25,6 +25,13 @@
 	</header>
 
 	<section id="main">
+	<div class="pull-left">
+                    <form  action="dashboard" method="POST"
+                        class="form-inline">
+                        <input type="submit" id="searchsubmit" value="Logout"
+                            class="btn btn-primary" />
+                    </form>
+                    </div>
 		<div class="container">
 			<h1 id="homeTitle">
 				<c:out value="${fn:length(computers)}"></c:out>
