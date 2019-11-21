@@ -1,11 +1,8 @@
 package fr.excilys.db.configuration;
-
 import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -16,23 +13,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	DataSource dataSource;
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.inMemoryAuthentication().withUser("john").password("{noop}test123").roles("EMPLOYEE").and()
-//				.withUser("mery").password("{noop}test123").roles("EMPLOYEE").and().withUser("susan")
-//				.password("{noop}test123").roles("ADMIN");
+
 		auth.jdbcAuthentication().dataSource(dataSource);
 	}
 
-//	@Override
-//	protected void configure(HttpSecurity http) throws Exception {
-//		http.authorizeRequests().
-//		anyRequest().
-//		authenticated().
-//		and().formLogin().
-//		loginPage("/login").
-//		defaultSuccessUrl("/dashboard").
-//		failureUrl("/login?error=true").
-//		permitAll().and().
-//		logout().permitAll();
-//	}
+
 
 }
