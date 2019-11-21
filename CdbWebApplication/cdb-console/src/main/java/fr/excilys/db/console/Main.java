@@ -12,7 +12,6 @@ import fr.excilys.db.model.Computer;
 import fr.excilys.db.model.ComputerBuilder;
 import fr.excilys.db.service.*;
 import fr.excilys.db.validators.ConsoleValidator;
-
 @Component
 public class Main {
 	static Connection conn;
@@ -20,7 +19,6 @@ public class Main {
 	private ComputerServiceImpl computerServiceImpl;
 	@Autowired
 	private CompanyServiceImpl companyService;
-	private static ConsoleValidator validator;
 	private static ApplicationContext context;
 	static int value;
 
@@ -41,42 +39,34 @@ public class Main {
 				value = showTheMenu();
 				break;
 			case 3:
-				Computer computer = main.computerCreate();
-				manageCreate(computer);
+				main.computerCreate();
 				value = showTheMenu();
 				break;
 			case 4:
 				System.out.println("Your are about to get computer details :");
 				int idComputer = getIdOfComputer();
-				Computer myComputer = manageDetails(idComputer);
-				System.out.println(myComputer.getId()+" "+myComputer.getName()+" "+myComputer.getIntroducedDate()+" "+myComputer.getDiscountedDate()+" "+myComputer.getCompany().getId());
+				Computer myComputer = main.manageDetails(idComputer);
+				System.out.println(myComputer.getId()+" "+myComputer.getName()+" "+myComputer.getIntroducedDate()+" "+myComputer.getDiscountedDate()+" "+myComputer.getCompany().getIdCompany());
 				value = showTheMenu();
 				break;
 			case 5:
 				System.out.println("Your are in the update part :");
-				Connection conn5= new ComputerDBConnection().getConnection();
-				Computer updatComputer = getComputerToUpdate(conn5);
-				manageUpdate(updatComputer,conn5);
+				main.getComputerToUpdate();
 				value = showTheMenu();
 				break;
 			case 6:
 				System.out.println("Your are in the delete part :");
-				int idCom = getComputerToDelet();
-				manageDelete(idCom);
+				main.getComputerToDelet();
 				value = showTheMenu();
 				break;
 			case 7:
 				System.out.println("Pagination part :");
-				List<Computer> myComputers = computersByPage(conn);
+				List<Computer> myComputers = main.computersByPage();
 				myComputers.forEach((cp) -> System.out.println(cp.toString()));
 				value = showTheMenu();
 				break;
-			case 8 :
-				System.out.println("Delete company :");
-				deleteCompany();
-				value = showTheMenu();
-				break;
-			case 9:
+
+			case 8:
 				System.out.print("Quit");
 				System.out.flush();
 				System.out.println("Thank you for using our Application.");
@@ -85,13 +75,7 @@ public class Main {
 		}
 	}
 
-	private void deleteCompany() {
-		System.out.println("Choose a company id:");
-		Scanner sc = new Scanner(System.in);
-		int idCompany = sc.nextInt();
-		computerServiceImpl.deleteCompany(idCompany);
 
-	}
 
 	public static int getOperationNumber() {
 		System.out.println("Choose a number :");
@@ -100,7 +84,7 @@ public class Main {
 		return value;
 	}
 
-	public Computer computerCreate() {
+	public void computerCreate() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the name of PC :");
 		String name = sc.nextLine();
@@ -111,7 +95,7 @@ public class Main {
 		Company company = companyService.getCompanyById(idCompany);
 		Computer computer = ComputerBuilder.newInstance().setName(name).setIntroducedDate(localDateIntro)
 				.setDiscountedDate(localDateDicounted).setCompany(company).build();
-		return computer;
+		computerServiceImpl.createComputer(computer);
 	}
 
 	public static int getIdOfComputer() {
@@ -121,14 +105,16 @@ public class Main {
 		return idComputer;
 	}
 
-	public static int getComputerToDelet() {
+	public  int getComputerToDelet() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer to update");
 		int idComputer = sc.nextInt();
+		computerServiceImpl.deleteComputer(idComputer);
+
 		return idComputer;
 	}
 
-	public Computer getComputerToUpdate(Connection conn) {
+	public void getComputerToUpdate() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please give the id of the computer to update");
 		Scanner scn = new Scanner(System.in);
@@ -139,19 +125,21 @@ public class Main {
 		LocalDate localDateDicounted = ConsoleValidator.inputIsValidForDiscontinued();
 		System.out.println("Please give the id of company :");
 		int idCompany = scn.nextInt();
-		Company company = computerServiceImpl.getCompanyById(idCompany);
+		Company company = companyService.getCompanyById(idCompany);
 		Computer computer = ComputerBuilder.newInstance().setId(idComputer).setName(name)
 				.setIntroducedDate(localDateIntro).setDiscountedDate(localDateDicounted).setCompany(company).build();
-		return computer;
+		computerServiceImpl.updateComputer(computer);
 	}
 
-	public List<Computer> computersByPage(Connection conn) {
+	public List<Computer> computersByPage() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please enter the number of page");
 		int pageNumber = sc.nextInt();
+		System.out.println("Please enter the size of page");
+		int size = sc.nextInt();
 		List<Computer> computers = null;
 
-		computers = computerServiceImpl.getComputersByPage(pageNumber, 50);
+		computers = computerServiceImpl.getComputersByPage(pageNumber, size);
 
 		return computers;
 	}
@@ -173,15 +161,7 @@ public class Main {
 		return value;
 	}
 
-	public void manageCreate(Computer computer) {
-		computerServiceImpl.createComputer(computer);
-	}
-
-	public void manageUpdate(Computer computer, Connection conn) {
-
-		computerServiceImpl.updateComputer(computer);
-
-	}
+	
 
 	public  List<Computer> manageAllComputers() {
 		List<Computer> computers = computerServiceImpl.getAllComputers();

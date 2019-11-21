@@ -39,9 +39,9 @@ public class DashBoardController {
 			numberOfpages = computerService.getPagesNumberByName(size, search);
 			List<Computer> computers = computerService.getComputersByName(search, size, beginPage);
 			computersDto = computerMapper.fromListObjecToListString(computers);
-//			while (endPage > numberOfpages) {
-//				endPage--;
-//			}
+			while (endPage > numberOfpages) {
+				endPage--;
+			}
 		} else {
 			computersDto = computerMapper
 					.fromListObjecToListString(computerService.getComputersByPage(beginPage, size));
