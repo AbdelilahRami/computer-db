@@ -1,5 +1,4 @@
 package fr.excilys.db.dto;
-
 public class ComputerDto {
 	private String id;
 	private String name;
