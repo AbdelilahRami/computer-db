@@ -3,31 +3,36 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import fr.excilys.db.dao.ComputerDaoImpl;
+import fr.excilys.db.dto.ComputerDto;
+import fr.excilys.db.mapper.ComputerMapper;
 import fr.excilys.db.model.Computer;
 @Service
 public class ComputerServiceImpl  {
 	
 	@Autowired
 	private  ComputerDaoImpl computerDaoImpl;
-		
+	@Autowired
+	private ComputerMapper computerMapper;
 	
-	public List<Computer> getAllComputers()  {
+	public List<ComputerDto> getAllComputers()  {
 		List<Computer> computers = computerDaoImpl.getAllComputers();
-		return computers;
+		return computerMapper.fromListObjecToListString(computers);
 	}
 	
 	public void updateComputer(Computer computer) {
 			 computerDaoImpl.updateComputer(computer);
 	}
 	
-	public void createComputer(Computer computer) {
-			 computerDaoImpl.createComputer(computer);
+	public void createComputer(ComputerDto computerDto) {
+		Computer computer=computerMapper.mapToComputerForCreate(computerDto);
+		computerDaoImpl.createComputer(computer);
 			
 	}
 	
-	public List<Computer> getComputersByPage(int numPage,int pageSize)  {
+	public List<ComputerDto> getComputersByPage(int numPage,int pageSize)  {
 		List<Computer> computers = computerDaoImpl.getComputersByPageNumber(numPage,pageSize);
-		return computers;
+		List<ComputerDto> computersDto=computerMapper.fromListObjecToListString(computers);
+		return computersDto;
 	}
 	
 	public void deleteComputer(int idComputer) {

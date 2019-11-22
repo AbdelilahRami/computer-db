@@ -11,7 +11,7 @@ import fr.excilys.db.model.Company;
 public class CompanyServiceImpl  {
 
 	@Autowired
-	CompanyDaoImpl companyDaoImpl;
+	private CompanyDaoImpl companyDaoImpl;
 	
 
 	public Company getCompanyById(int idCompany) {

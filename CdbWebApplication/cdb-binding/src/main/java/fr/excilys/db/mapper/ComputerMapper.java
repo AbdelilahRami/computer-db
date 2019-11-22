@@ -22,7 +22,7 @@ public class ComputerMapper implements RowMapper<Computer>{
 	@Autowired
 	private DateValidator dateValidator;
 
-	public  ComputerDto fromObjectToString(Computer computer) {
+	public static  ComputerDto fromObjectToString(Computer computer) {
 		ComputerDto computerDto= new ComputerDto();
 		computerDto.setId(String.valueOf(computer.getId()));
 		computerDto.setName(computer.getName());
@@ -32,16 +32,46 @@ public class ComputerMapper implements RowMapper<Computer>{
 		computerDto.setIdCompany(companyName);
 		return computerDto;
 	}
-	public  Computer fromStringToObject(ComputerDto computer) throws DatesNotValidException, DateTimeParseException{
+	public static ComputerDto mapComputerToString(Computer computer) {
+		ComputerDto computerDto= new ComputerDto();
+		computerDto.setId(String.valueOf(computer.getId()));
+		computerDto.setName(computer.getName());
+		computerDto.setLocalDateIntroduction(computer.getIntroducedDate() == null ? "" : computer.getIntroducedDate().toString());
+		computerDto.setLocalDateDiscontinued(computer.getDiscountedDate() == null ? "" : computer.getDiscountedDate().toString());
+		String companyId=computer.getCompany()==null ?"":String.valueOf(computer.getCompany().getIdCompany());
+		computerDto.setIdCompany(companyId);
+		return computerDto;
+	}
+	public  Computer mapToComputerForUpdate(ComputerDto computer) {
 		String name=computer.getName();
 		LocalDate lci=null,lcd=null;
 		lci = dateValidator.fromStringToLocalDate(computer.getLocalDateIntroduction());
 		lcd = dateValidator.fromStringToLocalDate(computer.getLocalDateDiscontinued());
-		dateValidator.datesAreValid(lci, lcd);
+		try {
+			dateValidator.datesAreValid(lci, lcd);
+		} catch (DatesNotValidException e) {
+			System.out.println(e.getMessage());
+		}
 		System.out.println(computer.getIdCompany());
-		Company company = (!computer.getIdCompany().isEmpty()) ? CompanyBuilder.newInstance().setIdCompany(Integer.parseInt(computer.getIdCompany())).build() : null;
-		Computer objComputer=ComputerBuilder.newInstance().setName(name) 
-										.setIntroducedDate(lci).setDiscountedDate(lcd).setCompany(company).build();
+		Company company = (!(computer.getIdCompany()==null)) ? CompanyBuilder.newInstance().setIdCompany(Integer.parseInt(computer.getIdCompany())).build() : null;
+		Computer objComputer=ComputerBuilder.newInstance().setId(Integer.parseInt(computer.getId())).setName(name)
+				.setIntroducedDate(lci).setDiscountedDate(lcd).setCompany(company).build();
+		return objComputer;
+	}
+	public  Computer mapToComputerForCreate(ComputerDto computer) {
+		String name=computer.getName();
+		LocalDate lci=null,lcd=null;
+		lci = dateValidator.fromStringToLocalDate(computer.getLocalDateIntroduction());
+		lcd = dateValidator.fromStringToLocalDate(computer.getLocalDateDiscontinued());
+		try {
+			dateValidator.datesAreValid(lci, lcd);
+		} catch (DatesNotValidException e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println(computer.getIdCompany());
+		Company company = (!(computer.getIdCompany() == null)) ? CompanyBuilder.newInstance().setIdCompany(Integer.parseInt(computer.getIdCompany())).build() : null;
+		Computer objComputer=ComputerBuilder.newInstance().setName(name)
+				.setIntroducedDate(lci).setDiscountedDate(lcd).setCompany(company).build();
 		return objComputer;
 	}
 	

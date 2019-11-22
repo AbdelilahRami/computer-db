@@ -1,5 +1,4 @@
 package fr.excilys.db.dao;
-
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,13 +13,9 @@ import fr.excilys.db.model.Computer;
 @Repository
 public class ComputerDaoImpl {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
-	
-	SessionFactory sessionFactory;
 	@Autowired
-	public ComputerDaoImpl(SessionFactory sessionFactory) {
-		super();
-		this.sessionFactory = sessionFactory;
-	}
+	SessionFactory sessionFactory;
+	
 
 	public List<Computer> getAllComputers() {
 		Session session = sessionFactory.openSession();
@@ -39,7 +34,7 @@ public class ComputerDaoImpl {
 		boolean success = false;
 		try {
 			Session session = sessionFactory.openSession();
-			session.saveOrUpdate(computer);
+			session.save(computer);
 			success = true;
 		} catch (Exception e) {
 			LOGGER.error("Error in adding operation");
@@ -49,16 +44,12 @@ public class ComputerDaoImpl {
 
 	public boolean updateComputer(Computer computer) {
 		boolean success = false;
-		try {
 			Session session = sessionFactory.openSession();
 			Transaction transaction = session.beginTransaction();
-			session.update(computer);
-			success = true;
+			session.merge(computer);
 			transaction.commit();
-		} catch (Exception e) {
-			LOGGER.error("Error in updating operation");
-		}
-		return success;
+			success = true;
+			return success;
 	}
 
 	public boolean deleteComputer(int id) {

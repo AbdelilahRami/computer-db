@@ -29,7 +29,7 @@ public class DateValidator {
 
 	public static LocalDate fromStringToLocalDate(String s) {
 		LocalDate localDate = null;
-		if (s.equals("")) {
+		if (s==null || s.isEmpty()) {
 			return localDate;
 		}
 		if (s.matches(
